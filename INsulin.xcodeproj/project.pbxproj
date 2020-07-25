@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,6 +22,8 @@
 		A944AA5724CB2BBB00671754 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A944AA5624CB2BBB00671754 /* Preview Assets.xcassets */; };
 		A944AA6924CB2C1800671754 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A944AA6824CB2C1800671754 /* HealthKit.framework */; };
 		A944AA6B24CB307D00671754 /* Calculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA6A24CB307D00671754 /* Calculations.swift */; };
+		A944AA6F24CC445000671754 /* ChartHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA6E24CC445000671754 /* ChartHostingController.swift */; };
+		A944AA7124CC45A100671754 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA7024CC45A100671754 /* ChartView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +78,7 @@
 		821838AC2EF54D90330E6661 /* Pods-INsulin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INsulin.release.xcconfig"; path = "Target Support Files/Pods-INsulin/Pods-INsulin.release.xcconfig"; sourceTree = "<group>"; };
 		9245D9C6B63D805483CF1315 /* Pods_INsulin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_INsulin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7CF3B6E9D1A814FE9714C89 /* Pods-INsulin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INsulin.debug.xcconfig"; path = "Target Support Files/Pods-INsulin/Pods-INsulin.debug.xcconfig"; sourceTree = "<group>"; };
-		A944AA3324CB2BB800671754 /* INsulin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = INsulin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A944AA3324CB2BB800671754 /* Active Insulin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Active Insulin.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A944AA3724CB2BB800671754 /* INsulin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = INsulin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A944AA3D24CB2BB800671754 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		A944AA3F24CB2BBA00671754 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -92,6 +94,8 @@
 		A944AA6624CB2C1800671754 /* INsulin WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "INsulin WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		A944AA6824CB2C1800671754 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS6.2.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		A944AA6A24CB307D00671754 /* Calculations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculations.swift; sourceTree = "<group>"; };
+		A944AA6E24CC445000671754 /* ChartHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartHostingController.swift; sourceTree = "<group>"; };
+		A944AA7024CC45A100671754 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,7 +141,7 @@
 		A944AA3424CB2BB800671754 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A944AA3324CB2BB800671754 /* INsulin.app */,
+				A944AA3324CB2BB800671754 /* Active Insulin.app */,
 				A944AA3724CB2BB800671754 /* INsulin.app */,
 				A944AA4624CB2BBA00671754 /* INsulin WatchKit Extension.appex */,
 			);
@@ -166,6 +170,8 @@
 				A944AA5824CB2BBB00671754 /* Info.plist */,
 				A944AA5524CB2BBB00671754 /* Preview Content */,
 				A944AA6A24CB307D00671754 /* Calculations.swift */,
+				A944AA6E24CC445000671754 /* ChartHostingController.swift */,
+				A944AA7024CC45A100671754 /* ChartView.swift */,
 			);
 			path = "INsulin WatchKit Extension";
 			sourceTree = "<group>";
@@ -199,7 +205,6 @@
 				4FA2E478BBA111BC51FA73AF /* Pods-INsulin WatchKit Extension.debug.xcconfig */,
 				685077167C9C6C9A969ED820 /* Pods-INsulin WatchKit Extension.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -222,7 +227,7 @@
 			);
 			name = INsulin;
 			productName = INsulin;
-			productReference = A944AA3324CB2BB800671754 /* INsulin.app */;
+			productReference = A944AA3324CB2BB800671754 /* Active Insulin.app */;
 			productType = "com.apple.product-type.application.watchapp2-container";
 		};
 		A944AA3624CB2BB800671754 /* INsulin WatchKit App */ = {
@@ -425,6 +430,8 @@
 			files = (
 				A944AA4E24CB2BBA00671754 /* HostingController.swift in Sources */,
 				A944AA5224CB2BBA00671754 /* ComplicationController.swift in Sources */,
+				A944AA6F24CC445000671754 /* ChartHostingController.swift in Sources */,
+				A944AA7124CC45A100671754 /* ChartView.swift in Sources */,
 				A944AA4C24CB2BBA00671754 /* ContentView.swift in Sources */,
 				A944AA6B24CB307D00671754 /* Calculations.swift in Sources */,
 				A944AA5024CB2BBA00671754 /* ExtensionDelegate.swift in Sources */,
@@ -577,6 +584,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "INsulin WatchKit Extension/INsulin WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"INsulin WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				ENABLE_PREVIEWS = YES;
@@ -603,6 +611,7 @@
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CODE_SIGN_ENTITLEMENTS = "INsulin WatchKit Extension/INsulin WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"INsulin WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				ENABLE_PREVIEWS = YES;
@@ -629,6 +638,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				IBSC_MODULE = INsulin_WatchKit_Extension;
 				INFOPLIST_FILE = "INsulin WatchKit App/Info.plist";
@@ -649,6 +659,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				IBSC_MODULE = INsulin_WatchKit_Extension;
 				INFOPLIST_FILE = "INsulin WatchKit App/Info.plist";
@@ -667,11 +678,11 @@
 			baseConfigurationReference = A7CF3B6E9D1A814FE9714C89 /* Pods-INsulin.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kingstinct.INsulin;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Active Insulin";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -681,11 +692,11 @@
 			baseConfigurationReference = 821838AC2EF54D90330E6661 /* Pods-INsulin.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kingstinct.INsulin;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Active Insulin";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

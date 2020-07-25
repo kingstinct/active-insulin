@@ -19,11 +19,11 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSHealthShareUsageDescription</key>
-	<string>dfgsdfgsdfgsdfgsdfg</string>
+	<string>Active Insulin uses Healthkit to read Insulin Data</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>sdfgsdfgsdfgasdfgasdc</string>
+	<string>Active Insulin uses Healthkit to store Insulin Data</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

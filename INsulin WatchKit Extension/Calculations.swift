@@ -81,32 +81,31 @@ class Calculations {
         
     }
     
-    static func fetchActiveInsulinTimeline(healthStore: HKHealthStore, minuteResolution: Double = 2, forTime: Date? = nil) -> Future<[(Date, Double)], Error>{
+    static func fetchActiveInsulinTimeline(healthStore: HKHealthStore, from: Date, to: Date, minuteResolution: Double = 2) -> Future<[(Date, Double)], Error>{
         return Future { promise in
             let totalDurationInMinutes: Double = 360;
             let peakTimeInMinutes: Double = 75;
-            let dateTime = forTime ?? Date();
             // let from = Date.init(timeIntervalSinceNow: TimeInterval(exactly: -totalDurationInMinutes * 60)!)
-            let from = dateTime.advanced(by: TimeInterval(exactly: -totalDurationInMinutes * 60)!);
+            let queryFrom = from.advanced(by: TimeInterval(exactly: -totalDurationInMinutes * 60)!);
             
-            let query = HKSampleQuery.init(sampleType: insulinQuantityType, predicate: HKQuery.predicateForSamples(withStart: from, end: nil, options: []), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (q, _samples, error) in
+            let query = HKSampleQuery.init(sampleType: insulinQuantityType, predicate: HKQuery.predicateForSamples(withStart: queryFrom, end: nil, options: []), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (q, _samples, error) in
                 if let e = error {
                     promise(.failure(e));
                 } else {
                     if let samples = _samples as? [HKQuantitySample] {
                         var futureMinute: Double = 0;
                         var retVal = Array<(Date, Double)>();
-                        while(futureMinute <= totalDurationInMinutes){
-                            let date = dateTime.advanced(by: TimeInterval(futureMinute * 60))
+                        while(futureMinute <= to.timeIntervalSince(from)){
+                            let date = from.advanced(by: TimeInterval(futureMinute * 60))
                             var totalActiveInsulinLeft: Double = 0;
                             for sample in samples {
                                 let quantity = sample.quantity.doubleValue(for: HKUnit.internationalUnit());
                                 let minutesAgo = -sample.startDate.timeIntervalSince(date) / 60;
-                                if(minutesAgo <= totalDurationInMinutes){
+                                // if(minutesAgo <= totalDurationInMinutes){
                                     let iobFactor = self.iobCurve(t: minutesAgo, peakTimeInMinutes: peakTimeInMinutes, totalDurationInMinutes: totalDurationInMinutes);
                                     let activeInsulinLeft = quantity * iobFactor;
                                     totalActiveInsulinLeft += activeInsulinLeft;
-                                }
+                                // }
                             }
                             
                             retVal.append((date, totalActiveInsulinLeft))

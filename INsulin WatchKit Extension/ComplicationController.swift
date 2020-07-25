@@ -125,7 +125,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     func getTimelineEntries(for complication: CLKComplication, after date: Date, limit: Int, withHandler handler: @escaping ([CLKComplicationTimelineEntry]?) -> Void) {
         let healthStore = HKHealthStore()
         // Call the handler with the timeline entries after to the given date
-        currentPromise = Calculations.fetchActiveInsulinTimeline(healthStore: healthStore, forTime: date).sink(receiveCompletion: { (error) in
+        currentPromise = Calculations.fetchActiveInsulinTimeline(healthStore: healthStore, from: date, to: date.addingTimeInterval(TimeInterval(5 * 60 * 60))).sink(receiveCompletion: { (error) in
             
         }, receiveValue: { (results) in
             let timelineEntries = results.map { (time, iob) -> CLKComplicationTimelineEntry? in

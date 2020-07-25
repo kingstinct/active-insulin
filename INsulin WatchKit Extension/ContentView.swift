@@ -15,26 +15,14 @@ extension Double {
     }
 }
 
-class OptionalData: ObservableObject {
-    @Published var chartImage: UIImage?
-}
-
 struct ContentView: View {
     @State var insulin: Double = 0.5
     @State var rotation: Double = 0.0
     @State var lastRotation: Double = 0.0
-    var activeInsulin: Double
-    @ObservedObject var optionalData: OptionalData
     var saveAction: ((_: Double) -> Void)?
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
+        
             VStack(alignment: .center){
-                
-                self.optionalData.chartImage.map { image in
-                    Image(uiImage: image)
-                }
-                Text("Insulin on Board")
-                Text("\(activeInsulin.format(f: "0.1"))")
                 Text("Units of insulin").focusable(true)
                     .digitalCrownRotation(
                     $rotation,
@@ -65,13 +53,11 @@ struct ContentView: View {
                     Text("Save")
                 }
             }
-        }
-        
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        return ContentView(insulin: 10, rotation: 0, lastRotation: 0, activeInsulin: 5, optionalData: OptionalData(), saveAction: nil)
+        return ContentView(insulin: 10, rotation: 0, lastRotation: 0, saveAction: nil)
     }
 }
