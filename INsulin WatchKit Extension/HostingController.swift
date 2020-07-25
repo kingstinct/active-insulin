@@ -11,6 +11,7 @@ import Foundation
 import SwiftUI
 import HealthKit
 import Combine
+import YOChartImageKit
 
 let insulinQuantityType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
 
@@ -18,6 +19,7 @@ class HostingController: WKHostingController<ContentView> {
     var activeInsulin: Double = 0
     let healthStore = HKHealthStore()
     var promise: AnyCancellable?
+    var image: UIImage?
     
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
@@ -46,15 +48,33 @@ class HostingController: WKHostingController<ContentView> {
             }
         }
         
-        
-        
-        promise = Calculations.fetchActiveInsulin(healthStore: self.healthStore).sink(receiveCompletion: { (errors) in
+        promise = Calculations.fetchActiveInsulinTimeline(healthStore: self.healthStore, minuteResolution: 5).sink(receiveCompletion: { (errors) in
             // handle error
             // handler();
-        }) { (val) in
+        }) { (vals) in
             DispatchQueue.main.async {
-                self.activeInsulin = val;
-                self.setNeedsBodyUpdate()
+                if let val = vals.first?.1 {
+                    self.activeInsulin = val;
+                    self.setNeedsBodyUpdate()
+                }
+                
+                let chart = YOLineChartImage();
+                // chart.smooth = true;
+                /*let newVals = vals.map({ (_: Date, value: Double) -> NSNumber in
+                
+                    return NSNumber(value: value);
+                })*/
+                let newVals = vals.map({ $0.1 })
+                chart.values = newVals as [NSNumber];
+                chart.fillColor = UIColor.magenta.withAlphaComponent(0.5)
+                // chart.smooth = true
+                chart.strokeColor = UIColor.magenta
+                chart.strokeWidth = 2.0
+                
+                self.image = chart.draw(CGRect(x: 0, y: 0, width: WKInterfaceDevice.current().screenBounds.width, height: 50), scale: WKInterfaceDevice.current().screenScale);
+                
+                
+                
                 handler();
             }
         }
@@ -71,6 +91,8 @@ class HostingController: WKHostingController<ContentView> {
     }
     
     override var body: ContentView {
-        return ContentView(activeInsulin: activeInsulin, saveAction: saveAction)
+        let optionalData = OptionalData();
+        optionalData.chartImage = self.image;
+        return ContentView(activeInsulin: activeInsulin, optionalData: optionalData, saveAction: saveAction)
     }
 }

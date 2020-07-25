@@ -81,7 +81,7 @@ class Calculations {
         
     }
     
-    static func fetchActiveInsulinTimeline(healthStore: HKHealthStore, forTime: Date? = nil) -> Future<Dictionary<Date, Double>, Error>{
+    static func fetchActiveInsulinTimeline(healthStore: HKHealthStore, minuteResolution: Double = 2, forTime: Date? = nil) -> Future<[(Date, Double)], Error>{
         return Future { promise in
             let totalDurationInMinutes: Double = 360;
             let peakTimeInMinutes: Double = 75;
@@ -95,7 +95,7 @@ class Calculations {
                 } else {
                     if let samples = _samples as? [HKQuantitySample] {
                         var futureMinute: Double = 0;
-                        var retVal = Dictionary<Date, Double>();
+                        var retVal = Array<(Date, Double)>();
                         while(futureMinute <= totalDurationInMinutes){
                             let date = dateTime.advanced(by: TimeInterval(futureMinute * 60))
                             var totalActiveInsulinLeft: Double = 0;
@@ -109,13 +109,9 @@ class Calculations {
                                 }
                             }
                             
-                            retVal.updateValue(totalActiveInsulinLeft, forKey: date)
+                            retVal.append((date, totalActiveInsulinLeft))
                             
-                            futureMinute += 2;
-                            
-                            /* if(totalActiveInsulinLeft == 0){
-                                break;
-                            } */
+                            futureMinute += minuteResolution;
                         }
                         
                         

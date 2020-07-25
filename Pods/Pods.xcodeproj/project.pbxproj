@@ -1,0 +1,978 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		028E5CC5764797720C80502E56984C36 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D38AE3804295616A1FF61657BA1DB2 /* Foundation.framework */; };
+		0651CDADE36A1D89E37EE1BEFF643794 /* Pods-INsulin WatchKit Extension-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FE62E95EB1CC14D725948F5F9502A4AA /* Pods-INsulin WatchKit Extension-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1850841AED884411AA05C0071CF61B0C /* Pods-INsulin WatchKit App-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 345DDA0B266A1A682EF07ECAA948C638 /* Pods-INsulin WatchKit App-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1C208B851226CE037D9BBA1AB5747172 /* YOChartImageKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AF4215ACA42CEA41248B969D2A8CFDED /* YOChartImageKit-dummy.m */; };
+		22E8501D77332002BA45CDF0E29D9F10 /* Pods-INsulin-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = CCEE1A6EB86F559FC958E025A10710B0 /* Pods-INsulin-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		230E62D68D4F8ADF650597D0A7F7A738 /* YOBarChartImage.h in Headers */ = {isa = PBXBuildFile; fileRef = F498AC84B7EBE7580AF36F4D16D7720C /* YOBarChartImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		248AADC64E0ACC7B6A44A93B9E48D2CD /* Pods-INsulin WatchKit Extension-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C56031F94D94370A03EF8237B07B54E2 /* Pods-INsulin WatchKit Extension-dummy.m */; };
+		2F98C9DA6018E432D210F35F2B0BB7F3 /* YOLineChartImage.m in Sources */ = {isa = PBXBuildFile; fileRef = BB42572458E9EFEF07E957DA9B95455C /* YOLineChartImage.m */; };
+		54BCD00451ADB49DB0B689199CDDC606 /* Pods-INsulin WatchKit App-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A79506BC1AE98E216EDA8655DCDB0E44 /* Pods-INsulin WatchKit App-dummy.m */; };
+		561CA53FB4CA8F5CC8D9F74C7B2659B4 /* YOBarChartImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E8E4BCDD9B92B9DDA871F05C85A83D2 /* YOBarChartImage.m */; };
+		746E2649D89CDF92C1AB46D1C291D723 /* YODonutChartImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B235051759A03203C0294D6AD528CA8 /* YODonutChartImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		75A901313CA74E9392EF1489CD7D1BF7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 356D081351CFBD0475E5983D730E32DF /* Foundation.framework */; };
+		9A00A13371014A448B1474F368A730EC /* YODonutChartImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F313D8B1C4DCF799A9D4FCD21756EA /* YODonutChartImage.m */; };
+		BC1B603945E97B24E08FE274E6F2CBEE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 356D081351CFBD0475E5983D730E32DF /* Foundation.framework */; };
+		C41676B788951FDD79AC633E0EF718D6 /* YOChartImageKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D752AE324B09E9881A66BF19BA3D805E /* YOChartImageKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D8FCDAC0A446E44A61477EBB3C45F40C /* YOChartImageKit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C955BDFA64E820F5D49237B9EB68702C /* YOChartImageKit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DD4AA6196C100383D168D71540114ADE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 356D081351CFBD0475E5983D730E32DF /* Foundation.framework */; };
+		E4ED2C501235D2FFA6DFD0360A22AC34 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE257882FC043E265CF9C48330638AAC /* UIKit.framework */; };
+		F7137BDD3E6EF51C8D9C31ECC4564263 /* Pods-INsulin-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 741B74BD13B8F973443D509081F7239A /* Pods-INsulin-dummy.m */; };
+		FF9F7A02348F5D33087E72CACD5ACD83 /* YOLineChartImage.h in Headers */ = {isa = PBXBuildFile; fileRef = D822015CB36D2338D9628F15A002D6AF /* YOLineChartImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		64DB9B638CC5448A3865E707EAA808D1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7124CA1709F89369848C20E79ED72EA7;
+			remoteInfo = YOChartImageKit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02D38AE3804295616A1FF61657BA1DB2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		0FDB8ED3CD4398060CE4AE77FE9F8626 /* YOChartImageKit-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "YOChartImageKit-Info.plist"; sourceTree = "<group>"; };
+		17B1FC691487ED157144212AADDE3D24 /* Pods-INsulin WatchKit Extension-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-INsulin WatchKit Extension-frameworks.sh"; sourceTree = "<group>"; };
+		2BE216BA40F29BF1706605CFC44CB25A /* Pods-INsulin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-INsulin.release.xcconfig"; sourceTree = "<group>"; };
+		2C228E23FA29EAB9BEBCFF36086F9356 /* Pods-INsulin.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-INsulin.modulemap"; sourceTree = "<group>"; };
+		345DDA0B266A1A682EF07ECAA948C638 /* Pods-INsulin WatchKit App-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-INsulin WatchKit App-umbrella.h"; sourceTree = "<group>"; };
+		356D081351CFBD0475E5983D730E32DF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS5.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		3880C5C7C2C0A2A04A046A1F951FC75D /* Pods-INsulin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-INsulin.debug.xcconfig"; sourceTree = "<group>"; };
+		4AEB575442D41B2EF7D80245426FB1ED /* Pods_INsulin_WatchKit_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_INsulin_WatchKit_Extension.framework; path = "Pods-INsulin WatchKit Extension.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		54F313D8B1C4DCF799A9D4FCD21756EA /* YODonutChartImage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = YODonutChartImage.m; path = Source/YOChartImageKit/YODonutChartImage.m; sourceTree = "<group>"; };
+		5806138DCB78ECBA0AA10207C9EB6C93 /* Pods-INsulin-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-INsulin-Info.plist"; sourceTree = "<group>"; };
+		5E31696E76D59B43E32924DE25F52DC7 /* Pods-INsulin-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-INsulin-acknowledgements.markdown"; sourceTree = "<group>"; };
+		70D3D8D4D39DAB6008BFF5466C4B7287 /* Pods-INsulin WatchKit App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-INsulin WatchKit App.release.xcconfig"; sourceTree = "<group>"; };
+		741B74BD13B8F973443D509081F7239A /* Pods-INsulin-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-INsulin-dummy.m"; sourceTree = "<group>"; };
+		79591681658EC3D160CE6B1B8BD5B6A4 /* Pods-INsulin WatchKit Extension-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-INsulin WatchKit Extension-acknowledgements.markdown"; sourceTree = "<group>"; };
+		79FA29BFF7933828736E9529AEA6269B /* YOChartImageKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = YOChartImageKit.framework; path = YOChartImageKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F74DFE4A17FC3CEDF2A4762F22C8C8B /* Pods-INsulin WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-INsulin WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
+		818FBF8DAD5C8247B28B8E3E99F02082 /* Pods-INsulin WatchKit App-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-INsulin WatchKit App-acknowledgements.markdown"; sourceTree = "<group>"; };
+		883A1393729204142D2C40A41AF2D025 /* YOChartImageKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "YOChartImageKit-prefix.pch"; sourceTree = "<group>"; };
+		88E6A3CE488BB9968CD7CFB14B321BEE /* Pods-INsulin WatchKit App-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-INsulin WatchKit App-Info.plist"; sourceTree = "<group>"; };
+		89A31E78B9CAFD7BFA4788659E29CBFF /* Pods-INsulin WatchKit Extension-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-INsulin WatchKit Extension-Info.plist"; sourceTree = "<group>"; };
+		9B235051759A03203C0294D6AD528CA8 /* YODonutChartImage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YODonutChartImage.h; path = Source/YOChartImageKit/YODonutChartImage.h; sourceTree = "<group>"; };
+		9B97B0F9FF95D467D68243FEF95A3FCA /* Pods_INsulin_WatchKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_INsulin_WatchKit_App.framework; path = "Pods-INsulin WatchKit App.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9E8E4BCDD9B92B9DDA871F05C85A83D2 /* YOBarChartImage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = YOBarChartImage.m; path = Source/YOChartImageKit/YOBarChartImage.m; sourceTree = "<group>"; };
+		9EB3DBE892ECAFB9B3DDC4ECF575D72D /* Pods-INsulin WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-INsulin WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		A27DE33EAAB92C3F401608260CED8821 /* Pods-INsulin WatchKit Extension.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-INsulin WatchKit Extension.modulemap"; sourceTree = "<group>"; };
+		A45143E5792BCE91F30EC05A06A0F5BE /* Pods-INsulin WatchKit App.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-INsulin WatchKit App.modulemap"; sourceTree = "<group>"; };
+		A79506BC1AE98E216EDA8655DCDB0E44 /* Pods-INsulin WatchKit App-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-INsulin WatchKit App-dummy.m"; sourceTree = "<group>"; };
+		AF4215ACA42CEA41248B969D2A8CFDED /* YOChartImageKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "YOChartImageKit-dummy.m"; sourceTree = "<group>"; };
+		B8532CF71B8402C89A29CE997314CE97 /* YOChartImageKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = YOChartImageKit.xcconfig; sourceTree = "<group>"; };
+		BB42572458E9EFEF07E957DA9B95455C /* YOLineChartImage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = YOLineChartImage.m; path = Source/YOChartImageKit/YOLineChartImage.m; sourceTree = "<group>"; };
+		BEDFF94607AE0772125F6942EA33F538 /* Pods-INsulin-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-INsulin-acknowledgements.plist"; sourceTree = "<group>"; };
+		C56031F94D94370A03EF8237B07B54E2 /* Pods-INsulin WatchKit Extension-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-INsulin WatchKit Extension-dummy.m"; sourceTree = "<group>"; };
+		C568E74EE9B22FD6DBA939B52A131711 /* Pods_INsulin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_INsulin.framework; path = "Pods-INsulin.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5AAF6E13FFF4E370E8A35680F420C47 /* YOChartImageKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = YOChartImageKit.modulemap; sourceTree = "<group>"; };
+		C955BDFA64E820F5D49237B9EB68702C /* YOChartImageKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "YOChartImageKit-umbrella.h"; sourceTree = "<group>"; };
+		CCEE1A6EB86F559FC958E025A10710B0 /* Pods-INsulin-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-INsulin-umbrella.h"; sourceTree = "<group>"; };
+		D752AE324B09E9881A66BF19BA3D805E /* YOChartImageKit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YOChartImageKit.h; path = Source/YOChartImageKit/YOChartImageKit.h; sourceTree = "<group>"; };
+		D822015CB36D2338D9628F15A002D6AF /* YOLineChartImage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YOLineChartImage.h; path = Source/YOChartImageKit/YOLineChartImage.h; sourceTree = "<group>"; };
+		DE257882FC043E265CF9C48330638AAC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS5.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		E1BBC1121C9E8C0C6E6741E4039FE2F2 /* Pods-INsulin WatchKit Extension-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-INsulin WatchKit Extension-acknowledgements.plist"; sourceTree = "<group>"; };
+		F498AC84B7EBE7580AF36F4D16D7720C /* YOBarChartImage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YOBarChartImage.h; path = Source/YOChartImageKit/YOBarChartImage.h; sourceTree = "<group>"; };
+		FAA705A4CF28C7A6AA96624989C9C9E1 /* Pods-INsulin WatchKit App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-INsulin WatchKit App.debug.xcconfig"; sourceTree = "<group>"; };
+		FC712F30B4A1B3ABFE8CD1C1F2037475 /* Pods-INsulin WatchKit App-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-INsulin WatchKit App-acknowledgements.plist"; sourceTree = "<group>"; };
+		FE62E95EB1CC14D725948F5F9502A4AA /* Pods-INsulin WatchKit Extension-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-INsulin WatchKit Extension-umbrella.h"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0575A97A00E3059646500A2AA26301C0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC1B603945E97B24E08FE274E6F2CBEE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3104D4A5AF886F987387FC822C31C80D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				75A901313CA74E9392EF1489CD7D1BF7 /* Foundation.framework in Frameworks */,
+				E4ED2C501235D2FFA6DFD0360A22AC34 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D007110A6D7103B2353949BFD272502C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				028E5CC5764797720C80502E56984C36 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F5B7995A2DD7B07A6D16D10433B50F69 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD4AA6196C100383D168D71540114ADE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		11D9AE111084918F3B1B8E840138598A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3AF64318EFE59853295D34CC67C676DD /* iOS */,
+				ACEFC3AAD274AD90974D496DF07C98CD /* watchOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		125969A322E59E5379819102D83AAA36 /* Pods-INsulin WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				A45143E5792BCE91F30EC05A06A0F5BE /* Pods-INsulin WatchKit App.modulemap */,
+				818FBF8DAD5C8247B28B8E3E99F02082 /* Pods-INsulin WatchKit App-acknowledgements.markdown */,
+				FC712F30B4A1B3ABFE8CD1C1F2037475 /* Pods-INsulin WatchKit App-acknowledgements.plist */,
+				A79506BC1AE98E216EDA8655DCDB0E44 /* Pods-INsulin WatchKit App-dummy.m */,
+				88E6A3CE488BB9968CD7CFB14B321BEE /* Pods-INsulin WatchKit App-Info.plist */,
+				345DDA0B266A1A682EF07ECAA948C638 /* Pods-INsulin WatchKit App-umbrella.h */,
+				FAA705A4CF28C7A6AA96624989C9C9E1 /* Pods-INsulin WatchKit App.debug.xcconfig */,
+				70D3D8D4D39DAB6008BFF5466C4B7287 /* Pods-INsulin WatchKit App.release.xcconfig */,
+			);
+			name = "Pods-INsulin WatchKit App";
+			path = "Target Support Files/Pods-INsulin WatchKit App";
+			sourceTree = "<group>";
+		};
+		3AF64318EFE59853295D34CC67C676DD /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				02D38AE3804295616A1FF61657BA1DB2 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		3E87611E2B92FB6B1DD90829BED7FA3B /* Pods-INsulin WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				A27DE33EAAB92C3F401608260CED8821 /* Pods-INsulin WatchKit Extension.modulemap */,
+				79591681658EC3D160CE6B1B8BD5B6A4 /* Pods-INsulin WatchKit Extension-acknowledgements.markdown */,
+				E1BBC1121C9E8C0C6E6741E4039FE2F2 /* Pods-INsulin WatchKit Extension-acknowledgements.plist */,
+				C56031F94D94370A03EF8237B07B54E2 /* Pods-INsulin WatchKit Extension-dummy.m */,
+				17B1FC691487ED157144212AADDE3D24 /* Pods-INsulin WatchKit Extension-frameworks.sh */,
+				89A31E78B9CAFD7BFA4788659E29CBFF /* Pods-INsulin WatchKit Extension-Info.plist */,
+				FE62E95EB1CC14D725948F5F9502A4AA /* Pods-INsulin WatchKit Extension-umbrella.h */,
+				9EB3DBE892ECAFB9B3DDC4ECF575D72D /* Pods-INsulin WatchKit Extension.debug.xcconfig */,
+				7F74DFE4A17FC3CEDF2A4762F22C8C8B /* Pods-INsulin WatchKit Extension.release.xcconfig */,
+			);
+			name = "Pods-INsulin WatchKit Extension";
+			path = "Target Support Files/Pods-INsulin WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		4D905F9391B3447AD96C6B3CAD3F84A7 /* Pods-INsulin */ = {
+			isa = PBXGroup;
+			children = (
+				2C228E23FA29EAB9BEBCFF36086F9356 /* Pods-INsulin.modulemap */,
+				5E31696E76D59B43E32924DE25F52DC7 /* Pods-INsulin-acknowledgements.markdown */,
+				BEDFF94607AE0772125F6942EA33F538 /* Pods-INsulin-acknowledgements.plist */,
+				741B74BD13B8F973443D509081F7239A /* Pods-INsulin-dummy.m */,
+				5806138DCB78ECBA0AA10207C9EB6C93 /* Pods-INsulin-Info.plist */,
+				CCEE1A6EB86F559FC958E025A10710B0 /* Pods-INsulin-umbrella.h */,
+				3880C5C7C2C0A2A04A046A1F951FC75D /* Pods-INsulin.debug.xcconfig */,
+				2BE216BA40F29BF1706605CFC44CB25A /* Pods-INsulin.release.xcconfig */,
+			);
+			name = "Pods-INsulin";
+			path = "Target Support Files/Pods-INsulin";
+			sourceTree = "<group>";
+		};
+		560734976495BECE76DD80CDCB98C79A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C568E74EE9B22FD6DBA939B52A131711 /* Pods_INsulin.framework */,
+				9B97B0F9FF95D467D68243FEF95A3FCA /* Pods_INsulin_WatchKit_App.framework */,
+				4AEB575442D41B2EF7D80245426FB1ED /* Pods_INsulin_WatchKit_Extension.framework */,
+				79FA29BFF7933828736E9529AEA6269B /* YOChartImageKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6C991CB49EA6BFD830D0ABF94567F40E /* YOChartImageKit */ = {
+			isa = PBXGroup;
+			children = (
+				F498AC84B7EBE7580AF36F4D16D7720C /* YOBarChartImage.h */,
+				9E8E4BCDD9B92B9DDA871F05C85A83D2 /* YOBarChartImage.m */,
+				D752AE324B09E9881A66BF19BA3D805E /* YOChartImageKit.h */,
+				9B235051759A03203C0294D6AD528CA8 /* YODonutChartImage.h */,
+				54F313D8B1C4DCF799A9D4FCD21756EA /* YODonutChartImage.m */,
+				D822015CB36D2338D9628F15A002D6AF /* YOLineChartImage.h */,
+				BB42572458E9EFEF07E957DA9B95455C /* YOLineChartImage.m */,
+				EDF389E7167D99CF14C405A2F8E6A128 /* Support Files */,
+			);
+			name = YOChartImageKit;
+			path = YOChartImageKit;
+			sourceTree = "<group>";
+		};
+		71566947CD5C99A39A4A0263D344E4A5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6C991CB49EA6BFD830D0ABF94567F40E /* YOChartImageKit */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		ACEFC3AAD274AD90974D496DF07C98CD /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				356D081351CFBD0475E5983D730E32DF /* Foundation.framework */,
+				DE257882FC043E265CF9C48330638AAC /* UIKit.framework */,
+			);
+			name = watchOS;
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				11D9AE111084918F3B1B8E840138598A /* Frameworks */,
+				71566947CD5C99A39A4A0263D344E4A5 /* Pods */,
+				560734976495BECE76DD80CDCB98C79A /* Products */,
+				ED59BA8ACC89F134E0CD20331C86D823 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		ED59BA8ACC89F134E0CD20331C86D823 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				4D905F9391B3447AD96C6B3CAD3F84A7 /* Pods-INsulin */,
+				125969A322E59E5379819102D83AAA36 /* Pods-INsulin WatchKit App */,
+				3E87611E2B92FB6B1DD90829BED7FA3B /* Pods-INsulin WatchKit Extension */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		EDF389E7167D99CF14C405A2F8E6A128 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C5AAF6E13FFF4E370E8A35680F420C47 /* YOChartImageKit.modulemap */,
+				B8532CF71B8402C89A29CE997314CE97 /* YOChartImageKit.xcconfig */,
+				AF4215ACA42CEA41248B969D2A8CFDED /* YOChartImageKit-dummy.m */,
+				0FDB8ED3CD4398060CE4AE77FE9F8626 /* YOChartImageKit-Info.plist */,
+				883A1393729204142D2C40A41AF2D025 /* YOChartImageKit-prefix.pch */,
+				C955BDFA64E820F5D49237B9EB68702C /* YOChartImageKit-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/YOChartImageKit";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		3159721AB4DC18D25275F539ECA56A24 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22E8501D77332002BA45CDF0E29D9F10 /* Pods-INsulin-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		57EEC736F8E91D27A60BBE6CC58E3783 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0651CDADE36A1D89E37EE1BEFF643794 /* Pods-INsulin WatchKit Extension-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A34932E4DB686044C258970CD08D3AB8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				230E62D68D4F8ADF650597D0A7F7A738 /* YOBarChartImage.h in Headers */,
+				D8FCDAC0A446E44A61477EBB3C45F40C /* YOChartImageKit-umbrella.h in Headers */,
+				C41676B788951FDD79AC633E0EF718D6 /* YOChartImageKit.h in Headers */,
+				746E2649D89CDF92C1AB46D1C291D723 /* YODonutChartImage.h in Headers */,
+				FF9F7A02348F5D33087E72CACD5ACD83 /* YOLineChartImage.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3FE85CEC47584D1F4AF9984FEC416F0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1850841AED884411AA05C0071CF61B0C /* Pods-INsulin WatchKit App-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		25EBB9045C703216AA78574E5A531BE9 /* Pods-INsulin WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 70FB32E1849FBE54EC4CA09655CD95FA /* Build configuration list for PBXNativeTarget "Pods-INsulin WatchKit App" */;
+			buildPhases = (
+				F3FE85CEC47584D1F4AF9984FEC416F0 /* Headers */,
+				5DB4697FAF535A5BE1A6C58CA55BBD7C /* Sources */,
+				F5B7995A2DD7B07A6D16D10433B50F69 /* Frameworks */,
+				E9D2623D8B89C67933BE957F891CBD84 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-INsulin WatchKit App";
+			productName = "Pods-INsulin WatchKit App";
+			productReference = 9B97B0F9FF95D467D68243FEF95A3FCA /* Pods_INsulin_WatchKit_App.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		5635FC11CB983819EBCA9F686E397D9C /* Pods-INsulin WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A67E714D173A6DCD2273ADA6B4679E34 /* Build configuration list for PBXNativeTarget "Pods-INsulin WatchKit Extension" */;
+			buildPhases = (
+				57EEC736F8E91D27A60BBE6CC58E3783 /* Headers */,
+				C80AE56B9364F4D89A7C029DF4103422 /* Sources */,
+				0575A97A00E3059646500A2AA26301C0 /* Frameworks */,
+				4E0157A4B772214D5CD8E49EED62094C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7C76142208810669E32C1E58FEC1A932 /* PBXTargetDependency */,
+			);
+			name = "Pods-INsulin WatchKit Extension";
+			productName = "Pods-INsulin WatchKit Extension";
+			productReference = 4AEB575442D41B2EF7D80245426FB1ED /* Pods_INsulin_WatchKit_Extension.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		7124CA1709F89369848C20E79ED72EA7 /* YOChartImageKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B321EC4598DB3756BDBBE9411A675DD /* Build configuration list for PBXNativeTarget "YOChartImageKit" */;
+			buildPhases = (
+				A34932E4DB686044C258970CD08D3AB8 /* Headers */,
+				93DA5D088D6770BC84EE67CFEDEE93C2 /* Sources */,
+				3104D4A5AF886F987387FC822C31C80D /* Frameworks */,
+				69FDB8A071DAC77027CEF6BA282BEEC3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = YOChartImageKit;
+			productName = YOChartImageKit;
+			productReference = 79FA29BFF7933828736E9529AEA6269B /* YOChartImageKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		80AC2E4BB19DC7F1F9C3356ED74933A9 /* Pods-INsulin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 10D66812608F6D27A8A9BFCF24DD1BFF /* Build configuration list for PBXNativeTarget "Pods-INsulin" */;
+			buildPhases = (
+				3159721AB4DC18D25275F539ECA56A24 /* Headers */,
+				134EE8916D068028EDACB57D42D4F26A /* Sources */,
+				D007110A6D7103B2353949BFD272502C /* Frameworks */,
+				408918304EBA759E608818BC9A49850F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-INsulin";
+			productName = "Pods-INsulin";
+			productReference = C568E74EE9B22FD6DBA939B52A131711 /* Pods_INsulin.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 1100;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = 560734976495BECE76DD80CDCB98C79A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				80AC2E4BB19DC7F1F9C3356ED74933A9 /* Pods-INsulin */,
+				25EBB9045C703216AA78574E5A531BE9 /* Pods-INsulin WatchKit App */,
+				5635FC11CB983819EBCA9F686E397D9C /* Pods-INsulin WatchKit Extension */,
+				7124CA1709F89369848C20E79ED72EA7 /* YOChartImageKit */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		408918304EBA759E608818BC9A49850F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4E0157A4B772214D5CD8E49EED62094C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		69FDB8A071DAC77027CEF6BA282BEEC3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9D2623D8B89C67933BE957F891CBD84 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		134EE8916D068028EDACB57D42D4F26A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7137BDD3E6EF51C8D9C31ECC4564263 /* Pods-INsulin-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5DB4697FAF535A5BE1A6C58CA55BBD7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54BCD00451ADB49DB0B689199CDDC606 /* Pods-INsulin WatchKit App-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93DA5D088D6770BC84EE67CFEDEE93C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				561CA53FB4CA8F5CC8D9F74C7B2659B4 /* YOBarChartImage.m in Sources */,
+				1C208B851226CE037D9BBA1AB5747172 /* YOChartImageKit-dummy.m in Sources */,
+				9A00A13371014A448B1474F368A730EC /* YODonutChartImage.m in Sources */,
+				2F98C9DA6018E432D210F35F2B0BB7F3 /* YOLineChartImage.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C80AE56B9364F4D89A7C029DF4103422 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				248AADC64E0ACC7B6A44A93B9E48D2CD /* Pods-INsulin WatchKit Extension-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7C76142208810669E32C1E58FEC1A932 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = YOChartImageKit;
+			target = 7124CA1709F89369848C20E79ED72EA7 /* YOChartImageKit */;
+			targetProxy = 64DB9B638CC5448A3865E707EAA808D1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1180074806A6EA08F793A9113E3C4246 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F74DFE4A17FC3CEDF2A4762F22C8C8B /* Pods-INsulin WatchKit Extension.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-INsulin WatchKit Extension/Pods-INsulin WatchKit Extension-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-INsulin WatchKit Extension/Pods-INsulin WatchKit Extension.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Release;
+		};
+		3936396CDAA45745DC6618EE1DB97AE5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = "";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Release;
+		};
+		41E8892EAED584E4A40D884390E7358A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B8532CF71B8402C89A29CE997314CE97 /* YOChartImageKit.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/YOChartImageKit/YOChartImageKit-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/YOChartImageKit/YOChartImageKit-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/YOChartImageKit/YOChartImageKit.modulemap";
+				PRODUCT_MODULE_NAME = YOChartImageKit;
+				PRODUCT_NAME = YOChartImageKit;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		890DFE4E1FA8C2F7F54880D36410B68B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = "";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Debug;
+		};
+		90FD21BDDD14E331C15C217894D85487 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FAA705A4CF28C7A6AA96624989C9C9E1 /* Pods-INsulin WatchKit App.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-INsulin WatchKit App/Pods-INsulin WatchKit App-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-INsulin WatchKit App/Pods-INsulin WatchKit App.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Debug;
+		};
+		A5188021E1B90802F293048A9298D7A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3880C5C7C2C0A2A04A046A1F951FC75D /* Pods-INsulin.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-INsulin/Pods-INsulin-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-INsulin/Pods-INsulin.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C6A099498C9D257B6DF339B5614C7B9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70D3D8D4D39DAB6008BFF5466C4B7287 /* Pods-INsulin WatchKit App.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-INsulin WatchKit App/Pods-INsulin WatchKit App-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-INsulin WatchKit App/Pods-INsulin WatchKit App.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Release;
+		};
+		D35638334E2048BBFC997832963E1B5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B8532CF71B8402C89A29CE997314CE97 /* YOChartImageKit.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/YOChartImageKit/YOChartImageKit-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/YOChartImageKit/YOChartImageKit-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/YOChartImageKit/YOChartImageKit.modulemap";
+				PRODUCT_MODULE_NAME = YOChartImageKit;
+				PRODUCT_NAME = YOChartImageKit;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		E6477E2FF53849B532BEBF19EC868C1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9EB3DBE892ECAFB9B3DDC4ECF575D72D /* Pods-INsulin WatchKit Extension.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-INsulin WatchKit Extension/Pods-INsulin WatchKit Extension-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-INsulin WatchKit Extension/Pods-INsulin WatchKit Extension.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 6.2;
+			};
+			name = Debug;
+		};
+		EB3740A42DD2B7A347213D19ED2F919C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2BE216BA40F29BF1706605CFC44CB25A /* Pods-INsulin.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-INsulin/Pods-INsulin-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-INsulin/Pods-INsulin.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		10D66812608F6D27A8A9BFCF24DD1BFF /* Build configuration list for PBXNativeTarget "Pods-INsulin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5188021E1B90802F293048A9298D7A5 /* Debug */,
+				EB3740A42DD2B7A347213D19ED2F919C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				890DFE4E1FA8C2F7F54880D36410B68B /* Debug */,
+				3936396CDAA45745DC6618EE1DB97AE5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		70FB32E1849FBE54EC4CA09655CD95FA /* Build configuration list for PBXNativeTarget "Pods-INsulin WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				90FD21BDDD14E331C15C217894D85487 /* Debug */,
+				C6A099498C9D257B6DF339B5614C7B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8B321EC4598DB3756BDBBE9411A675DD /* Build configuration list for PBXNativeTarget "YOChartImageKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D35638334E2048BBFC997832963E1B5C /* Debug */,
+				41E8892EAED584E4A40D884390E7358A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A67E714D173A6DCD2273ADA6B4679E34 /* Build configuration list for PBXNativeTarget "Pods-INsulin WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6477E2FF53849B532BEBF19EC868C1E /* Debug */,
+				1180074806A6EA08F793A9113E3C4246 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}
