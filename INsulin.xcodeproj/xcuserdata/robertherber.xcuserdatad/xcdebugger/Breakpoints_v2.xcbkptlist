@@ -14,8 +14,8 @@
             filePath = "INsulin WatchKit Extension/ComplicationController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
             landmarkName = "getCurrentTimelineEntry(for:withHandler:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,41 +30,9 @@
             filePath = "INsulin WatchKit Extension/ComplicationController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
             landmarkName = "getTimelineEntries(for:before:limit:withHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1FA89DC9-33E3-4CF3-9E5A-D9A36ADC42B1"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "INsulin WatchKit Extension/ComplicationController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
-            landmarkName = "getTimelineEntries(for:after:limit:withHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E1013A05-2464-4514-89C9-B587DA5A9F96"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "INsulin WatchKit Extension/ComplicationController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "getLocalizableSampleTemplate(for:withHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -78,24 +46,8 @@
             filePath = "INsulin WatchKit Extension/ComplicationController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "getCurrentTimelineEntry(for:withHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "49AAF5A2-BF48-4129-AA38-E44087EE3E74"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "INsulin WatchKit Extension/ComplicationController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "getCurrentTimelineEntry(for:withHandler:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -112,7 +64,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "49"
             endingLineNumber = "49"
-            landmarkName = "fetchActiveInsulin(healthStore:)"
+            landmarkName = "fetchActiveInsulin(healthStore:forTime:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -158,9 +110,9 @@
             filePath = "INsulin WatchKit Extension/Calculations.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "fetchActiveInsulin(healthStore:)"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "fetchActiveInsulin(healthStore:forTime:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -206,8 +158,8 @@
             filePath = "INsulin WatchKit Extension/HostingController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
             landmarkName = "queryAndUpdateActiveInsulin(handler:)"
             landmarkType = "7">
             <Locations>
@@ -254,8 +206,8 @@
             filePath = "INsulin WatchKit Extension/HostingController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "queryAndUpdateActiveInsulin(handler:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -366,8 +318,8 @@
             filePath = "INsulin WatchKit Extension/ComplicationController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
             landmarkName = "getCurrentTimelineEntry(for:withHandler:)"
             landmarkType = "7">
             <Locations>
@@ -414,8 +366,8 @@
             filePath = "INsulin WatchKit Extension/ComplicationController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
             landmarkName = "getCurrentTimelineEntry(for:withHandler:)"
             landmarkType = "7">
             <Locations>
@@ -480,6 +432,102 @@
             startingLineNumber = "28"
             endingLineNumber = "28"
             landmarkName = "awake(withContext:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F444C6D6-F791-45E4-951F-963110519D04"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "INsulin WatchKit Extension/ComplicationController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
+            landmarkName = "getTimelineEntries(for:after:limit:withHandler:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F444C6D6-F791-45E4-951F-963110519D04 - 16f7b7ad7f753449"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Dictionary&lt;Foundation.Date, Swift.Double&gt;) -&gt; () in INsulin_WatchKit_Extension.ComplicationController.getTimelineEntries(for: __C.CLKComplication, after: Foundation.Date, limit: Swift.Int, withHandler: (Swift.Optional&lt;Swift.Array&lt;__C.CLKComplicationTimelineEntry&gt;&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "INsulin WatchKit Extension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/robertherber/code/glucool/INsulin/INsulin%20WatchKit%20Extension/ComplicationController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "119">
+               </Location>
+               <Location
+                  uuid = "F444C6D6-F791-45E4-951F-963110519D04 - 213ffa3f47f5e889"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Foundation.Date, Swift.Double) -&gt; Swift.Optional&lt;__C.CLKComplicationTimelineEntry&gt; in closure #2 (Swift.Dictionary&lt;Foundation.Date, Swift.Double&gt;) -&gt; () in INsulin_WatchKit_Extension.ComplicationController.getTimelineEntries(for: __C.CLKComplication, after: Foundation.Date, limit: Swift.Int, withHandler: (Swift.Optional&lt;Swift.Array&lt;__C.CLKComplicationTimelineEntry&gt;&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "INsulin WatchKit Extension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/robertherber/code/glucool/INsulin/INsulin%20WatchKit%20Extension/ComplicationController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "97"
+                  endingLineNumber = "97"
+                  offsetFromSymbolStart = "146">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "78894A4B-28DE-483D-9C74-F2E32A342617"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "INsulin WatchKit Extension/HostingController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "queryAndUpdateActiveInsulin(handler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "05F6E718-D1A7-4D69-A1E4-54D029A6B22F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "INsulin WatchKit Extension/ComplicationController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "getTimelineEntries(for:after:limit:withHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C2136E3B-72A5-405C-A4C9-F1F5C1CB5174"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "INsulin WatchKit Extension/ComplicationController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
+            landmarkName = "getTimelineEntries(for:after:limit:withHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

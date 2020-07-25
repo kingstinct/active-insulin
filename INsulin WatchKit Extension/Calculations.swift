@@ -45,12 +45,13 @@ class Calculations {
         return Double(1) - (S * part1 * part3);
     }
     
-    static func fetchActiveInsulin(healthStore: HKHealthStore) -> Future<Double, Error>{
+    static func fetchActiveInsulin(healthStore: HKHealthStore, forTime: Date? = nil) -> Future<Double, Error>{
         return Future { promise in
             let totalDurationInMinutes: Double = 360;
             let peakTimeInMinutes: Double = 75;
-            let from = Date.init(timeIntervalSinceNow: TimeInterval(exactly: -totalDurationInMinutes * 60)!)
-        
+            let dateTime = forTime ?? Date();
+            // let from = Date.init(timeIntervalSinceNow: TimeInterval(exactly: -totalDurationInMinutes * 60)!)
+            let from = dateTime.advanced(by: TimeInterval(exactly: -totalDurationInMinutes * 60)!);
             
             let query = HKSampleQuery.init(sampleType: insulinQuantityType, predicate: HKQuery.predicateForSamples(withStart: from, end: nil, options: []), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (q, _samples, error) in
                 if let e = error {
@@ -60,7 +61,7 @@ class Calculations {
                         var totalActiveInsulinLeft: Double = 0;
                         for sample in samples {
                             let quantity = sample.quantity.doubleValue(for: HKUnit.internationalUnit());
-                            let minutesAgo = -sample.startDate.timeIntervalSinceNow / 60;
+                            let minutesAgo = -sample.startDate.timeIntervalSince(dateTime) / 60;
                             if(minutesAgo <= totalDurationInMinutes){
                                 let iobFactor = self.iobCurve(t: minutesAgo, peakTimeInMinutes: peakTimeInMinutes, totalDurationInMinutes: totalDurationInMinutes);
                                 let activeInsulinLeft = quantity * iobFactor;
@@ -70,6 +71,56 @@ class Calculations {
                         
                         DispatchQueue.main.async {
                             promise(.success(totalActiveInsulinLeft));
+                        }
+                    }
+                }
+            }
+            
+            healthStore.execute(query);
+        }
+        
+    }
+    
+    static func fetchActiveInsulinTimeline(healthStore: HKHealthStore, forTime: Date? = nil) -> Future<Dictionary<Date, Double>, Error>{
+        return Future { promise in
+            let totalDurationInMinutes: Double = 360;
+            let peakTimeInMinutes: Double = 75;
+            let dateTime = forTime ?? Date();
+            // let from = Date.init(timeIntervalSinceNow: TimeInterval(exactly: -totalDurationInMinutes * 60)!)
+            let from = dateTime.advanced(by: TimeInterval(exactly: -totalDurationInMinutes * 60)!);
+            
+            let query = HKSampleQuery.init(sampleType: insulinQuantityType, predicate: HKQuery.predicateForSamples(withStart: from, end: nil, options: []), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (q, _samples, error) in
+                if let e = error {
+                    promise(.failure(e));
+                } else {
+                    if let samples = _samples as? [HKQuantitySample] {
+                        var futureMinute: Double = 0;
+                        var retVal = Dictionary<Date, Double>();
+                        while(futureMinute <= totalDurationInMinutes){
+                            let date = dateTime.advanced(by: TimeInterval(futureMinute * 60))
+                            var totalActiveInsulinLeft: Double = 0;
+                            for sample in samples {
+                                let quantity = sample.quantity.doubleValue(for: HKUnit.internationalUnit());
+                                let minutesAgo = -sample.startDate.timeIntervalSince(date) / 60;
+                                if(minutesAgo <= totalDurationInMinutes){
+                                    let iobFactor = self.iobCurve(t: minutesAgo, peakTimeInMinutes: peakTimeInMinutes, totalDurationInMinutes: totalDurationInMinutes);
+                                    let activeInsulinLeft = quantity * iobFactor;
+                                    totalActiveInsulinLeft += activeInsulinLeft;
+                                }
+                            }
+                            
+                            retVal.updateValue(totalActiveInsulinLeft, forKey: date)
+                            
+                            futureMinute += 2;
+                            
+                            /* if(totalActiveInsulinLeft == 0){
+                                break;
+                            } */
+                        }
+                        
+                        
+                        DispatchQueue.main.async {
+                            promise(.success(retVal));
                         }
                     }
                 }

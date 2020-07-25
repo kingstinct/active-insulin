@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A944AA3824CB2BB800671754 /* INsulin WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A944AA3724CB2BB800671754 /* INsulin WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A944AA3824CB2BB800671754 /* INsulin.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A944AA3724CB2BB800671754 /* INsulin.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A944AA3E24CB2BB800671754 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A944AA3C24CB2BB800671754 /* Interface.storyboard */; };
 		A944AA4024CB2BBA00671754 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A944AA3F24CB2BBA00671754 /* Assets.xcassets */; };
 		A944AA4724CB2BBA00671754 /* INsulin WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A944AA4624CB2BBA00671754 /* INsulin WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -56,7 +56,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				A944AA3824CB2BB800671754 /* INsulin WatchKit App.app in Embed Watch Content */,
+				A944AA3824CB2BB800671754 /* INsulin.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -65,7 +65,7 @@
 
 /* Begin PBXFileReference section */
 		A944AA3324CB2BB800671754 /* INsulin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = INsulin.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A944AA3724CB2BB800671754 /* INsulin WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "INsulin WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A944AA3724CB2BB800671754 /* INsulin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = INsulin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A944AA3D24CB2BB800671754 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		A944AA3F24CB2BBA00671754 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A944AA4124CB2BBA00671754 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				A944AA3324CB2BB800671754 /* INsulin.app */,
-				A944AA3724CB2BB800671754 /* INsulin WatchKit App.app */,
+				A944AA3724CB2BB800671754 /* INsulin.app */,
 				A944AA4624CB2BBA00671754 /* INsulin WatchKit Extension.appex */,
 			);
 			name = Products;
@@ -190,7 +190,7 @@
 			);
 			name = "INsulin WatchKit App";
 			productName = "INsulin WatchKit App";
-			productReference = A944AA3724CB2BB800671754 /* INsulin WatchKit App.app */;
+			productReference = A944AA3724CB2BB800671754 /* INsulin.app */;
 			productType = "com.apple.product-type.application.watchapp2";
 		};
 		A944AA4524CB2BBA00671754 /* INsulin WatchKit Extension */ = {
@@ -491,7 +491,7 @@
 				IBSC_MODULE = INsulin_WatchKit_Extension;
 				INFOPLIST_FILE = "INsulin WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kingstinct.INsulin.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = INsulin;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -510,7 +510,7 @@
 				IBSC_MODULE = INsulin_WatchKit_Extension;
 				INFOPLIST_FILE = "INsulin WatchKit App/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kingstinct.INsulin.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = INsulin;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;

@@ -40,6 +40,14 @@ class HostingController: WKHostingController<ContentView> {
     }
     
     func queryAndUpdateActiveInsulin (handler: @escaping HKObserverQueryCompletionHandler) {
+        if let complications = CLKComplicationServer.sharedInstance().activeComplications {
+            for complication in complications {
+                CLKComplicationServer.sharedInstance().reloadTimeline(for: complication)
+            }
+        }
+        
+        
+        
         promise = Calculations.fetchActiveInsulin(healthStore: self.healthStore).sink(receiveCompletion: { (errors) in
             // handle error
             // handler();
