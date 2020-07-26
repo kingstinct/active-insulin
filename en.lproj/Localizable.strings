@@ -1,0 +1,15 @@
+/* 
+  Translations.strings
+  INsulin
+
+  Created by Robert Herber on 2020-07-26.
+  Copyright © 2020 Robert Herber. All rights reserved.
+*/
+
+
+"insulin_on_board" = "Insulin on Board";
+"insulin_on_board_short" = "IOB";
+"units_of_insulin" = "Units of Insulin";
+"save" = "Save";
+"app_name" = "Active Insulin";
+"please_authorize" = "Please authorize access to Insulin Delivery in Health Settings";

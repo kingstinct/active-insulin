@@ -23,7 +23,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     }
     
     func getTimelineEndDate(for complication: CLKComplication, withHandler handler: @escaping (Date?) -> Void) {
-        handler(nil)
+        handler(Date().addingTimeInterval(TimeInterval(60 * 60 * 5)))
     }
     
     func getPrivacyBehavior(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationPrivacyBehavior) -> Void) {
@@ -32,10 +32,21 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     // MARK: - Timeline Population
     
+    func getGraphicRectangular(for complication: CLKComplication, iob: Double, image: UIImage) -> CLKComplicationTemplateGraphicRectangularLargeImage {
+        let iobStr = iob.format(f: "0.1");
+        let valueTextProvider = CLKSimpleTextProvider(text: NSLocalizedString("app_name", comment: "Active Insulin") + " - " + iobStr);
+        
+        let complication = CLKComplicationTemplateGraphicRectangularLargeImage();
+        complication.imageProvider = CLKFullColorImageProvider(fullColorImage: image);
+        complication.textProvider = valueTextProvider;
+        return complication
+    }
+    
     func getTemplateWithIOB(for complication: CLKComplication, iob: Double) -> CLKComplicationTemplate? {
         let iobStr = iob.format(f: "0.1");
-        let labelProvider = CLKSimpleTextProvider(text: "Insulin on Board");
-        labelProvider.shortText = "IOB"
+        
+        let labelProvider = CLKSimpleTextProvider(text: NSLocalizedString("insulin_on_board", comment: "Insulin on board"));
+        labelProvider.shortText = NSLocalizedString("insulin_on_board_short", comment: "Insulin on board")
         let valueTextProvider = CLKSimpleTextProvider(text: iobStr);
         
         if(complication.family == .circularSmall){
@@ -103,17 +114,39 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
         let healthStore = HKHealthStore()
-        
-        currentPromise = Calculations.fetchActiveInsulin(healthStore: healthStore).sink(receiveCompletion: { (errors) in
+    
+            currentPromise = Calculations.fetchActiveInsulin(healthStore: healthStore).sink(receiveCompletion: { (errors) in
+                
+            }) { (val) in
+                if(complication.family == .graphicRectangular){
+                    self.currentPromise = Calculations.fetchActiveInsulinChart(healthStore: healthStore, from: Date().addingTimeInterval(TimeInterval(-60 * 60)), to: Date().addingTimeInterval(TimeInterval(5 * 60 * 60))).sink(receiveCompletion: { (completion) in
+                            switch completion {
+                            case let .failure(error):
+                                handler(nil);
+                                print(error)
+                            case .finished: break
+                            }
+                        }) { (vals) in
+                            let image = Calculations.getChartImage(vals: vals, width: 171, chartHeight: 54);
+                            let template = self.getGraphicRectangular(for: complication, iob: val, image: image);
+                                
+                            let entry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template)
+                            handler(entry);
+                        }
+                }
+                else {
+                    if let template = self.getTemplateWithIOB(for: complication, iob: val) {
+                        let entry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template)
+                        handler(entry);
+                    } else  {
+                        handler(nil)
+                    }
+                }
+                
+                
             
-        }) { (val) in
-            if let template = self.getTemplateWithIOB(for: complication, iob: val) {
-                let entry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template)
-                handler(entry);
-            } else  {
-                handler(nil)
-            }
         }
+        
         
     }
     
@@ -125,18 +158,40 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     func getTimelineEntries(for complication: CLKComplication, after date: Date, limit: Int, withHandler handler: @escaping ([CLKComplicationTimelineEntry]?) -> Void) {
         let healthStore = HKHealthStore()
         // Call the handler with the timeline entries after to the given date
+        
+        
         currentPromise = Calculations.fetchActiveInsulinTimeline(healthStore: healthStore, from: date, to: date.addingTimeInterval(TimeInterval(5 * 60 * 60))).sink(receiveCompletion: { (error) in
             
         }, receiveValue: { (results) in
-            let timelineEntries = results.map { (time, iob) -> CLKComplicationTimelineEntry? in
-                if let template = self.getTemplateWithIOB(for: complication, iob: iob) {
-                    return CLKComplicationTimelineEntry(date: time, complicationTemplate: template);
-                }
-                else {
-                    return nil;
-                }
+            var timelineEntries = Array<CLKComplicationTimelineEntry?>();
+            if(complication.family == .graphicRectangular){
+                self.currentPromise = Calculations.fetchActiveInsulinChart(healthStore: healthStore, from: date.addingTimeInterval(TimeInterval(-60 * 60)), to: date.addingTimeInterval(TimeInterval(11 * 60 * 60))).sink(receiveCompletion: { (errors) in
+                    
+                }) { (vals) in
+                    timelineEntries = results.suffix(limit).map { (time, iob) -> CLKComplicationTimelineEntry? in
+                        let chartFrom = time.addingTimeInterval(TimeInterval(-60 * 60))
+                        let chartTo = time.addingTimeInterval(TimeInterval(5 * 60 * 60))
+                        let valsForChart = vals.filter { (hey) -> Bool in
+                            return hey.0 >= chartFrom && hey.0 <= chartTo;
+                        }
+                        let image = Calculations.getChartImage(vals: valsForChart,now: time, width: 171, chartHeight: 54);
+                        let template = self.getGraphicRectangular(for: complication, iob: iob, image: image);
+                        return CLKComplicationTimelineEntry(date: time, complicationTemplate: template);
+                    }
+                    
+                    
             }
-            
+            } else {
+                timelineEntries = results.suffix(limit).map { (time, iob) -> CLKComplicationTimelineEntry? in
+                    if let template = self.getTemplateWithIOB(for: complication, iob: iob) {
+                        return CLKComplicationTimelineEntry(date: time, complicationTemplate: template);
+                    }
+                    else {
+                        return nil;
+                    }
+                }
+                
+            }
             if let entries = timelineEntries as? [CLKComplicationTimelineEntry] {
                 handler(entries);
             } else {
@@ -149,6 +204,16 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     func getLocalizableSampleTemplate(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTemplate?) -> Void) {
         // This method will be called once per supported complication, and the results will be cached
+        
+        let image = Calculations.getChartImage(vals: Array<(Date, Double)>([
+            (Date().addingTimeInterval(TimeInterval(-60 * 60)), 0),
+            (Date(), 0),
+            (Date().addingTimeInterval(TimeInterval(60 * 60)), 10),
+            (Date().addingTimeInterval(TimeInterval(2 * 60 * 60)), 5),
+            (Date().addingTimeInterval(TimeInterval(3 * 60 * 60)), 4),
+            (Date().addingTimeInterval(TimeInterval(4 * 60 * 60)), 3),
+            (Date().addingTimeInterval(TimeInterval(5 * 60 * 60)), 2),
+        ]))
             
         let template = self.getTemplateWithIOB(for: complication, iob: 4.5);
         handler(template);

@@ -15,23 +15,26 @@ class OptionalData: ObservableObject {
 
 struct ChartView: View {
     var activeInsulin: Double
+    var isAuthorized: Bool = false
     @ObservedObject var optionalData: OptionalData
+    @ViewBuilder
     var body: some View {
-        
+        if(isAuthorized){
         VStack(alignment: .leading, spacing: 0){
+            Text(NSLocalizedString("insulin_on_board", comment: "Insulin on board")).padding(EdgeInsets(top: 0, leading: 0, bottom: 5, trailing: 0))
                 self.optionalData.chartImage.map { image in
                     Image(uiImage: image)
                 }
                 HStack(alignment: .top, spacing: 0) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text("IOB").multilineTextAlignment(.leading)
-                        Text("\(activeInsulin.format(f: "0.1"))")
-                    }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                    Text("in 5 hours").multilineTextAlignment(.trailing).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+                    Text("-1h")
+                    Text("\(activeInsulin.format(f: "0.1"))").multilineTextAlignment(.center).frame(minWidth: 0, maxWidth: .infinity, alignment: .center).foregroundColor(Color(UIColor.magenta))
+                    Text("+5h").multilineTextAlignment(.trailing).frame(alignment: .trailing)
                 }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 
             }
-        
+        } else {
+            Text(NSLocalizedString("please_authorize", comment: "Please authorize"))
+        }
         
     }
 }

@@ -14,12 +14,22 @@ import Combine
 import YOChartImageKit
 
 let insulinQuantityType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
+let insulinObjectType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
 
 class HostingController: WKHostingController<ContentView> {
-    var activeInsulin: Double = 0
     let healthStore = HKHealthStore()
-    var promise: AnyCancellable?
-    var image: UIImage?
+    var isAuthorized = true;
+    
+    override func didAppear() {
+        healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
+            if(status == .unnecessary){
+                self.isAuthorized = true;
+            } else {
+                self.isAuthorized = false;
+            }
+            self.setNeedsBodyUpdate()
+        }
+    }
     
     func saveAction(units: Double) -> Void {
         let now = Date.init();
@@ -32,7 +42,7 @@ class HostingController: WKHostingController<ContentView> {
     }
     
     override var body: ContentView {
-        return ContentView(saveAction: saveAction)
+        return ContentView(saveAction: saveAction, isAuthorized: isAuthorized)
     }
 }
 

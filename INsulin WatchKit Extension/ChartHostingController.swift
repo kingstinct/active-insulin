@@ -12,7 +12,7 @@ import SwiftUI
 import HealthKit
 import Combine
 import YOChartImageKit
-
+import UserNotifications
 
 
 class ChartHostingController: WKHostingController<ChartView> {
@@ -23,33 +23,27 @@ class ChartHostingController: WKHostingController<ChartView> {
     var anotherPromise: AnyCancellable?
     var image: UIImage?
     
+    var isAuthorized = true;
+    
     override func awake(withContext context: Any?) {
-        super.awake(withContext: context)
-        
-        if(healthStore.authorizationStatus(for: insulinQuantityType) == .sharingAuthorized){
-            let query = HKObserverQuery.init(sampleType: insulinQuantityType, predicate: nil) { (query, handler, error) in
-                self.queryAndUpdateActiveInsulin(handler: handler)
+        let query = HKObserverQuery.init(sampleType: insulinQuantityType, predicate: nil) { (query, handler, error) in
+            self.queryAndUpdateActiveInsulin(handler: handler)
+        }
+        healthStore.execute(query)
+    }
+    
+    override func didAppear() {
+        healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
+            if(status == .unnecessary){
+                self.isAuthorized = true;
+            } else {
+                self.isAuthorized = false;
             }
-            healthStore.execute(query)
-        } else {
-            healthStore.requestAuthorization(toShare: [insulinQuantityType], read: [HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!]) { (success, error) in
-                
-                let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
-                    self.queryAndUpdateActiveInsulin(handler: handler)
-                }
-                
-                self.healthStore.execute(query)
-            }
+            self.setNeedsBodyUpdate()
         }
     }
     
     func queryAndUpdateActiveInsulin (handler: @escaping HKObserverQueryCompletionHandler) {
-        if let complications = CLKComplicationServer.sharedInstance().activeComplications {
-            for complication in complications {
-                CLKComplicationServer.sharedInstance().reloadTimeline(for: complication)
-            }
-        }
-        
         anotherPromise = Calculations.fetchActiveInsulin(healthStore: self.healthStore).sink(receiveCompletion: { (error) in
             
         }, receiveValue: { (value) in
@@ -61,104 +55,21 @@ class ChartHostingController: WKHostingController<ChartView> {
             // handler();
         }) { (vals) in
             DispatchQueue.main.async {
-                if let max = vals.max { (arg0, arg1) -> Bool in
-                    return arg0.1 < arg1.1;
-                }?.1 {
-                    let maxNumber = NSNumber(value: max * 1.5);
+                let newImage = Calculations.getChartImage(vals: vals);
                     
-                    let futureVals = vals.filter({ (date, value) -> Bool in
-                        return date.timeIntervalSinceNow >= 0
-                    }).map({ $0.1 });
-                    
-                    let previousVals = vals.filter({ (date, value) -> Bool in
-                        return date.timeIntervalSinceNow < 0
-                    }).map({ $0.1 });
-                    
-                    let previousChart = YOLineChartImage();
-                    previousChart.values = previousVals as [NSNumber];
-                    previousChart.fillColor = UIColor.magenta.withAlphaComponent(0.3)
-                    previousChart.maxValue = maxNumber;
-                    // chart.smooth = true
-                    previousChart.strokeColor = UIColor.magenta.withAlphaComponent(0.5)
-                    previousChart.strokeWidth = 3.0
-                    
-                    
-                    let futureChart = YOLineChartImage();
-                    futureChart.values = futureVals as [NSNumber];
-                    futureChart.maxValue = maxNumber;
-                    futureChart.fillColor = UIColor.magenta.withAlphaComponent(0.6)
-                    // chart.smooth = true
-                    futureChart.strokeColor = UIColor.magenta
-                    futureChart.strokeWidth = 3.0
-                    
-                    
-                    let width = Int(WKInterfaceDevice.current().screenBounds.width);
-                    let previousWidth = width * previousVals.count / vals.count;
-                    let futureWidth = width * futureVals.count / vals.count;
-                    
-                    let chartHeight = 100
-                    let screenScale = WKInterfaceDevice.current().screenScale
-                    
-                    let imagePrevious = previousChart.draw(CGRect(x: 0, y: 0, width: previousWidth, height: chartHeight), scale: screenScale)
-                    
-                    let imageFuture = futureChart.draw(CGRect(x: 0, y: 0, width: futureWidth, height: chartHeight), scale: screenScale)
-                    
-                    
-                    
-                    let size = CGSize(width: width, height: chartHeight)
-                    UIGraphicsBeginImageContextWithOptions(size, false, screenScale)
-                    
-                    let context = UIGraphicsGetCurrentContext();
-                    
-                    let hourDividers = 5;
-                    let widthPerDivider = width / (hourDividers + 1)
-                    
-                    func drawLine(at: Int, lineWidth: CGFloat = 0.5) -> Void {
-                        context?.setLineWidth(lineWidth)
-                        context?.setStrokeColor(UIColor.darkGray.cgColor);
-                        context?.move(to: CGPoint(x: at, y: 0))
-                        context?.addLine(to: CGPoint(x: at, y: chartHeight))
-                        context?.strokePath()
-                    }
-                    
-                    for i in 0..<hourDividers { /* do something */
-                        let x = (i + 1) * widthPerDivider;
-                        drawLine(at: x, lineWidth: i == 0 ? 1 : 0.5)
-                    }
-                    
-                    drawLine(at: width - 1)
-                    drawLine(at: 1)
-                    
-                    
-                    
-                    imagePrevious.draw(in: CGRect(x: 0, y: 0, width: previousWidth, height: chartHeight))
-                    imageFuture.draw(in: CGRect(x: previousWidth, y: 0, width: futureWidth, height: chartHeight))
-
-                    let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-                    UIGraphicsEndImageContext()
-                    
-                    self.image = newImage
-                    
-                    self.setNeedsBodyUpdate()
-                }
+                self.image = newImage
                 
-                
-                // chart.smooth = true;
-                /*let newVals = vals.map({ (_: Date, value: Double) -> NSNumber in
-                
-                    return NSNumber(value: value);
-                })*/
-                
-                
-                handler();
+                self.setNeedsBodyUpdate()
             }
+            
+            handler();
         }
     }
     
     override var body: ChartView {
         let optionalData = OptionalData();
         optionalData.chartImage = self.image;
-        return ChartView(activeInsulin: activeInsulin, optionalData: optionalData)
+        return ChartView(activeInsulin: activeInsulin, isAuthorized: isAuthorized, optionalData: optionalData)
     }
 }
 

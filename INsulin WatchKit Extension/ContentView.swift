@@ -20,16 +20,19 @@ struct ContentView: View {
     @State var rotation: Double = 0.0
     @State var lastRotation: Double = 0.0
     var saveAction: ((_: Double) -> Void)?
+    var isAuthorized: Bool = false
+    
+    @ViewBuilder
     var body: some View {
-        
+        if(isAuthorized){
             VStack(alignment: .center){
-                Text("Units of insulin").focusable(true)
+                Text(NSLocalizedString("units_of_insulin", comment: "Units of insulin")).focusable(true)
                     .digitalCrownRotation(
                     $rotation,
                     from: -100000,
                     through: 100000,
                     by: 1,
-                    sensitivity: .low,
+                    sensitivity: .medium,
                     isContinuous: true,
                     isHapticFeedbackEnabled: true
                 ).onAppear() {
@@ -50,9 +53,12 @@ struct ContentView: View {
                 Button(action: {
                     self.saveAction?(self.insulin)
                 }){
-                    Text("Save")
+                    Text(NSLocalizedString("save", comment: "Save"))
                 }
             }
+        } else {
+            Text(NSLocalizedString("please_authorize", comment: "Please authorize"))
+        }
     }
 }
 

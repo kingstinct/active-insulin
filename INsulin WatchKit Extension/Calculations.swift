@@ -86,7 +86,7 @@ class Calculations {
     
     
     
-    static func fetchActiveInsulinTimeline(healthStore: HKHealthStore, from: Date, to: Date, minuteResolution: Double = 2) -> Future<[(Date, Double)], Error>{
+    static func fetchActiveInsulinTimeline(healthStore: HKHealthStore, from: Date, to: Date, minuteResolution: Double = 5) -> Future<[(Date, Double)], Error>{
         return Future { promise in
             let totalDurationInMinutes: Double = 360;
             let peakTimeInMinutes: Double = 75;
@@ -132,7 +132,7 @@ class Calculations {
     }
     
     
-    static func fetchActiveInsulinChart(healthStore: HKHealthStore, from: Date, to: Date, minuteResolution: Double = 2) -> Future<[(Date, Double)], Error>{
+    static func fetchActiveInsulinChart(healthStore: HKHealthStore, from: Date, to: Date, minuteResolution: Double = 5) -> Future<[(Date, Double)], Error>{
         return Future { promise in
             let totalDurationInMinutes: Double = 360;
             let peakTimeInMinutes: Double = 75;
@@ -156,7 +156,7 @@ class Calculations {
                                     let activityRightNow = -self.insulinActivityCurve(t: minutesAgo, peakTimeInMinutes: peakTimeInMinutes, totalDurationInMinutes: totalDurationInMinutes);
                                     // print(activityRightNow)
                                     let activeInsulinLeft = quantity * activityRightNow;
-                                    totalActiveInsulinLeft += activeInsulinLeft;
+                                    totalActiveInsulinLeft += activeInsulinLeft > 0 ? activeInsulinLeft : 0;
                                 }
                             }
                             
@@ -181,49 +181,46 @@ class Calculations {
     
     
     
-    /*static func getChartImage(healthStore: HKHealthStore){
-        let from = Date().advanced(by: TimeInterval(-60 * 60));
-        let to = Date().advanced(by: TimeInterval(5 * 60 * 60));
+    static func getChartImage(vals: Array<(Date, Double)>, now: Date = Date(), width: Int = Int(WKInterfaceDevice.current().screenBounds.width), chartHeight: Int = 100) -> UIImage{
         
-        return self
-            .fetchActiveInsulinChart(healthStore: healthStore, from: from, to: to)
-            .combineLatest(_: Publisher<UIImage>) { (vals, output: ) -> UIImage in
-                if let max = vals.max { (arg0, arg1) -> Bool in
+                let max = vals.max { (arg0, arg1) -> Bool in
                     return arg0.1 < arg1.1;
-                }?.1 {
-                    let maxNumber = NSNumber(value: max * 1.5);
+                }?.1
+                    let maxNumber = NSNumber(value: max! * 1.5);
                     
                     let futureVals = vals.filter({ (date, value) -> Bool in
-                        return date.timeIntervalSinceNow >= 0
+                        return date.timeIntervalSince(now) >= 0
                     }).map({ $0.1 });
                     
                     let previousVals = vals.filter({ (date, value) -> Bool in
-                        return date.timeIntervalSinceNow < 0
+                        return date.timeIntervalSince(now) < 0
                     }).map({ $0.1 });
                     
                     let previousChart = YOLineChartImage();
-                    previousChart.values = previousVals as [NSNumber];
+                    let valsAsNumbers = previousVals as [NSNumber];
+                    previousChart.values = valsAsNumbers;
                     previousChart.fillColor = UIColor.magenta.withAlphaComponent(0.3)
                     previousChart.maxValue = maxNumber;
                     // chart.smooth = true
                     previousChart.strokeColor = UIColor.magenta.withAlphaComponent(0.5)
-                    previousChart.strokeWidth = 3.0
+                    previousChart.strokeWidth = 1.0
+                    
                     
                     
                     let futureChart = YOLineChartImage();
-                    futureChart.values = futureVals as [NSNumber];
+                    let futureAsNumbers = futureVals as [NSNumber];
+                    futureChart.values = futureAsNumbers;
                     futureChart.maxValue = maxNumber;
                     futureChart.fillColor = UIColor.magenta.withAlphaComponent(0.6)
                     // chart.smooth = true
                     futureChart.strokeColor = UIColor.magenta
-                    futureChart.strokeWidth = 3.0
+                    futureChart.strokeWidth = 1.0
+                    futureChart.smooth = true
                     
                     
-                    let width = Int(WKInterfaceDevice.current().screenBounds.width);
                     let previousWidth = width * previousVals.count / vals.count;
                     let futureWidth = width * futureVals.count / vals.count;
                     
-                    let chartHeight = 100
                     let screenScale = WKInterfaceDevice.current().screenScale
                     
                     let imagePrevious = previousChart.draw(CGRect(x: 0, y: 0, width: previousWidth, height: chartHeight), scale: screenScale)
@@ -236,8 +233,9 @@ class Calculations {
                     UIGraphicsBeginImageContextWithOptions(size, false, screenScale)
                     
                     let context = UIGraphicsGetCurrentContext();
+        
                     
-                    let hourDividers = 5;
+                    let hourDividers = Int(round(vals.last!.0.timeIntervalSince(vals.first!.0) / (60 * 60))) - 1;
                     let widthPerDivider = width / (hourDividers + 1)
                     
                     func drawLine(at: Int, lineWidth: CGFloat = 0.5) -> Void {
@@ -256,8 +254,6 @@ class Calculations {
                     drawLine(at: width - 1)
                     drawLine(at: 1)
                     
-                    
-                    
                     imagePrevious.draw(in: CGRect(x: 0, y: 0, width: previousWidth, height: chartHeight))
                     imageFuture.draw(in: CGRect(x: previousWidth, y: 0, width: futureWidth, height: chartHeight))
 
@@ -265,8 +261,7 @@ class Calculations {
                     UIGraphicsEndImageContext()
                     
                     return newImage;
-            }
-        }
+            
         
-    }*/
+    }
 }
