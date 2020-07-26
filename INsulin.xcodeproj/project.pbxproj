@@ -96,6 +96,7 @@
 		A944AA6A24CB307D00671754 /* Calculations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculations.swift; sourceTree = "<group>"; };
 		A944AA6E24CC445000671754 /* ChartHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartHostingController.swift; sourceTree = "<group>"; };
 		A944AA7024CC45A100671754 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		A944AA7224CC7A6800671754 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +131,7 @@
 		A944AA2C24CB2BB800671754 = {
 			isa = PBXGroup;
 			children = (
+				A944AA7624CC7B9A00671754 /* INsulin App */,
 				A944AA3B24CB2BB800671754 /* INsulin WatchKit App */,
 				A944AA4A24CB2BBA00671754 /* INsulin WatchKit Extension */,
 				A944AA3424CB2BB800671754 /* Products */,
@@ -193,6 +195,14 @@
 				19542F90B52576F8DA43D775 /* Pods_INsulin_WatchKit_Extension.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A944AA7624CC7B9A00671754 /* INsulin App */ = {
+			isa = PBXGroup;
+			children = (
+				A944AA7224CC7A6800671754 /* Info.plist */,
+			);
+			path = "INsulin App";
 			sourceTree = "<group>";
 		};
 		F203E97192BB68B5D4918F9C /* Pods */ = {
@@ -680,6 +690,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
+				INFOPLIST_FILE = "INsulin App/Info.plist";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kingstinct.INsulin;
 				PRODUCT_NAME = "Active Insulin";
@@ -694,6 +705,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
+				INFOPLIST_FILE = "INsulin App/Info.plist";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kingstinct.INsulin;
 				PRODUCT_NAME = "Active Insulin";

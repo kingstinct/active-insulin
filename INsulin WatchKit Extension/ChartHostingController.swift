@@ -20,6 +20,7 @@ class ChartHostingController: WKHostingController<ChartView> {
     var activeInsulin: Double = 0
     let healthStore = HKHealthStore()
     var promise: AnyCancellable?
+    var anotherPromise: AnyCancellable?
     var image: UIImage?
     
     override func awake(withContext context: Any?) {
@@ -49,15 +50,17 @@ class ChartHostingController: WKHostingController<ChartView> {
             }
         }
         
-        promise = Calculations.fetchActiveInsulinTimeline(healthStore: self.healthStore, from: Date().advanced(by: TimeInterval(-60 * 60)), to: Date().advanced(by: TimeInterval(5 * 60 * 60))).sink(receiveCompletion: { (errors) in
+        anotherPromise = Calculations.fetchActiveInsulin(healthStore: self.healthStore).sink(receiveCompletion: { (error) in
+            
+        }, receiveValue: { (value) in
+            self.activeInsulin = value
+        })
+        
+        promise = Calculations.fetchActiveInsulinChart(healthStore: self.healthStore, from: Date().advanced(by: TimeInterval(-60 * 60)), to: Date().advanced(by: TimeInterval(5 * 60 * 60))).sink(receiveCompletion: { (errors) in
             // handle error
             // handler();
         }) { (vals) in
             DispatchQueue.main.async {
-                if let val = vals.first(where: { $0.0 >= Date() })?.1 {
-                    self.activeInsulin = val
-                }
-                
                 if let max = vals.max { (arg0, arg1) -> Bool in
                     return arg0.1 < arg1.1;
                 }?.1 {
@@ -77,7 +80,8 @@ class ChartHostingController: WKHostingController<ChartView> {
                     previousChart.maxValue = maxNumber;
                     // chart.smooth = true
                     previousChart.strokeColor = UIColor.magenta.withAlphaComponent(0.5)
-                    previousChart.strokeWidth = 0.0
+                    previousChart.strokeWidth = 3.0
+                    
                     
                     let futureChart = YOLineChartImage();
                     futureChart.values = futureVals as [NSNumber];
@@ -86,6 +90,7 @@ class ChartHostingController: WKHostingController<ChartView> {
                     // chart.smooth = true
                     futureChart.strokeColor = UIColor.magenta
                     futureChart.strokeWidth = 3.0
+                    
                     
                     let width = Int(WKInterfaceDevice.current().screenBounds.width);
                     let previousWidth = width * previousVals.count / vals.count;
