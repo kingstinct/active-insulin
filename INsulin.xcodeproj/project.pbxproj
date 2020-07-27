@@ -14,8 +14,8 @@
 		A944AA3E24CB2BB800671754 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A944AA3C24CB2BB800671754 /* Interface.storyboard */; };
 		A944AA4024CB2BBA00671754 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A944AA3F24CB2BBA00671754 /* Assets.xcassets */; };
 		A944AA4724CB2BBA00671754 /* INsulin WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A944AA4624CB2BBA00671754 /* INsulin WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		A944AA4C24CB2BBA00671754 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA4B24CB2BBA00671754 /* ContentView.swift */; };
-		A944AA4E24CB2BBA00671754 /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA4D24CB2BBA00671754 /* HostingController.swift */; };
+		A944AA4C24CB2BBA00671754 /* InsulinInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA4B24CB2BBA00671754 /* InsulinInputView.swift */; };
+		A944AA4E24CB2BBA00671754 /* InsulinInputHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA4D24CB2BBA00671754 /* InsulinInputHostingController.swift */; };
 		A944AA5024CB2BBA00671754 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA4F24CB2BBA00671754 /* ExtensionDelegate.swift */; };
 		A944AA5224CB2BBA00671754 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA5124CB2BBA00671754 /* ComplicationController.swift */; };
 		A944AA5424CB2BBB00671754 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A944AA5324CB2BBB00671754 /* Assets.xcassets */; };
@@ -30,6 +30,11 @@
 		A944AA8D24CE2B8700671754 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA8C24CE2B8700671754 /* IntentHandler.swift */; };
 		A944AA9124CE2B8700671754 /* INsulin Siri extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A944AA8A24CE2B8700671754 /* INsulin Siri extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A944AA9924CEF59800671754 /* CLKTextProvider+MultiColorPatch.m in Sources */ = {isa = PBXBuildFile; fileRef = A944AA9824CEF59800671754 /* CLKTextProvider+MultiColorPatch.m */; };
+		A944AA9C24CF016700671754 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA9B24CF016700671754 /* AppState.swift */; };
+		A944AA9E24CF03F700671754 /* UNNotificationAttachment+create.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AA9D24CF03F700671754 /* UNNotificationAttachment+create.swift */; };
+		A944AAA124CF04EE00671754 /* Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AAA024CF04EE00671754 /* Health.swift */; };
+		A944AAA324CF057700671754 /* ChartBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AAA224CF057700671754 /* ChartBuilder.swift */; };
+		A944AAA524CF5E2400671754 /* Double+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AAA424CF5E2400671754 /* Double+Format.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,8 +113,8 @@
 		A944AA3F24CB2BBA00671754 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A944AA4124CB2BBA00671754 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A944AA4624CB2BBA00671754 /* INsulin WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "INsulin WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A944AA4B24CB2BBA00671754 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A944AA4D24CB2BBA00671754 /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
+		A944AA4B24CB2BBA00671754 /* InsulinInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsulinInputView.swift; sourceTree = "<group>"; };
+		A944AA4D24CB2BBA00671754 /* InsulinInputHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsulinInputHostingController.swift; sourceTree = "<group>"; };
 		A944AA4F24CB2BBA00671754 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		A944AA5124CB2BBA00671754 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		A944AA5324CB2BBB00671754 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,6 +135,11 @@
 		A944AA9724CEF59800671754 /* INsulin WatchKit Extension-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "INsulin WatchKit Extension-Bridging-Header.h"; sourceTree = "<group>"; };
 		A944AA9824CEF59800671754 /* CLKTextProvider+MultiColorPatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CLKTextProvider+MultiColorPatch.m"; sourceTree = "<group>"; };
 		A944AA9A24CEF5D600671754 /* CLKTextProvider+MultiColorPatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CLKTextProvider+MultiColorPatch.h"; sourceTree = "<group>"; };
+		A944AA9B24CF016700671754 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		A944AA9D24CF03F700671754 /* UNNotificationAttachment+create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UNNotificationAttachment+create.swift"; sourceTree = "<group>"; };
+		A944AAA024CF04EE00671754 /* Health.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Health.swift; sourceTree = "<group>"; };
+		A944AAA224CF057700671754 /* ChartBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartBuilder.swift; sourceTree = "<group>"; };
+		A944AAA424CF5E2400671754 /* Double+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Format.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,10 +217,10 @@
 		A944AA4A24CB2BBA00671754 /* INsulin WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				A944AA9824CEF59800671754 /* CLKTextProvider+MultiColorPatch.m */,
+				A944AA9F24CF044B00671754 /* Utils */,
 				A944AA6624CB2C1800671754 /* INsulin WatchKit Extension.entitlements */,
-				A944AA4B24CB2BBA00671754 /* ContentView.swift */,
-				A944AA4D24CB2BBA00671754 /* HostingController.swift */,
+				A944AA4B24CB2BBA00671754 /* InsulinInputView.swift */,
+				A944AA4D24CB2BBA00671754 /* InsulinInputHostingController.swift */,
 				A944AA4F24CB2BBA00671754 /* ExtensionDelegate.swift */,
 				A944AA5124CB2BBA00671754 /* ComplicationController.swift */,
 				A944AA5324CB2BBB00671754 /* Assets.xcassets */,
@@ -219,7 +229,9 @@
 				A944AA6A24CB307D00671754 /* Calculations.swift */,
 				A944AA6E24CC445000671754 /* ChartHostingController.swift */,
 				A944AA7024CC45A100671754 /* ChartView.swift */,
-				A944AA9A24CEF5D600671754 /* CLKTextProvider+MultiColorPatch.h */,
+				A944AA9B24CF016700671754 /* AppState.swift */,
+				A944AAA024CF04EE00671754 /* Health.swift */,
+				A944AAA224CF057700671754 /* ChartBuilder.swift */,
 			);
 			path = "INsulin WatchKit Extension";
 			sourceTree = "<group>";
@@ -259,6 +271,17 @@
 				A944AA8E24CE2B8700671754 /* Info.plist */,
 			);
 			path = "INsulin Siri extension";
+			sourceTree = "<group>";
+		};
+		A944AA9F24CF044B00671754 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A944AA9824CEF59800671754 /* CLKTextProvider+MultiColorPatch.m */,
+				A944AA9A24CEF5D600671754 /* CLKTextProvider+MultiColorPatch.h */,
+				A944AA9D24CF03F700671754 /* UNNotificationAttachment+create.swift */,
+				A944AAA424CF5E2400671754 /* Double+Format.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		F203E97192BB68B5D4918F9C /* Pods */ = {
@@ -529,12 +552,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A944AA4E24CB2BBA00671754 /* HostingController.swift in Sources */,
+				A944AAA124CF04EE00671754 /* Health.swift in Sources */,
+				A944AA4E24CB2BBA00671754 /* InsulinInputHostingController.swift in Sources */,
 				A944AA9924CEF59800671754 /* CLKTextProvider+MultiColorPatch.m in Sources */,
+				A944AA9E24CF03F700671754 /* UNNotificationAttachment+create.swift in Sources */,
 				A944AA5224CB2BBA00671754 /* ComplicationController.swift in Sources */,
+				A944AA9C24CF016700671754 /* AppState.swift in Sources */,
+				A944AAA324CF057700671754 /* ChartBuilder.swift in Sources */,
+				A944AAA524CF5E2400671754 /* Double+Format.swift in Sources */,
 				A944AA6F24CC445000671754 /* ChartHostingController.swift in Sources */,
 				A944AA7124CC45A100671754 /* ChartView.swift in Sources */,
-				A944AA4C24CB2BBA00671754 /* ContentView.swift in Sources */,
+				A944AA4C24CB2BBA00671754 /* InsulinInputView.swift in Sources */,
 				A944AA6B24CB307D00671754 /* Calculations.swift in Sources */,
 				A944AA5024CB2BBA00671754 /* ExtensionDelegate.swift in Sources */,
 			);

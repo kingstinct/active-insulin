@@ -12,10 +12,10 @@ import HealthKit;
 import Combine;
 import Intents;
 
-
 class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate {
   let insulinQuantityType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
   var promise: AnyCancellable?
+  var query: HKQuery?;
   
   func applicationDidFinishLaunching() {
     UNUserNotificationCenter.current().delegate = self;
@@ -32,6 +32,34 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     // Define the notification type
     let notificationCategory = UNNotificationCategory(identifier: "PEAK", actions: [snooze15, snooze30, snooze60], intentIdentifiers: [], options: [.allowAnnouncement, .allowInCarPlay])
     
+    Health.current.healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
+      if(status == .unnecessary){
+        AppState.current().isHealthKitAuthorized = .authorized;
+        // AppState.current.$isHealthKitAuthorized.append(true)
+        let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
+          self.onUpdatedInsulin(completionHandler: handler)
+        }
+        
+        Health.current.healthStore.execute(query)
+        self.query = query;
+      } else {
+        Health.current.healthStore.requestAuthorization(toShare: [self.insulinQuantityType], read: [insulinObjectType]) { (status, error) in
+          if(status){
+            AppState.current().isHealthKitAuthorized = .authorized;
+            let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
+              self.onUpdatedInsulin(completionHandler: handler)
+            }
+            
+            Health.current.healthStore.execute(query)
+            self.query = query;
+          } else {
+            AppState.current().isHealthKitAuthorized = .unauthorized;
+          }
+        }
+      }
+    }
+    
+    
     // Register the notification type.
     let notificationCenter = UNUserNotificationCenter.current()
     notificationCenter.setNotificationCategories([notificationCategory])
@@ -45,26 +73,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         }
       }
     }
-    
-    
-    
-    
-    if(Calculations.healthStore.authorizationStatus(for: insulinQuantityType) == .sharingAuthorized){
-      let query = HKObserverQuery.init(sampleType: insulinQuantityType, predicate: nil) { (query, handler, error) in
-        self.onUpdatedInsulin(completionHandler: handler)
-      }
-      Calculations.healthStore.execute(query)
-    } else {
-      Calculations.healthStore.requestAuthorization(toShare: [insulinQuantityType], read: [HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!]) { (success, error) in
-        
-        let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
-          self.onUpdatedInsulin(completionHandler: handler)
-        }
-        
-        Calculations.healthStore.execute(query)
-      }
-    }
   }
+  
   
   func onUpdatedInsulin(completionHandler: @escaping () -> Void){
     if let complications = CLKComplicationServer.sharedInstance().activeComplications {
@@ -73,7 +83,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
       }
     }
     
-    promise = Calculations.fetchActiveInsulinChart(from: Date().advanced(by: TimeInterval(-60 * 60)), to: Date().advanced(by: TimeInterval(6 * 60 * 60))).sink(receiveCompletion: { (errors) in
+    promise = Health.current.fetchActiveInsulinChart(from: Date().advanced(by: TimeInterval(-60 * 60)), to: Date().advanced(by: TimeInterval(6 * 60 * 60))).sink(receiveCompletion: { (errors) in
       // handle error
       // handler();
     }) { (vals) in
@@ -84,7 +94,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
           
           if(max.0 != vals.first?.0){
             
-            let image = Calculations.getChartImage(vals: vals, now: max.0)
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests();
+            
+            let image = ChartBuilder.getChartImage(vals: vals, now: max.0)
             
             
             let content = UNMutableNotificationContent();
@@ -101,10 +113,10 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
               //something failed
             }
           }
-          let interval = 10.0;
+          let interval = 15.0;
           
-          Calculations.fetchActiveInsulinTimeline(from: Date(), to: Date().advanced(by: TimeInterval(5 * 60 * 60)), callback: { (error, timeline) in
-            let shortcuts = vals.map { (tuple) -> INRelevantShortcut in
+          Health.current.fetchActiveInsulinTimeline(from: Date(), to: Date().advanced(by: TimeInterval(5 * 60 * 60)), callback: { (error, timeline) in
+            let shortcuts = vals.prefix(100).map { (tuple) -> INRelevantShortcut in
               
               let title = NSLocalizedString("insulin_on_board", comment: "Insulin on Board");
               let userActivity = NSUserActivity(activityType: "com.kingstinct.INsulin.myactivitytype")
@@ -123,12 +135,10 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
               return suggestedShortcut;
             }
             
-            
-            
             INRelevantShortcutStore.default.setRelevantShortcuts(shortcuts) { (error) in
-              
+              completionHandler();
             }
-            completionHandler();
+            
           }, minuteResolution: interval );
         }
       }
@@ -152,8 +162,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
       return
     }
     
-    Calculations.fetchActiveInsulin(callback: { (error, iob) in
-      self.promise = Calculations.fetchActiveInsulinChart(from: Date().addingTimeInterval(TimeInterval(-60 * 60)), to: Date().addingTimeInterval(TimeInterval(6 * 60 * 60))).sink(receiveCompletion: { (response) in
+    Health.current.fetchActiveInsulin(callback: { (error, iob) in
+      self.promise = Health.current.fetchActiveInsulinChart(from: Date().addingTimeInterval(TimeInterval(-60 * 60)), to: Date().addingTimeInterval(TimeInterval(6 * 60 * 60))).sink(receiveCompletion: { (response) in
         
       }, receiveValue: { (vals) in
         
@@ -172,7 +182,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         
         let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: time)
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: false)
-        image = Calculations.getChartImage(vals: currentVals)
+        image = ChartBuilder.getChartImage(vals: currentVals)
         content.attachments = [UNNotificationAttachment.create(identifier: "CHART", image: image, options: .none )!]
         if let val = iob {
             content.subtitle = "Current IOB: " + val.format(f: "0.1")
@@ -198,6 +208,24 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
   }
   
   func applicationDidBecomeActive() {
+    UNUserNotificationCenter.current().removeAllDeliveredNotifications();
+    Health.current.healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
+      if(status == .unnecessary){
+        AppState.current().objectWillChange.send()
+        AppState.current().isHealthKitAuthorized = .authorized;
+        if(self.query == nil){
+          let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
+            self.onUpdatedInsulin(completionHandler: handler)
+          }
+          
+          Health.current.healthStore.execute(query)
+          self.query = query;
+        }
+        
+      } else {
+        AppState.current().isHealthKitAuthorized = .unauthorized;
+      }
+    }
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
   }
   

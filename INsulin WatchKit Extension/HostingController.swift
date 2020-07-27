@@ -16,18 +16,8 @@ import YOChartImageKit
 let insulinQuantityType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
 let insulinObjectType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
 
-class HostingController: WKHostingController<ContentView> {
-    var isAuthorized = true;
-    
+class InsulinInputController: WKHostingController<InsulinInputView> {
     override func didAppear() {
-        Calculations.healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
-            if(status == .unnecessary){
-                self.isAuthorized = true;
-            } else {
-                self.isAuthorized = false;
-            }
-            self.setNeedsBodyUpdate()
-        }
     }
     
     func saveAction(units: Double) -> Void {
@@ -40,13 +30,13 @@ class HostingController: WKHostingController<ContentView> {
         }
     }
     
-    override var body: ContentView {
-        return ContentView(saveAction: saveAction, isAuthorized: isAuthorized)
+    override var body: InsulinInputView {
+      return InsulinInputView(saveAction: saveAction, appState: AppState.current)
     }
 }
 
 struct HostingController_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        InsulinInputView(appState: AppState.current)
     }
 }

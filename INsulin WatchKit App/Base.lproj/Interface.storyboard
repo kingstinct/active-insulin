@@ -6,10 +6,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="16012"/>
     </dependencies>
     <scenes>
-        <!--Hosting Controller-->
+        <!--Insulin Input Hosting Controller-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <hostingController id="3mp-fW-waa" customClass="HostingController" customModule="INsulin" customModuleProvider="target">
+                <hostingController id="3mp-fW-waa" customClass="InsulinInputHostingController" customModule="INsulin" customModuleProvider="target">
                     <connections>
                         <segue destination="ViL-N3-uUb" kind="relationship" relationship="nextPage" id="D2v-Kp-VPR"/>
                     </connections>
