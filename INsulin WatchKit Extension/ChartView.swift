@@ -37,8 +37,8 @@ struct ChartView: View {
         }
       }.navigationBarTitle(LocalizedStringKey("active"))
     } else if(appState.isHealthKitAuthorized == .unauthorized){
-        Text(NSLocalizedString("please_authorize", comment: "Please authorize"))
-      }
+      Text(NSLocalizedString("please_authorize", comment: "Please authorize"))
+    }
     EmptyView()
   }
 }
@@ -49,4 +49,5 @@ struct ChartView_Previews: PreviewProvider {
     return ChartView(activeInsulin: 5, appState: AppState.current(), optionalData: optionalData)
   }
 }
+
 

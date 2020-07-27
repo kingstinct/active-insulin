@@ -88,9 +88,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
       // handler();
     }) { (vals) in
       DispatchQueue.main.async {
-        if let max = vals.max { (arg0, arg1) -> Bool in
+        if let max = vals.max(by: { (arg0, arg1) -> Bool in
           return arg0.1 < arg1.1;
-          } {
+        }) {
           
           if(max.0 != vals.first?.0){
             
@@ -187,7 +187,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         image = ChartBuilder.getChartImage(vals: currentVals)
         content.attachments = [UNNotificationAttachment.create(identifier: "CHART", image: image, options: .none )!]
         if let val = iob {
-            content.subtitle = "Current IOB: " + val.format(f: "0.1")
+          content.subtitle = "Current IOB: " + val.format(f: "0.1")
         }
         
         
@@ -267,4 +267,5 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
   }
   
 }
+
 
