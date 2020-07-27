@@ -13,3 +13,13 @@
 "save" = "Save";
 "app_name" = "Active Insulin";
 "please_authorize" = "Please authorize access to Insulin Delivery in Health Settings";
+"notification_snoozed_description" = "Time to check your glucose after your insulin peak?";
+"notification_snoozed_title" = "Insulin Reminder";
+"notification_peak_description" = "Your insulin level is peaking, check your glucose?";
+"notification_peak_title" = "Insulin Peak";
+"snooze_15" = "Snooze 15 mins";
+"snooze_30" = "Snooze 30 mins";
+"snooze_60" = "Snooze 60 mins";
+"add_insulin" = "Add insulin";
+"add" = "Add";
+"active" = "Active";

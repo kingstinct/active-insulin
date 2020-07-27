@@ -17,11 +17,10 @@ let insulinQuantityType = HKSampleType.quantityType(forIdentifier: HKQuantityTyp
 let insulinObjectType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
 
 class HostingController: WKHostingController<ContentView> {
-    let healthStore = HKHealthStore()
     var isAuthorized = true;
     
     override func didAppear() {
-        healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
+        Calculations.healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
             if(status == .unnecessary){
                 self.isAuthorized = true;
             } else {
@@ -36,7 +35,7 @@ class HostingController: WKHostingController<ContentView> {
         let sample = HKQuantitySample.init(type: insulinQuantityType, quantity: HKQuantity(unit: HKUnit.internationalUnit(), doubleValue: units), start: now, end: now,
             metadata: [HKMetadataKeyInsulinDeliveryReason : NSNumber.init(value: 2)]
         )
-        healthStore.save(sample) { (success, error) in
+        Calculations.healthStore.save(sample) { (success, error) in
             
         }
     }

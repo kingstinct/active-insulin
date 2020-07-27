@@ -14,3 +14,13 @@
 "save" = "Spara";
 "app_name" = "Active Insulin";
 "please_authorize" = "Vänligen ge tillgång till Insulin Delivery i inställningarna för Hälsa";
+"notification_snoozed_description" = "Dags att kolla blodsockret efter din insulintopp?";
+"notification_snoozed_title" = "Insulin-påminnelse";
+"notification_peak_description" = "Du har en insulintopp, dags att kolla blodsockret?";
+"notification_peak_title" = "Insulin-topp";
+"snooze_15" = "Påminn om 15 min";
+"snooze_30" = "Påminn om 30 min";
+"snooze_60" = "Påminn om 60 min";
+"add_insulin" = "Lägg till insulin";
+"add" = "Lägg till";
+"active" = "Aktiv";
