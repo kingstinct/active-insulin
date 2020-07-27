@@ -121,7 +121,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             let shortcuts = vals.prefix(100).map { (tuple) -> INRelevantShortcut in
               
               let title = NSLocalizedString("insulin_on_board", comment: "Insulin on Board");
-              let userActivity = NSUserActivity(activityType: "com.kingstinct.INsulin.myactivitytype")
+              let userActivity = NSUserActivity(activityType: "com.kingstinct.INsulin.displayIOB")
               userActivity.title = title
               
               let shortcut = INShortcut(userActivity: userActivity)
