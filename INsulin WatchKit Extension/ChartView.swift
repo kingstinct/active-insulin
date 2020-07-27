@@ -19,7 +19,10 @@ struct ChartView: View {
   @ObservedObject var optionalData: OptionalData
   @ViewBuilder
   var body: some View {
-    if(appState.isHealthKitAuthorized == .authorized){
+    
+    if(appState.isHealthKitAuthorized == .unauthorized){
+      Text(NSLocalizedString("please_authorize", comment: "Please authorize"))
+    } else {
       ScrollView(){
         VStack(alignment: .leading, spacing: 0){
           Text(NSLocalizedString("insulin_on_board", comment: "Insulin on board")).frame(minWidth: 0, maxWidth: .infinity, alignment: .center).padding(EdgeInsets(top: 0, leading: 0, bottom: 5, trailing: 0))
@@ -36,17 +39,14 @@ struct ChartView: View {
           
         }
       }.navigationBarTitle(LocalizedStringKey("active"))
-    } else if(appState.isHealthKitAuthorized == .unauthorized){
-      Text(NSLocalizedString("please_authorize", comment: "Please authorize"))
     }
-    EmptyView()
   }
 }
 
 struct ChartView_Previews: PreviewProvider {
   static var previews: some View {
     let optionalData = OptionalData()
-    return ChartView(activeInsulin: 5, appState: AppState.current(), optionalData: optionalData)
+    return ChartView(activeInsulin: 5, appState: AppState.current, optionalData: optionalData)
   }
 }
 

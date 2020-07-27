@@ -55,10 +55,13 @@ class AppState: ObservableObject {
     ])
   }
   
-  static var _current: AppState?;
+  static var current = AppState();
   
-  static func current() -> AppState {
-    _current = _current ??  AppState()
+  /*static func current() -> AppState {
+    _current = _current ?? AppState()
+    
+    dispatchonce
+    
     return _current!;
-  }
+  }*/
 }

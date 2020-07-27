@@ -17,6 +17,18 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
   var promise: AnyCancellable?
   var query: HKQuery?;
   
+  func handleUserActivity(_ userInfo: [AnyHashable : Any]?) {
+    
+  }
+  
+  func handle(_ userActivity: NSUserActivity) {
+    
+  }
+  
+  func handle(_ intent: INIntent, completionHandler: @escaping (INIntentResponse) -> Void) {
+    
+  }
+  
   func applicationDidFinishLaunching() {
     UNUserNotificationCenter.current().delegate = self;
     // Define the custom actions.
@@ -34,7 +46,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     
     Health.current.healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
       if(status == .unnecessary){
-        AppState.current().isHealthKitAuthorized = .authorized;
+        AppState.current.isHealthKitAuthorized = .authorized;
         // AppState.current.$isHealthKitAuthorized.append(true)
         let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
           self.onUpdatedInsulin(completionHandler: handler)
@@ -45,7 +57,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
       } else {
         Health.current.healthStore.requestAuthorization(toShare: [self.insulinQuantityType], read: [insulinObjectType]) { (status, error) in
           if(status){
-            AppState.current().isHealthKitAuthorized = .authorized;
+            AppState.current.isHealthKitAuthorized = .authorized;
             let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
               self.onUpdatedInsulin(completionHandler: handler)
             }
@@ -53,7 +65,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             Health.current.healthStore.execute(query)
             self.query = query;
           } else {
-            AppState.current().isHealthKitAuthorized = .unauthorized;
+            AppState.current.isHealthKitAuthorized = .unauthorized;
           }
         }
       }
@@ -213,8 +225,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     UNUserNotificationCenter.current().removeAllDeliveredNotifications();
     Health.current.healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
       if(status == .unnecessary){
-        AppState.current().objectWillChange.send()
-        AppState.current().isHealthKitAuthorized = .authorized;
+        AppState.current.isHealthKitAuthorized = .authorized;
         if(self.query == nil){
           let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
             self.onUpdatedInsulin(completionHandler: handler)
@@ -225,7 +236,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         }
         
       } else {
-        AppState.current().isHealthKitAuthorized = .unauthorized;
+        AppState.current.isHealthKitAuthorized = .unauthorized;
       }
     }
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.

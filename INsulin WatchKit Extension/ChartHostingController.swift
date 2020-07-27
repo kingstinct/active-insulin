@@ -1,5 +1,5 @@
 //
-//  HostingController.swift
+//  ChartHostingController.swift
 //  glucool-watch WatchKit Extension
 //
 //  Created by Robert Herber on 2020-07-24.
@@ -65,14 +65,14 @@ class ChartHostingController: WKHostingController<ChartView> {
   override var body: ChartView {
     let optionalData = OptionalData();
     optionalData.chartImage = self.image;
-    return ChartView(activeInsulin: activeInsulin, appState: AppState.current(), optionalData: optionalData)
+    return ChartView(activeInsulin: activeInsulin, appState: AppState.current, optionalData: optionalData)
   }
 }
 
 struct ChartHostingController_Previews: PreviewProvider {
   static var previews: some View {
     let optionalData = OptionalData();
-    return ChartView(activeInsulin: 5, appState: AppState.current(), optionalData: optionalData)
+    return ChartView(activeInsulin: 5, appState: AppState.current, optionalData: optionalData)
   }
 }
 
