@@ -30,7 +30,7 @@ class AppState: ObservableObject {
   
   var updaters = Array<AnyCancellable>()
   
-  init() {
+  private init() {
     totalDurationInMinutes = UserDefaults.standard.double(forKey: INSULIN_DURATION_IN_MINUTES_KEY) != 0 ? UserDefaults.standard.double(forKey: INSULIN_DURATION_IN_MINUTES_KEY) : 360;
     peakTimeInMinutes = UserDefaults.standard.double(forKey: INSULIN_PEAK_TIME_IN_MINUTES_KEY) != 0 ? UserDefaults.standard.double(forKey: INSULIN_PEAK_TIME_IN_MINUTES_KEY) : 75;
     initialInsulinUnits = UserDefaults.standard.double(forKey: INSULIN_INITIAL_UNITS_KEY) != 0 ? UserDefaults.standard.double(forKey: INSULIN_INITIAL_UNITS_KEY) : 4;

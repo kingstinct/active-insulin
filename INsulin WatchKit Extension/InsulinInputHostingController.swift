@@ -1,5 +1,5 @@
 //
-//  HostingController.swift
+//  InsulinInputHostingController.swift
 //  glucool-watch WatchKit Extension
 //
 //  Created by Robert Herber on 2020-07-24.
@@ -17,6 +17,7 @@ let insulinQuantityType = HKSampleType.quantityType(forIdentifier: HKQuantityTyp
 let insulinObjectType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
 
 class InsulinInputHostingController: WKHostingController<InsulinInputView> {
+  var insulin = Double(AppState.current.initialInsulinUnits)
   override func didAppear() {
   }
   
@@ -31,14 +32,8 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   }
   
   override var body: InsulinInputView {
-    let appState = AppState.current();
-    return InsulinInputView(saveAction: saveAction, appState: appState)
-  }
-}
-
-struct HostingController_Previews: PreviewProvider {
-  static var previews: some View {
-    InsulinInputView(appState: AppState.current())
+    return InsulinInputView(saveAction: saveAction, appState: AppState.current)
+    // return InsulinInputView(saveAction: saveAction, appState: AppState.current)
   }
 }
 
