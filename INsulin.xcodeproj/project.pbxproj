@@ -35,6 +35,7 @@
 		A944AAA124CF04EE00671754 /* Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AAA024CF04EE00671754 /* Health.swift */; };
 		A944AAA324CF057700671754 /* ChartBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AAA224CF057700671754 /* ChartBuilder.swift */; };
 		A944AAA524CF5E2400671754 /* Double+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AAA424CF5E2400671754 /* Double+Format.swift */; };
+		A944AAA724CF657900671754 /* FileManager.+clearTmpDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A944AAA624CF657900671754 /* FileManager.+clearTmpDirectory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,6 +141,7 @@
 		A944AAA024CF04EE00671754 /* Health.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Health.swift; sourceTree = "<group>"; };
 		A944AAA224CF057700671754 /* ChartBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartBuilder.swift; sourceTree = "<group>"; };
 		A944AAA424CF5E2400671754 /* Double+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Format.swift"; sourceTree = "<group>"; };
+		A944AAA624CF657900671754 /* FileManager.+clearTmpDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager.+clearTmpDirectory.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,6 +282,7 @@
 				A944AA9A24CEF5D600671754 /* CLKTextProvider+MultiColorPatch.h */,
 				A944AA9D24CF03F700671754 /* UNNotificationAttachment+create.swift */,
 				A944AAA424CF5E2400671754 /* Double+Format.swift */,
+				A944AAA624CF657900671754 /* FileManager.+clearTmpDirectory.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -554,6 +557,7 @@
 			files = (
 				A944AAA124CF04EE00671754 /* Health.swift in Sources */,
 				A944AA4E24CB2BBA00671754 /* InsulinInputHostingController.swift in Sources */,
+				A944AAA724CF657900671754 /* FileManager.+clearTmpDirectory.swift in Sources */,
 				A944AA9924CEF59800671754 /* CLKTextProvider+MultiColorPatch.m in Sources */,
 				A944AA9E24CF03F700671754 /* UNNotificationAttachment+create.swift in Sources */,
 				A944AA5224CB2BBA00671754 /* ComplicationController.swift in Sources */,

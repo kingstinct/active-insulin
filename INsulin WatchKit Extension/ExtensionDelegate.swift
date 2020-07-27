@@ -96,6 +96,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests();
             
+            FileManager.default.clearTmpDirectory();
+            
             let image = ChartBuilder.getChartImage(vals: vals, now: max.0)
             
             

@@ -18,7 +18,6 @@ enum AuthStatus {
   case uninitialized;
   case authorized;
   case unauthorized;
-  
 }
 
 class AppState: ObservableObject {
