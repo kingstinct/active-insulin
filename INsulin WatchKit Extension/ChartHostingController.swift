@@ -32,6 +32,8 @@ class ChartHostingController: WKHostingController<ChartView> {
   }
   
   override func didAppear() {
+    NSUserActivity.displayIOBActivityType().becomeCurrent()
+    
     let query = HKObserverQuery.init(sampleType: insulinQuantityType, predicate: nil) { (query, handler, error) in
       self.queryAndUpdateActiveInsulin(handler: handler)
     }

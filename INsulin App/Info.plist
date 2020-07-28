@@ -12,5 +12,7 @@
 	<string>Active Insulin uses Healthkit to read Insulin Data</string>
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>Active Insulin uses Healthkit to store Insulin Data</string>
+	<key>NSSiriUsageDescription</key>
+	<string>Active Insulin uses Siri to display relevant information on the Siri Watchface</string>
 </dict>
 </plist>

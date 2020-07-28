@@ -141,10 +141,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             let shortcuts = vals.prefix(100).map { (tuple) -> INRelevantShortcut in
               
               let title = NSLocalizedString("insulin_on_board", comment: "Insulin on Board");
-              let userActivity = NSUserActivity(activityType: "com.kingstinct.INsulin.displayIOB")
-              userActivity.title = title
               
-              let shortcut = INShortcut(userActivity: userActivity)
+              let shortcut = INShortcut(userActivity: .displayIOBActivityType())
               
               let suggestedShortcut = INRelevantShortcut(shortcut: shortcut)
               suggestedShortcut.shortcutRole = .information
@@ -233,8 +231,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     UNUserNotificationCenter.current().removeAllDeliveredNotifications();
     Health.current.healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
       DispatchQueue.main.async {
-        AppState.current.objectWillChange.send()
+        
         if(status == .unnecessary){
+          AppState.current.objectWillChange.send()
           AppState.current.isHealthKitAuthorized = .authorized;
           if(self.query == nil){
             let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
@@ -246,6 +245,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
           }
           
         } else {
+          AppState.current.objectWillChange.send()
           AppState.current.isHealthKitAuthorized = .unauthorized;
         }
       }

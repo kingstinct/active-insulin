@@ -24,5 +24,8 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 
+*.ipa
+report.xml
+
 ## Gcc Patch
 /*.gcno
