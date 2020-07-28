@@ -11,10 +11,10 @@ import UserNotifications
 import HealthKit;
 import Combine;
 import Intents;
+import SwiftUI
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate {
-  let insulinQuantityType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
-  var promise: AnyCancellable?
+  
   var query: HKQuery?;
   
   func handleUserActivity(_ userInfo: [AnyHashable : Any]?) {
@@ -41,16 +41,17 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     let snooze60 = UNNotificationAction(identifier: "SNOOZE_60",
                                         title: NSLocalizedString("snooze_60", comment: "Snooze 1 hour"),
                                         options: [])
+    
+    
     // Define the notification type
     let notificationCategory = UNNotificationCategory(identifier: "PEAK", actions: [snooze15, snooze30, snooze60], intentIdentifiers: [], options: [.allowAnnouncement, .allowInCarPlay])
-    
     Health.current.healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
       if(status == .unnecessary){
         DispatchQueue.main.async {
           AppState.current.objectWillChange.send()
           AppState.current.isHealthKitAuthorized = .authorized;
           // AppState.current.$isHealthKitAuthorized.append(true)
-          let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
+          let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
             self.onUpdatedInsulin(completionHandler: handler)
           }
           
@@ -58,12 +59,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
           self.query = query;
         }
       } else {
-        Health.current.healthStore.requestAuthorization(toShare: [self.insulinQuantityType], read: [insulinObjectType]) { (status, error) in
+        Health.current.healthStore.requestAuthorization(toShare: [Health.current.insulinQuantityType], read: [insulinObjectType]) { (status, error) in
           DispatchQueue.main.async {
             AppState.current.objectWillChange.send()
             if(status){
               AppState.current.isHealthKitAuthorized = .authorized;
-              let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
+              let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
                 self.onUpdatedInsulin(completionHandler: handler)
               }
               
@@ -93,6 +94,49 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
   }
   
+  func updateRelevantShortcuts(data: [ChartPoint], completionHandler: @escaping () -> Void){
+    Health.current.fetchTimelineIOB(limit: 100, callback: { (error, timeline) in
+      if let timeline = timeline {
+        var shortcuts = Array<INRelevantShortcut>();
+        
+        for (index, (date, iob)) in timeline.enumerated() {
+          
+          let nextIndex = index + 1
+          let end = timeline.count > nextIndex ? timeline[nextIndex].0 - 1 : nil;
+          
+          let chartData = data.filter { (point) -> Bool in
+            return point.date >= date.addHours(addHours: -1) && point.date <= date.addHours(addHours: 1)
+          }
+          
+          let title = NSLocalizedString("insulin_on_board", comment: "Insulin on Board");
+          
+          let shortcut = INShortcut(userActivity: .displayIOBActivityType())
+          
+          let suggestedShortcut = INRelevantShortcut(shortcut: shortcut)
+          suggestedShortcut.shortcutRole = .information
+          
+          let template = INDefaultCardTemplate(title: title)
+          template.subtitle = iob.format(f: "0.1")
+          if let image = ChartBuilder.getChartImage(vals: chartData, now: date, width: 50, chartHeight: 50) {
+            template.image = INImage.create(image: image);
+          }
+          
+          
+          suggestedShortcut.watchTemplate = template
+          suggestedShortcut.relevanceProviders = [INDateRelevanceProvider(start: date, end: end)]
+          shortcuts.append(suggestedShortcut)
+        }
+        
+        INRelevantShortcutStore.default.setRelevantShortcuts(shortcuts) { (error) in
+          completionHandler();
+        }
+        
+      } else {
+        completionHandler();
+      }
+    });
+  }
+  
   
   func onUpdatedInsulin(completionHandler: @escaping () -> Void){
     if let complications = CLKComplicationServer.sharedInstance().activeComplications {
@@ -101,12 +145,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
       }
     }
     
-    Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 5)) { (error, data) in
+    Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 6)) { (error, data) in
       DispatchQueue.main.async {
         if let max = data.max(by: { (arg0, arg1) -> Bool in
           return arg0.currentInsulin < arg1.currentInsulin;
         }) {
-          if(max != data.first){
+          if(max != data.first && max.date > Date()){
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             //UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["PEAK"])
             
@@ -117,7 +161,10 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             content.subtitle = NSLocalizedString("insulin_on_board", comment: "IOB") + " - " + max.insulinOnBoard.format(f: "0.1")
             content.title = NSLocalizedString("notification_peak_title", comment: "notification_peak_title")
             content.sound = .default;
-            if let image = ChartBuilder.getChartImage(vals: data, now: max.date) {
+            let filteredData = data.filter { (point) -> Bool in
+              return point.date >= max.date.addHours(addHours: -1) && point.date <= max.date.addHours(addHours: 5)
+            }
+            if let image = ChartBuilder.getChartImage(vals: filteredData, now: max.date) {
               content.attachments = [UNNotificationAttachment.create(image: image, options: .none )!]
             }
             content.categoryIdentifier = "PEAK";
@@ -128,46 +175,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
               //something failed
             }
             
-            Health.current.fetchTimelineIOB(limit: 100, callback: { (error, timeline) in
-              if let timeline = timeline {
-                var shortcuts = Array<INRelevantShortcut>();
-                
-                for (index, (date, iob)) in timeline.enumerated() {
-                  
-                  let nextIndex = index + 1
-                  let end = timeline.count > nextIndex ? timeline[nextIndex].0 - 1 : nil;
-                  
-                  let chartData = data.filter { (point) -> Bool in
-                    return point.date >= date.addHours(addHours: -1) && point.date <= date.addHours(addHours: 1)
-                  }
-                  
-                  let title = NSLocalizedString("insulin_on_board", comment: "Insulin on Board");
-                  
-                  let shortcut = INShortcut(userActivity: .displayIOBActivityType())
-                  
-                  let suggestedShortcut = INRelevantShortcut(shortcut: shortcut)
-                  suggestedShortcut.shortcutRole = .information
-                  
-                  let template = INDefaultCardTemplate(title: title)
-                  template.subtitle = iob.format(f: "0.1")
-                  if let image = ChartBuilder.getChartImage(vals: chartData, now: date, width: 50, chartHeight: 50) {
-                    template.image = INImage.create(image: image);
-                  }
-                  
-                  
-                  suggestedShortcut.watchTemplate = template
-                  suggestedShortcut.relevanceProviders = [INDateRelevanceProvider(start: date, end: end)]
-                  shortcuts.append(suggestedShortcut)
-                }
-                
-                INRelevantShortcutStore.default.setRelevantShortcuts(shortcuts) { (error) in
-                  completionHandler();
-                }
-                
-              } else {
-                completionHandler();
-              }
-            });
+            self.updateRelevantShortcuts(data: data) {
+              completionHandler();
+            }
           }
           
           
@@ -285,13 +295,18 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
           // Be sure to complete the URL session task once you’re done.
           urlSessionTask.setTaskCompletedWithSnapshot(false)
         case let relevantShortcutTask as WKRelevantShortcutRefreshBackgroundTask:
-          // Be sure to complete the relevant-shortcut task once you're done.
-          relevantShortcutTask.setTaskCompletedWithSnapshot(false)
+          Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 5)) { (error, data) in
+            self.updateRelevantShortcuts(data: data) {
+              relevantShortcutTask.setTaskCompletedWithSnapshot(false)
+            }
+          }
+          
         case let intentDidRunTask as WKIntentDidRunRefreshBackgroundTask:
           // Be sure to complete the intent-did-run task once you're done.
           intentDidRunTask.setTaskCompletedWithSnapshot(false)
         default:
           // make sure to complete unhandled task types
+          
           task.setTaskCompletedWithSnapshot(false)
         }
       }

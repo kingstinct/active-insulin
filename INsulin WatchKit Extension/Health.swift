@@ -21,6 +21,7 @@ struct ChartPoint: Equatable {
 
 class Health {
   let healthStore = HKHealthStore()
+  let insulinQuantityType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
   
   static let current = Health();
   
