@@ -103,63 +103,79 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
       }
     }
     
-    promise = Health.current.fetchActiveInsulinChart(from: Date().advanced(by: TimeInterval(-60 * 60)), to: Date().advanced(by: TimeInterval(6 * 60 * 60))).sink(receiveCompletion: { (errors) in
+    promise = Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 6)).sink(receiveCompletion: { (errors) in
       // handle error
       // handler();
     }) { (vals) in
       DispatchQueue.main.async {
         if let max = vals.max(by: { (arg0, arg1) -> Bool in
-          return arg0.1 < arg1.1;
+          return arg0.currentInsulin < arg1.currentInsulin;
         }) {
-          
-          if(max.0 != vals.first?.0){
-            
-            UNUserNotificationCenter.current().removeAllPendingNotificationRequests();
+          if(max != vals.first){
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            //UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["PEAK"])
             
             FileManager.default.clearTmpDirectory();
             
-            let image = ChartBuilder.getChartImage(vals: vals, now: max.0)
-            
-            
             let content = UNMutableNotificationContent();
             content.body = NSLocalizedString("notification_peak_description", comment: "notification_peak_description")
-            content.subtitle = "Current IOB: " + max.1.format(f: "0.1")
+            content.subtitle = NSLocalizedString("insulin_on_board", comment: "IOB") + " - " + max.insulinOnBoard.format(f: "0.1")
             content.title = NSLocalizedString("notification_peak_title", comment: "notification_peak_title")
-            content.attachments = [UNNotificationAttachment.create(identifier: "CHART", image: image, options: .none )!]
+            content.sound = .default;
+            if let image = ChartBuilder.getChartImage(vals: vals, now: max.date) {
+              content.attachments = [UNNotificationAttachment.create(image: image, options: .none )!]
+            }
             content.categoryIdentifier = "PEAK";
             
-            
-            let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: max.0)
+            let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: max.date)
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: false)
             UNUserNotificationCenter.current().add(UNNotificationRequest.init(identifier: "PEAK", content: content, trigger: trigger)) { (error) in
               //something failed
             }
+            
+            Health.current.fetchTimelineIOB(limit: 100, callback: { (error, timeline) in
+              if let timeline = timeline {
+                var shortcuts = Array<INRelevantShortcut>();
+                
+                for (index, (date, iob)) in timeline.enumerated() {
+                  
+                  let nextIndex = index + 1
+                  let end = timeline.count > nextIndex ? timeline[nextIndex].0 - 1 : nil;
+                  
+                  let chartData = vals.filter { (point) -> Bool in
+                    return point.date >= date.addHours(addHours: -1) && point.date <= date.addHours(addHours: 1)
+                  }
+                  
+                  let title = NSLocalizedString("insulin_on_board", comment: "Insulin on Board");
+                  
+                  let shortcut = INShortcut(userActivity: .displayIOBActivityType())
+                  
+                  let suggestedShortcut = INRelevantShortcut(shortcut: shortcut)
+                  suggestedShortcut.shortcutRole = .information
+                  
+                  let template = INDefaultCardTemplate(title: title)
+                  template.subtitle = iob.format(f: "0.1")
+                  if let image = ChartBuilder.getChartImage(vals: chartData, now: date, width: 50, chartHeight: 50) {
+                    template.image = INImage.create(image: image);
+                  }
+                  
+                  
+                  suggestedShortcut.watchTemplate = template
+                  suggestedShortcut.relevanceProviders = [INDateRelevanceProvider(start: date, end: end)]
+                  shortcuts.append(suggestedShortcut)
+                }
+                
+                INRelevantShortcutStore.default.setRelevantShortcuts(shortcuts) { (error) in
+                  completionHandler();
+                }
+                
+              } else {
+                completionHandler();
+              }
+            });
           }
-          let interval = 15.0;
           
-          Health.current.fetchActiveInsulinTimeline(from: Date(), to: Date().advanced(by: TimeInterval(5 * 60 * 60)), callback: { (error, timeline) in
-            let shortcuts = vals.prefix(100).map { (tuple) -> INRelevantShortcut in
-              
-              let title = NSLocalizedString("insulin_on_board", comment: "Insulin on Board");
-              
-              let shortcut = INShortcut(userActivity: .displayIOBActivityType())
-              
-              let suggestedShortcut = INRelevantShortcut(shortcut: shortcut)
-              suggestedShortcut.shortcutRole = .information
-              
-              let template = INDefaultCardTemplate(title: title)
-              template.subtitle = tuple.1.format(f: "0.1")
-              
-              suggestedShortcut.watchTemplate = template
-              suggestedShortcut.relevanceProviders = [INDateRelevanceProvider(start: tuple.0, end: tuple.0.addingTimeInterval(TimeInterval(60 * interval)))]
-              return suggestedShortcut;
-            }
-            
-            INRelevantShortcutStore.default.setRelevantShortcuts(shortcuts) { (error) in
-              completionHandler();
-            }
-            
-          }, minuteResolution: interval );
+          
         }
       }
       
@@ -167,57 +183,58 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
   }
   
   func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    var time: Date
+    var minutesToAdd: Double;
     
     if(response.actionIdentifier == "SNOOZE_15"){
-      time = Date.init(timeIntervalSinceNow: TimeInterval(60 * 15));
+      minutesToAdd = 15;
     }
     else if(response.actionIdentifier == "SNOOZE_30"){
-      time = Date.init(timeIntervalSinceNow: TimeInterval(60 * 30));
+      minutesToAdd = 30;
     }
     else if(response.actionIdentifier == "SNOOZE_60"){
-      time = Date.init(timeIntervalSinceNow: TimeInterval(60 * 60));
+      minutesToAdd = 60;
     } else {
       completionHandler();
       return
     }
+    let time = Date().addMinutes(addMinutes: minutesToAdd)
     
-    Health.current.fetchActiveInsulin(callback: { (error, iob) in
-      self.promise = Health.current.fetchActiveInsulinChart(from: Date().addingTimeInterval(TimeInterval(-60 * 60)), to: Date().addingTimeInterval(TimeInterval(6 * 60 * 60))).sink(receiveCompletion: { (response) in
-        
-      }, receiveValue: { (vals) in
-        
-        
-        let content = UNMutableNotificationContent();
-        content.body = NSLocalizedString("notification_snoozed_description", comment: "Snooze description");
-        content.title = NSLocalizedString("notification_snoozed_title", comment: "Snooze title")
-        content.categoryIdentifier = "PEAK";
-        
-        var image: UIImage
-        
-        
-        let currentVals = vals.filter { (pair) -> Bool in
-          return pair.0 >= time.addingTimeInterval(TimeInterval(-60 * 60)) && pair.0 <= time.addingTimeInterval(TimeInterval(5 * 60 * 60))
-        }
-        
-        let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: time)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: false)
-        image = ChartBuilder.getChartImage(vals: currentVals)
-        content.attachments = [UNNotificationAttachment.create(identifier: "CHART", image: image, options: .none )!]
-        if let val = iob {
-          content.subtitle = "Current IOB: " + val.format(f: "0.1")
-        }
-        
-        
-        let request = UNNotificationRequest.init(identifier: "SNOOZE", content: content, trigger: trigger);
-        
-        UNUserNotificationCenter.current().add(request) { (error) in
-          //something failed
-        }
-        
-        completionHandler();
-      })
-    }, forTime: time)
+    self.promise = Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 6)).sink(receiveCompletion: { (response) in
+      
+    }, receiveValue: { (vals) in
+      let content = UNMutableNotificationContent();
+      content.body = NSLocalizedString("notification_snoozed_description", comment: "Snooze description");
+      content.title = NSLocalizedString("notification_snoozed_title", comment: "Snooze title")
+      content.categoryIdentifier = "PEAK";
+      content.sound = .default;
+      
+      let currentVals = vals.filter { (point) -> Bool in
+        return point.date >= time.addHours(addHours: -1) && point.date <= time.addHours(addHours: 5)
+      }
+      
+      let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: time)
+      let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: false)
+      if let image = ChartBuilder.getChartImage(vals: currentVals) {
+        content.attachments = [UNNotificationAttachment.create(image: image, options: .none )!]
+      }
+      
+      let atTime = vals.first { (point) -> Bool in
+        return point.date >= time
+      }
+      
+      if let iob = atTime?.insulinOnBoard {
+        content.subtitle = NSLocalizedString("insulin_on_board", comment: "IOB") + " - " + iob.format(f: "0.1")
+      }
+      
+      
+      let request = UNNotificationRequest.init(identifier: "SNOOZE", content: content, trigger: trigger);
+      
+      UNUserNotificationCenter.current().add(request) { (error) in
+        //something failed
+      }
+      
+      completionHandler();
+    })
     
     
     
@@ -289,5 +306,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
   }
   
 }
+
+
 
 

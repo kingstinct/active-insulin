@@ -42,13 +42,13 @@ class ChartHostingController: WKHostingController<ChartView> {
   }
   
   func queryAndUpdateActiveInsulin (handler: @escaping HKObserverQueryCompletionHandler) {
-    Health.current.fetchActiveInsulin { (error, value) in
+    Health.current.fetchIOB { (error, value) in
       if let iob = value {
         self.activeInsulin = iob
       }
     }
     
-    promise = Health.current.fetchActiveInsulinChart(from: Date().advanced(by: TimeInterval(-60 * 60)), to: Date().advanced(by: TimeInterval(5 * 60 * 60))).sink(receiveCompletion: { (errors) in
+    promise = Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 5)).sink(receiveCompletion: { (errors) in
       // handle error
       // handler();
     }) { (vals) in

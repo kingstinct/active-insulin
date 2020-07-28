@@ -25,7 +25,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   }
   
   func getTimelineEndDate(for complication: CLKComplication, withHandler handler: @escaping (Date?) -> Void) {
-    handler(Date().addingTimeInterval(TimeInterval(60 * 60 * 5)))
+    handler(Date().addHours(addHours: 5))
   }
   
   func getPrivacyBehavior(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationPrivacyBehavior) -> Void) {
@@ -40,7 +40,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     let label = CLKSimpleTextProvider(text: NSLocalizedString("insulin_on_board", comment: "Active Insulin"))
     label.tintColor = UIColor.gray
-
+    
     let text = CLKSimpleTextProvider(text: iobStr)
     text.tintColor = UIColor.magenta
     
@@ -128,10 +128,10 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   
   func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
     
-    Health.current.fetchActiveInsulin { (error, value) in
+    Health.current.fetchIOB { (error, value) in
       if let iob = value {
         if(complication.family == .graphicRectangular){
-          self.currentPromise = Health.current.fetchActiveInsulinChart(from: Date().addingTimeInterval(TimeInterval(-60 * 60)), to: Date().addingTimeInterval(TimeInterval(5 * 60 * 60))).sink(receiveCompletion: { (completion) in
+          self.currentPromise = Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 5)).sink(receiveCompletion: { (completion) in
             switch completion {
             case let .failure(error):
               handler(nil);
@@ -140,10 +140,15 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             }
           }) { (vals) in
             let image = ChartBuilder.getChartImage(vals: vals, width: 171, chartHeight: 54);
-            let template = self.getGraphicRectangular(for: complication, iob: iob, image: image);
+            if let template = image != nil
+              ? self.getGraphicRectangular(for: complication, iob: iob, image: image!)
+              : self.getTemplateWithIOB(for: complication, iob: iob) {
+              let entry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template)
+              handler(entry);
+            } else {
+              handler(nil)
+            }
             
-            let entry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template)
-            handler(entry);
           }
         }
         else {
@@ -166,32 +171,39 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   func getTimelineEntries(for complication: CLKComplication, after date: Date, limit: Int, withHandler handler: @escaping ([CLKComplicationTimelineEntry]?) -> Void) {
     // Call the handler with the timeline entries after to the given date
     
-    Health.current.fetchActiveInsulinTimeline(from: date, to: date.addingTimeInterval(TimeInterval(5 * 60 * 60))) { (error, _results) in
+    Health.current.fetchTimelineIOB(from: date, limit: limit) { (error, _results) in
       var timelineEntries = Array<CLKComplicationTimelineEntry?>();
       if let results = _results {
         
         if(complication.family == .graphicRectangular){
-          self.currentPromise = Health.current.fetchActiveInsulinChart(from: date.addingTimeInterval(TimeInterval(-60 * 60)), to: date.addingTimeInterval(TimeInterval(11 * 60 * 60))).sink(receiveCompletion: { (errors) in
+          self.currentPromise = Health.current.fetchActiveInsulinChart(from: date.addHours(addHours: -1), to: date.addHours(addHours: 11)).sink(receiveCompletion: { (errors) in
             
           }) { (vals) in
-            timelineEntries = results.suffix(limit).map { (time, iob) -> CLKComplicationTimelineEntry? in
-              let chartFrom = time.addingTimeInterval(TimeInterval(-60 * 60))
-              let chartTo = time.addingTimeInterval(TimeInterval(5 * 60 * 60))
-              let valsForChart = vals.filter { (hey) -> Bool in
-                return hey.0 >= chartFrom && hey.0 <= chartTo;
+            timelineEntries = results.map { (time, iob) -> CLKComplicationTimelineEntry? in
+              let chartFrom = time.addHours(addHours: -1)
+              let chartTo = time.addHours(addHours: 5)
+              let valsForChart = vals.filter { chartPoint -> Bool in
+                return chartPoint.date >= chartFrom && chartPoint.date <= chartTo;
               }
               
               let image = WKInterfaceDevice.current().screenBounds.width > 162
                 ? ChartBuilder.getChartImage(vals: valsForChart,now: time, width: 171, chartHeight: 54)
                 : ChartBuilder.getChartImage(vals: valsForChart,now: time, width: 150, chartHeight: 47);
-              let template = self.getGraphicRectangular(for: complication, iob: iob, image: image);
-              return CLKComplicationTimelineEntry(date: time, complicationTemplate: template);
+              if let template = image != nil
+                ? self.getGraphicRectangular(for: complication, iob: iob, image: image!)
+                : self.getTemplateWithIOB(for: complication, iob: iob) {
+                return CLKComplicationTimelineEntry(date: time, complicationTemplate: template);
+              }
+              else {
+                return nil;
+              }
+              
             }
             
             
           }
         } else {
-          timelineEntries = results.suffix(limit).map { (time, iob) -> CLKComplicationTimelineEntry? in
+          timelineEntries = results.map { (time, iob) -> CLKComplicationTimelineEntry? in
             if let template = self.getTemplateWithIOB(for: complication, iob: iob) {
               return CLKComplicationTimelineEntry(date: time, complicationTemplate: template);
             }
@@ -216,28 +228,32 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   
   func getLocalizableSampleTemplate(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTemplate?) -> Void) {
     // This method will be called once per supported complication, and the results will be cached
+    var template: CLKComplicationTemplate?;
     
-    let image = ChartBuilder.getChartImage(vals: Array<(Date, Double)>([
-      (Date().addingTimeInterval(TimeInterval(-60 * 60)), 0),
-      (Date().addingTimeInterval(TimeInterval(-30 * 60)), 1),
-      (Date(), 2),
-      (Date().addingTimeInterval(TimeInterval(30 * 60)), 3),
-      (Date().addingTimeInterval(TimeInterval(60 * 60)), 4),
-      (Date().addingTimeInterval(TimeInterval(1.5 * 60 * 60)), 5),
-      (Date().addingTimeInterval(TimeInterval(2 * 60 * 60)), 5),
-      (Date().addingTimeInterval(TimeInterval(2.5 * 60 * 60)), 5),
-      (Date().addingTimeInterval(TimeInterval(3 * 60 * 60)), 4),
-      (Date().addingTimeInterval(TimeInterval(3.5 * 60 * 60)), 4),
-      (Date().addingTimeInterval(TimeInterval(4 * 60 * 60)), 3),
-      (Date().addingTimeInterval(TimeInterval(4.5 * 60 * 60)), 3),
-      (Date().addingTimeInterval(TimeInterval(5 * 60 * 60)), 2),
-    ]))
-    let template = (complication.family == .graphicRectangular)
-      ? self.getGraphicRectangular(for: complication, iob: 4.5, image: image)
-      : self.getTemplateWithIOB(for: complication, iob: 4.5);
+    if(complication.family == .graphicRectangular){
+      
+      
+      var injections = Array<(Date, Double)>();
+      injections.append((Date(), 5));
+      
+      let data = Health.current.buildChartData(injections: injections,
+                                               from: Date().addHours(addHours: -1),
+                                               to: Date().addHours(addHours: 5),
+                                               minuteResolution: 2);
+      
+      if let image = ChartBuilder.getChartImage(vals: data){
+        template = self.getGraphicRectangular(for: complication, iob: 4.5, image: image);
+      }
+    }
+    
+    if(template == nil){
+      template = self.getTemplateWithIOB(for: complication, iob: 4.5)
+    }
+    
     handler(template);
   }
   
 }
+
 
 

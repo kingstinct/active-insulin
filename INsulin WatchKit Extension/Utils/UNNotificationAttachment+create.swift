@@ -11,9 +11,10 @@ import UserNotifications
 
 extension UNNotificationAttachment {
   
-  static func create(identifier: String, image: UIImage, options: [NSObject : AnyObject]?) -> UNNotificationAttachment? {
+  static func create(image: UIImage, options: [NSObject : AnyObject]?) -> UNNotificationAttachment? {
     let fileManager = FileManager.default
     let tmpSubFolderName = ProcessInfo.processInfo.globallyUniqueString
+    let identifier = ProcessInfo.processInfo.globallyUniqueString
     let tmpSubFolderURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(tmpSubFolderName, isDirectory: true)
     do {
       try fileManager.createDirectory(at: tmpSubFolderURL, withIntermediateDirectories: true, attributes: nil)

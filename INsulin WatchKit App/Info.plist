@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>9</string>
+	<string>10</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -31,7 +31,5 @@
 	<array>
 		<string>com.kingstinct.INsulin.displayIOB</string>
 	</array>
-	<key>NSSiriUsageDescription</key>
-	<string>Active Insulin uses Siri to display relevant information on the Siri Watchface</string>
 </dict>
 </plist>
