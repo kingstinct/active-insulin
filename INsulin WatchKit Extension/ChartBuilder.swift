@@ -9,8 +9,9 @@
 import WatchKit
 import YOChartImageKit
 
-
 class ChartBuilder {
+  
+  
   static func getChartImage(vals: Array<ChartPoint>, now: Date = Date(), width: Double = Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: Double = 100) -> UIImage?{
     
     if let max = vals.max(by: { (arg0, arg1) -> Bool in
@@ -38,10 +39,10 @@ class ChartBuilder {
             let previousChart = YOLineChartImage();
             let valsAsNumbers = previousVals as [NSNumber];
             previousChart.values = valsAsNumbers;
-            previousChart.fillColor = UIColor.magenta.withAlphaComponent(0.2)
+            previousChart.fillColor = UIColor.magenta.withAlphaComponent(0.3)
             previousChart.maxValue = 1;
             previousChart.smooth = false
-            previousChart.strokeColor = UIColor.magenta.withAlphaComponent(0.4)
+            previousChart.strokeColor = UIColor.magenta.withAlphaComponent(0.5)
             previousChart.strokeWidth = 2.0
             
             

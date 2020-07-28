@@ -103,7 +103,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
       }
     }
     
-    promise = Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 6)).sink(receiveCompletion: { (errors) in
+    promise = Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 5)).sink(receiveCompletion: { (errors) in
       // handle error
       // handler();
     }) { (vals) in

@@ -34,11 +34,133 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   
   // MARK: - Timeline Population
   
-  func getGraphicRectangular(for complication: CLKComplication, iob: Double, image: UIImage) -> CLKComplicationTemplateGraphicRectangularLargeImage {
+  enum DeviceSize {
+    case mm38
+    case mm40and42
+    case mm44
+  }
+  
+  func getImageForComplication(vals: [ChartPoint], now: Date = Date(), family: CLKComplicationFamily) -> UIImage? {
+    let (width, height) = self.getImageSizeForComplication(family: family);
+    return ChartBuilder.getChartImage(vals: vals, now: now, width: width, chartHeight: height)
+  }
+  
+  let advancedFamilies = [
+    CLKComplicationFamily.graphicBezel,
+    CLKComplicationFamily.extraLarge,
+    // CLKComplicationFamily.modularSmall,
+    CLKComplicationFamily.graphicRectangular
+  ]
+  
+  func getImageSizeForComplication(family: CLKComplicationFamily) -> (Double, Double){
+    let deviceWidth = WKInterfaceDevice.current().screenBounds.width
+    let deviceSize = deviceWidth == 136 ? DeviceSize.mm38
+      : deviceWidth == 156 || deviceWidth == 162 ? DeviceSize.mm40and42
+      : DeviceSize.mm44;
+    
+    if(family == .graphicRectangular){
+      if(deviceSize == .mm40and42){
+        return (150, 47)
+      }
+      else {
+        return (171, 54);
+      }
+    }
+    
+    if(family == .graphicBezel || family == .graphicCircular){
+      if(deviceSize == .mm40and42){
+        return (42, 42)
+      }
+      else {
+        return (47, 47);
+      }
+    }
+    
+    if(family == .extraLarge){ // stack image
+      if(deviceSize == .mm38){
+        return (78, 42);
+      }
+      if(deviceSize == .mm40and42){
+        return (87, 45);
+      }
+      if(deviceSize == .mm44){
+        return (96, 51);
+      }
+    }
+    
+    if(family == .modularSmall){ // stack image
+      if(deviceSize == .mm38){
+        return (26, 12);
+      }
+      if(deviceSize == .mm40and42){
+        return (29, 15);
+      }
+      if(deviceSize == .mm44){
+        return (32, 17);
+      }
+    }
+    
+    return (100, 100);
+  }
+  
+  func combinedTextProviderSmall(iob: Double) -> CLKTextProvider{
+    let iobStr = iob.format(f: "0.1");
+    let label = CLKSimpleTextProvider(text: NSLocalizedString("insulin_on_board_short", comment: "Active Insulin"))
+    label.tintColor = UIColor.gray
+    
+    let text = CLKSimpleTextProvider(text: iobStr)
+    text.tintColor = UIColor.magenta
+    
+    let separator = " "
+    
+    let multi = CLKTextProvider(byJoining: [label, text], separator: separator)!
+    return multi;
+  }
+  
+  func combinedTextProvider(iob: Double) -> CLKTextProvider{
+    let iobStr = iob.format(f: "0.1");
+    let label = CLKSimpleTextProvider(text: NSLocalizedString("insulin_on_board", comment: "Active Insulin"))
+    label.tintColor = UIColor.gray
+    
+    let text = CLKSimpleTextProvider(text: iobStr)
+    text.tintColor = UIColor.magenta
+    
+    let separator = " "
+    
+    let multi = CLKTextProvider(byJoining: [label, text], separator: separator)!
+    return multi;
+  }
+  
+  func getGraphicRectangular(iob: Double, image: UIImage) -> CLKComplicationTemplateGraphicRectangularLargeImage {
+    let complication = CLKComplicationTemplateGraphicRectangularLargeImage();
+    complication.imageProvider = CLKFullColorImageProvider(fullColorImage: image);
+    complication.textProvider = combinedTextProvider(iob: iob);
+    return complication
+  }
+  
+  func getGraphicBezel(iob: Double, image: UIImage) -> CLKComplicationTemplateGraphicBezelCircularText {
+    let complication = CLKComplicationTemplateGraphicBezelCircularText();
+    
+    let circularProvider = CLKComplicationTemplateGraphicCircularImage();
+    circularProvider.imageProvider = CLKFullColorImageProvider(fullColorImage: image);
+    complication.circularTemplate = circularProvider;
+    complication.textProvider = combinedTextProvider(iob: iob);
+    return complication
+  }
+  
+  func getModularSmall(iob: Double, image: UIImage) -> CLKComplicationTemplateModularSmallStackImage {
+    let modularSmall = CLKComplicationTemplateModularSmallStackImage();
+    modularSmall.line1ImageProvider = CLKImageProvider(onePieceImage: image);
+    modularSmall.line2TextProvider = CLKSimpleTextProvider(text: iob.format(f: "0.1"))
+
+    return modularSmall;
+  }
+  
+  func getExtraLarge(iob: Double, image: UIImage) -> CLKComplicationTemplateExtraLargeStackImage {
     let iobStr = iob.format(f: "0.1");
     // let valueTextProvider = CLKSimpleTextProvider(text: NSLocalizedString("app_name", comment: "Active Insulin") + " - " + iobStr);
     
-    let label = CLKSimpleTextProvider(text: NSLocalizedString("insulin_on_board", comment: "Active Insulin"))
+    let label = CLKSimpleTextProvider(text: NSLocalizedString("insulin_on_board_short", comment: "Active Insulin"))
     label.tintColor = UIColor.gray
     
     let text = CLKSimpleTextProvider(text: iobStr)
@@ -49,10 +171,33 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     let multi = CLKTextProvider(byJoining: [label, text], separator: separator)!
     
     
-    let complication = CLKComplicationTemplateGraphicRectangularLargeImage();
-    complication.imageProvider = CLKFullColorImageProvider(fullColorImage: image);
-    complication.textProvider = multi;
-    return complication
+    let extraLarge = CLKComplicationTemplateExtraLargeStackImage();
+    extraLarge.line1ImageProvider = CLKImageProvider(onePieceImage: image);
+    extraLarge.line2TextProvider = multi;
+    
+    return extraLarge;
+  }
+  
+  func getTemplateWithChart(for complication: CLKComplication, iob: Double, unfilteredVals: Array<ChartPoint>, now: Date = Date()) -> CLKComplicationTemplate? {
+    let vals = unfilteredVals.filter { (point) -> Bool in
+      if(complication.family == .graphicRectangular){
+        return point.date >= now.addHours(addHours: -1) && point.date <= now.addHours(addHours: 5);
+      }
+      return point.date >= now.addHours(addHours: -1) && point.date <= now.addHours(addHours: 2);
+    }
+    
+    if let image = getImageForComplication(vals: vals, now: now, family: complication.family) {
+      if(complication.family == .graphicBezel){
+        return self.getGraphicBezel(iob: iob, image: image)
+      } else if (complication.family == .graphicRectangular){
+        return self.getGraphicRectangular(iob: iob, image: image)
+      } else if (complication.family == .modularSmall){
+        return self.getModularSmall(iob: iob, image: image)
+      } else if (complication.family == .extraLarge){
+        return self.getExtraLarge(iob: iob, image: image)
+      }
+    }
+    return getTemplateWithIOB(for: complication, iob: iob)
   }
   
   func getTemplateWithIOB(for complication: CLKComplication, iob: Double) -> CLKComplicationTemplate? {
@@ -64,16 +209,19 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     valueTextProvider.tintColor = UIColor.magenta
     
     if(complication.family == .circularSmall){
-      let complication = CLKComplicationTemplateCircularSmallSimpleText();
-      complication.textProvider = valueTextProvider;
+      let complication = CLKComplicationTemplateCircularSmallStackText();
+      complication.line1TextProvider = labelProvider;
+      complication.line2TextProvider = valueTextProvider;
       return complication
     }else if(complication.family == .utilitarianSmall){
       let complication = CLKComplicationTemplateUtilitarianSmallFlat();
       complication.textProvider = valueTextProvider;
       return complication
     } else if(complication.family == .modularSmall){
-      let complication = CLKComplicationTemplateModularSmallSimpleText();
-      complication.textProvider = valueTextProvider;
+      let complication = CLKComplicationTemplateModularSmallStackText();
+      complication.line1TextProvider = labelProvider;
+      complication.line2TextProvider = valueTextProvider;
+      complication.highlightLine2 = true;
       return complication
     } else if(complication.family == .graphicCircular){
       let complication = CLKComplicationTemplateGraphicCircularStackText();
@@ -116,7 +264,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
       return complication;
     } else if (complication.family == .utilitarianLarge){
       let complication = CLKComplicationTemplateUtilitarianLargeFlat();
-      complication.textProvider = valueTextProvider;
+      complication.textProvider = combinedTextProviderSmall(iob: iob);
       return complication;
     } else if (complication.family == .utilitarianSmallFlat){
       let complication = CLKComplicationTemplateUtilitarianSmallFlat();
@@ -130,7 +278,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     Health.current.fetchIOB { (error, value) in
       if let iob = value {
-        if(complication.family == .graphicRectangular){
+        if(self.advancedFamilies.contains(complication.family)){
           self.currentPromise = Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 5)).sink(receiveCompletion: { (completion) in
             switch completion {
             case let .failure(error):
@@ -139,25 +287,23 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             case .finished: break
             }
           }) { (vals) in
-            let image = ChartBuilder.getChartImage(vals: vals, width: 171, chartHeight: 54);
-            if let template = image != nil
-              ? self.getGraphicRectangular(for: complication, iob: iob, image: image!)
-              : self.getTemplateWithIOB(for: complication, iob: iob) {
+            if let template = self.getTemplateWithChart(for: complication, iob: iob, unfilteredVals: vals) {
               let entry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template)
               handler(entry);
-            } else {
-              handler(nil)
             }
-            
+            else {
+              handler(nil);
+            }
           }
         }
         else {
           if let template = self.getTemplateWithIOB(for: complication, iob: iob) {
             let entry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template)
-            handler(entry);
-          } else  {
-            handler(nil)
+            
+            return handler(entry);
           }
+          
+          handler(nil)
         }
       }
     }
@@ -172,55 +318,45 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     // Call the handler with the timeline entries after to the given date
     
     Health.current.fetchTimelineIOB(from: date, limit: limit) { (error, _results) in
-      var timelineEntries = Array<CLKComplicationTimelineEntry?>();
       if let results = _results {
         
-        if(complication.family == .graphicRectangular){
+        if(self.advancedFamilies.contains(complication.family)){
           self.currentPromise = Health.current.fetchActiveInsulinChart(from: date.addHours(addHours: -1), to: date.addHours(addHours: 11)).sink(receiveCompletion: { (errors) in
             
           }) { (vals) in
-            timelineEntries = results.map { (time, iob) -> CLKComplicationTimelineEntry? in
-              let chartFrom = time.addHours(addHours: -1)
-              let chartTo = time.addHours(addHours: 5)
-              let valsForChart = vals.filter { chartPoint -> Bool in
-                return chartPoint.date >= chartFrom && chartPoint.date <= chartTo;
+            let timelineEntries = results.map { (time, iob) -> CLKComplicationTimelineEntry? in
+              if let template = self.getTemplateWithChart(for: complication, iob: iob, unfilteredVals: vals, now: time) {
+                let entry = CLKComplicationTimelineEntry(date: time, complicationTemplate: template)
+                return entry;
               }
-              
-              let image = WKInterfaceDevice.current().screenBounds.width > 162
-                ? ChartBuilder.getChartImage(vals: valsForChart,now: time, width: 171, chartHeight: 54)
-                : ChartBuilder.getChartImage(vals: valsForChart,now: time, width: 150, chartHeight: 47);
-              if let template = image != nil
-                ? self.getGraphicRectangular(for: complication, iob: iob, image: image!)
-                : self.getTemplateWithIOB(for: complication, iob: iob) {
-                return CLKComplicationTimelineEntry(date: time, complicationTemplate: template);
-              }
-              else {
-                return nil;
-              }
-              
+              return nil;
             }
             
-            
+            if let entries = timelineEntries as? [CLKComplicationTimelineEntry] {
+              handler(entries);
+            } else {
+              handler(nil);
+            }
           }
         } else {
-          timelineEntries = results.map { (time, iob) -> CLKComplicationTimelineEntry? in
+          let timelineEntries = results.map { (time, iob) -> CLKComplicationTimelineEntry? in
             if let template = self.getTemplateWithIOB(for: complication, iob: iob) {
               return CLKComplicationTimelineEntry(date: time, complicationTemplate: template);
             }
-            else {
-              return nil;
-            }
+            
+            return nil;
+            
           }
-          
+          if let entries = timelineEntries as? [CLKComplicationTimelineEntry] {
+            handler(entries);
+          } else {
+            handler(nil);
+          }
         }
         
       }
       
-      if let entries = timelineEntries as? [CLKComplicationTimelineEntry] {
-        handler(entries);
-      } else {
-        handler(nil);
-      }
+      
     }
   }
   
@@ -230,9 +366,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     // This method will be called once per supported complication, and the results will be cached
     var template: CLKComplicationTemplate?;
     
-    if(complication.family == .graphicRectangular){
-      
-      
+    if(self.advancedFamilies.contains(complication.family)){
       var injections = Array<(Date, Double)>();
       injections.append((Date(), 5));
       
@@ -241,13 +375,12 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
                                                to: Date().addHours(addHours: 5),
                                                minuteResolution: 2);
       
-      if let image = ChartBuilder.getChartImage(vals: data){
-        template = self.getGraphicRectangular(for: complication, iob: 4.5, image: image);
-      }
+      template = self.getTemplateWithChart(for: complication, iob: 5, unfilteredVals: data)
     }
     
+    
     if(template == nil){
-      template = self.getTemplateWithIOB(for: complication, iob: 4.5)
+      template = self.getTemplateWithIOB(for: complication, iob: 5)
     }
     
     handler(template);
