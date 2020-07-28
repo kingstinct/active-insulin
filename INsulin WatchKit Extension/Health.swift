@@ -247,14 +247,14 @@ class Health {
     return retVal;
   }
   
-  func fetchActiveInsulinChart(from: Date, to: Date, minuteResolution: Double = 2) -> Future<[ChartPoint], Error>{
-    return Future { promise in
+  func fetchActiveInsulinChart(from: Date, to: Date, minuteResolution: Double = 2, callback: @escaping (Error?, Array<ChartPoint>) -> Void) -> Void {
+    
       // let from = Date.init(timeIntervalSinceNow: TimeInterval(exactly: -totalDurationInMinutes * 60)!)
       let queryFrom = from.addMinutes(addMinutes: -AppState.current.totalDurationInMinutes)
       
       let query = HKSampleQuery.init(sampleType: insulinQuantityType, predicate: HKQuery.predicateForSamples(withStart: queryFrom, end: nil, options: []), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (q, _samples, error) in
         if let e = error {
-          promise(.failure(e));
+          callback(e, []);
         } else {
           if let unfilteredSamples = _samples as? [HKQuantitySample] {
             let samples = unfilteredSamples.filter(self.filterBolusSample).map { (sample) -> (Date, Double) in
@@ -289,14 +289,13 @@ class Health {
             
             
             DispatchQueue.main.async {
-              promise(.success(retVal));
+              callback(nil, retVal);
             }
           }
         }
       }
       
       self.healthStore.execute(query);
-    }
     
   }
 }

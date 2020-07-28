@@ -48,20 +48,19 @@ class ChartHostingController: WKHostingController<ChartView> {
       }
     }
     
-    promise = Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 5)).sink(receiveCompletion: { (errors) in
-      // handle error
-      // handler();
-    }) { (vals) in
+    Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 5)) { (error, vals) in
       DispatchQueue.main.async {
-        let newImage = ChartBuilder.getChartImage(vals: vals);
-        
-        self.image = newImage
-        
-        self.setNeedsBodyUpdate()
+      let newImage = ChartBuilder.getChartImage(vals: vals);
+      
+      self.image = newImage
+      
+      self.setNeedsBodyUpdate()
       }
       
       handler();
+      
     }
+    
   }
   
   override var body: ChartView {

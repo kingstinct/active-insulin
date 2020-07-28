@@ -12,7 +12,7 @@ import YOChartImageKit
 class ChartBuilder {
   
   
-  static func getChartImage(vals: Array<ChartPoint>, now: Date = Date(), width: Double = Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: Double = 100) -> UIImage?{
+  static func getChartImage(vals: Array<ChartPoint>, now: Date = Date(), width: Double = Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: Double = 100, showEdgeLines: Bool = true) -> UIImage?{
     
     if let max = vals.max(by: { (arg0, arg1) -> Bool in
       return arg0.currentInsulin < arg1.currentInsulin;
@@ -88,8 +88,10 @@ class ChartBuilder {
             context?.strokePath()
           }
           
-          drawLine(at: width - 1)
-          drawLine(at: 1)
+          if(showEdgeLines){
+            drawLine(at: width - 1)
+            drawLine(at: 1)
+          }
           
           for i in 0..<hourDividers { /* do something */
             let x = Double(i + 1) * widthPerDivider;

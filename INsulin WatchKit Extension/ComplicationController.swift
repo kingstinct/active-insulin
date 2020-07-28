@@ -9,7 +9,7 @@ import HealthKit
 import ClockKit
 import Combine
 import WatchKit
-
+import SwiftUI
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
   var currentPromise: AnyCancellable?
@@ -42,7 +42,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   
   func getImageForComplication(vals: [ChartPoint], now: Date = Date(), family: CLKComplicationFamily) -> UIImage? {
     let (width, height) = self.getImageSizeForComplication(family: family);
-    return ChartBuilder.getChartImage(vals: vals, now: now, width: width, chartHeight: height)
+    return ChartBuilder.getChartImage(vals: vals, now: now, width: width, chartHeight: height, showEdgeLines: family != .graphicBezel)
   }
   
   let advancedFamilies = [
@@ -131,18 +131,37 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     return multi;
   }
   
+  func imageWithSize(size: CGSize, filledWithColor color: UIColor = UIColor.clear, scale: CGFloat = 0.0, opaque: Bool = false) -> UIImage {
+    let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+    
+    UIGraphicsBeginImageContextWithOptions(size, opaque, scale)
+    color.set()
+    UIRectFill(rect)
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    return image!;
+  }
+  
   func getGraphicRectangular(iob: Double, image: UIImage) -> CLKComplicationTemplateGraphicRectangularLargeImage {
     let complication = CLKComplicationTemplateGraphicRectangularLargeImage();
-    complication.imageProvider = CLKFullColorImageProvider(fullColorImage: image);
+    complication.imageProvider = getFullColorImage(image: image);
     complication.textProvider = combinedTextProvider(iob: iob);
     return complication
+  }
+  
+  func getFullColorImage(image: UIImage) -> CLKFullColorImageProvider{
+    let tintedImage = CLKImageProvider(onePieceImage: image, twoPieceImageBackground: imageWithSize(size: image.size, filledWithColor: UIColor.white.withAlphaComponent(0.1), scale: image.scale), twoPieceImageForeground: image);
+    tintedImage.tintColor = .magenta;
+    return CLKFullColorImageProvider(fullColorImage: image, tintedImageProvider: tintedImage);
   }
   
   func getGraphicBezel(iob: Double, image: UIImage) -> CLKComplicationTemplateGraphicBezelCircularText {
     let complication = CLKComplicationTemplateGraphicBezelCircularText();
     
     let circularProvider = CLKComplicationTemplateGraphicCircularImage();
-    circularProvider.imageProvider = CLKFullColorImageProvider(fullColorImage: image);
+    
+    circularProvider.imageProvider = getFullColorImage(image: image);
     complication.circularTemplate = circularProvider;
     complication.textProvider = combinedTextProvider(iob: iob);
     return complication
@@ -160,20 +179,13 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     let iobStr = iob.format(f: "0.1");
     // let valueTextProvider = CLKSimpleTextProvider(text: NSLocalizedString("app_name", comment: "Active Insulin") + " - " + iobStr);
     
-    let label = CLKSimpleTextProvider(text: NSLocalizedString("insulin_on_board_short", comment: "Active Insulin"))
-    label.tintColor = UIColor.gray
-    
     let text = CLKSimpleTextProvider(text: iobStr)
     text.tintColor = UIColor.magenta
-    
-    let separator = " "
-    
-    let multi = CLKTextProvider(byJoining: [label, text], separator: separator)!
     
     
     let extraLarge = CLKComplicationTemplateExtraLargeStackImage();
     extraLarge.line1ImageProvider = CLKImageProvider(onePieceImage: image);
-    extraLarge.line2TextProvider = multi;
+    extraLarge.line2TextProvider = text;
     
     return extraLarge;
   }
@@ -279,15 +291,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     Health.current.fetchIOB { (error, value) in
       if let iob = value {
         if(self.advancedFamilies.contains(complication.family)){
-          self.currentPromise = Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 5)).sink(receiveCompletion: { (completion) in
-            switch completion {
-            case let .failure(error):
-              handler(nil);
-              print(error)
-            case .finished: break
-            }
-          }) { (vals) in
-            if let template = self.getTemplateWithChart(for: complication, iob: iob, unfilteredVals: vals) {
+          
+          Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 5)) { (error, data) in
+            if let template = self.getTemplateWithChart(for: complication, iob: iob, unfilteredVals: data) {
               let entry = CLKComplicationTimelineEntry(date: Date(), complicationTemplate: template)
               handler(entry);
             }
@@ -321,11 +327,9 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
       if let results = _results {
         
         if(self.advancedFamilies.contains(complication.family)){
-          self.currentPromise = Health.current.fetchActiveInsulinChart(from: date.addHours(addHours: -1), to: date.addHours(addHours: 11)).sink(receiveCompletion: { (errors) in
-            
-          }) { (vals) in
+          Health.current.fetchActiveInsulinChart(from: date.addHours(addHours: -1), to: date.addHours(addHours: 11)) { (error, data) in
             let timelineEntries = results.map { (time, iob) -> CLKComplicationTimelineEntry? in
-              if let template = self.getTemplateWithChart(for: complication, iob: iob, unfilteredVals: vals, now: time) {
+              if let template = self.getTemplateWithChart(for: complication, iob: iob, unfilteredVals: data, now: time) {
                 let entry = CLKComplicationTimelineEntry(date: time, complicationTemplate: template)
                 return entry;
               }
