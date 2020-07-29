@@ -13,7 +13,6 @@ class OptionalData: ObservableObject {
   @Published var chartImage: UIImage?
 }
 
-let cellWidth = WKInterfaceDevice.current().screenBounds.width / 5.5;
 
 struct TrendArrow: View {
   var value: Double;
@@ -75,16 +74,17 @@ struct ChartView: View {
           }.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
           if(activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyLast24hours?.sumQuantity != nil){
             HStack {
+              Text("Move")
+              Text(activeEnergyLast24hours!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: .infinity, alignment: Alignment.trailing)
               TrendArrow(value: activeEnergyLast24hours!.sumQuantity!, compareWith: activeEnergyLast2weeks!.sumQuantity! / 14)
-              Text("Move").frame(minWidth: 0, maxWidth: .infinity, alignment: Alignment.leading)
-              Text(activeEnergyLast24hours!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: cellWidth, alignment: Alignment.trailing)
             }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
           }
           if(insulinLast24hours?.sumQuantity != nil && insulinLast2weeks?.sumQuantity != nil){
             HStack {
+              
+              Text("Insulin").frame(minWidth: 50, alignment: .leading)
+              Text(insulinLast24hours!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: .infinity, alignment: Alignment.trailing)
               TrendArrow(value: insulinLast24hours!.sumQuantity!, compareWith: insulinLast2weeks!.sumQuantity! / 14)
-              Text("Insulin").frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-              Text(insulinLast24hours!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: cellWidth, alignment: Alignment.trailing)
             }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
           }
         }.padding()
@@ -94,16 +94,18 @@ struct ChartView: View {
           }.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
           if(activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyPrevious2weeks?.sumQuantity != nil){
             HStack {
+              
+              Text("Move")
+              Text(activeEnergyLast2weeks!.sumQuantity! > 1000 ? (activeEnergyLast2weeks!.sumQuantity! / 1000).format(f: "0.1") + "k" : activeEnergyLast2weeks!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: .infinity, alignment: Alignment.trailing)
               TrendArrow(value: activeEnergyLast2weeks!.sumQuantity!, compareWith: activeEnergyPrevious2weeks!.sumQuantity!)
-              Text("Move").frame(minWidth: 0, maxWidth: .infinity, alignment: Alignment.leading)
-              Text(activeEnergyLast2weeks!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: cellWidth, alignment: Alignment.trailing)
             }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
           }
           if(insulinPrevious2weeks?.sumQuantity != nil && insulinLast2weeks?.sumQuantity != nil){
             HStack {
+              
+              Text("Insulin").frame(minWidth: 50, alignment: .leading)
+              Text(insulinLast2weeks!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: .infinity, alignment: Alignment.trailing)
               TrendArrow(value: insulinLast2weeks!.sumQuantity!, compareWith: insulinPrevious2weeks!.sumQuantity!)
-              Text("Insulin").frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-              Text(insulinLast2weeks!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: cellWidth, alignment: Alignment.trailing)
             }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
           }
         }.padding()
@@ -115,8 +117,13 @@ struct ChartView: View {
 struct ChartView_Previews: PreviewProvider {
   static var previews: some View {
     let optionalData = OptionalData()
-    let last2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 111)
+    let last2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 2311)
+    let previous2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 1111)
     let last24hours = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 111)
-    return ChartView(activeInsulin: 5, chartWidth: Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: 100, insulinLast2weeks: last2weeks, insulinLast24hours: last24hours,appState: AppState.current, optionalData: optionalData)
+    
+    let energyLast2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 5000)
+    let energyPrevious2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 4000)
+    let energyLast24hours = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 400)
+    return ChartView(activeInsulin: 5, chartWidth: Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: 100, insulinLast2weeks: last2weeks, insulinLast24hours: last24hours, insulinPrevious2weeks: previous2weeks, activeEnergyLast2weeks: energyLast2weeks, activeEnergyPrevious2weeks: energyPrevious2weeks, activeEnergyLast24hours: energyLast24hours,appState: AppState.current, optionalData: optionalData)
   }
 }

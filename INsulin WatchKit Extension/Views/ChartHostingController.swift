@@ -28,6 +28,7 @@ class ChartHostingController: WKHostingController<ChartView> {
   var activeEnergyLast24Hours: StatsResponse? = nil
   var activeEnergyLast2weeks: StatsResponse? = nil
   var activeEnergyPrevious2weeks: StatsResponse? = nil
+  var timer: Timer? = nil;
   
   var isAuthorized = true;
   
@@ -35,10 +36,18 @@ class ChartHostingController: WKHostingController<ChartView> {
     if let query = updateQuery {
       Health.current.healthStore.stop(query)
     }
+    if let timer = timer {
+      timer.invalidate()
+    }
   }
   
   override func didAppear() {
     NSUserActivity.displayIOBActivityType().becomeCurrent()
+    timer = Timer.init(timeInterval: TimeInterval(60), repeats: true, block: { (_) in
+      self.queryAndUpdateActiveInsulin {
+        
+      }
+    })
     
     let query = HKObserverQuery.init(sampleType: insulinQuantityType, predicate: nil) { (query, handler, error) in
       self.queryAndUpdateActiveInsulin(handler: handler)
@@ -79,7 +88,7 @@ class ChartHostingController: WKHostingController<ChartView> {
       }
     }
     
-    Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 5)) { (error, vals) in
+    Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 6)) { (error, vals) in
       DispatchQueue.main.async {
         let newImage = ChartBuilder.getChartImage(vals: vals, width: self.chartWidth, chartHeight: self.chartHeight);
         

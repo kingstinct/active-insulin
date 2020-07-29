@@ -156,67 +156,78 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
       }
     }
     
+    UNUserNotificationCenter.current().removeAllPendingNotificationRequests();
+    
+    FileManager.default.clearTmpDirectory();
+    
     Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 11)) { (error, data) in
       DispatchQueue.main.async {
-        
-        
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        //UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["PEAK"])
-        
-        FileManager.default.clearTmpDirectory();
-        
-        if(AppState.current.notifyOnInsulinPeakEnabled){
-          if let max = data.max(by: { (arg0, arg1) -> Bool in
-            return arg0.currentInsulin < arg1.currentInsulin;
-          }) {
-            if(max != data.first && max.date > Date()){
+        if let currentPoint = data.first(where: { (point) -> Bool in
+          return point.date >= Date()
+        }) {
+          if(AppState.current.notifyOnInsulinPeakEnabled){
+            if let max = data.max(by: { (arg0, arg1) -> Bool in
+              return arg0.currentInsulin < arg1.currentInsulin;
+            }) {
+              if(max != data.first && max.date > Date()){
+                let content = UNMutableNotificationContent();
+                content.body = NSLocalizedString("notification_peak_description", comment: "notification_peak_description")
+                content.subtitle = NSLocalizedString("insulin_on_board_short", comment: "IOB") + " - " + max.insulinOnBoard.format(f: "0.1")
+                content.title = NSLocalizedString("notification_peak_title", comment: "notification_peak_title")
+                content.sound = .default;
+                let filteredData = data.filter { (point) -> Bool in
+                  return point.date >= max.date.addHours(addHours: -1) && point.date <= max.date.addHours(addHours: 5)
+                }
+                if let image = ChartBuilder.getChartImage(vals: filteredData, now: max.date) {
+                  content.attachments = [UNNotificationAttachment.create(image: image, options: .none )!]
+                }
+                content.categoryIdentifier = "PEAK";
+                
+                let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: max.date)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: false)
+                UNUserNotificationCenter.current().add(UNNotificationRequest.init(identifier: "PEAK", content: content, trigger: trigger)) { (error) in
+                  //something failed
+                }
+              }
+            }
+          }
+          
+          if(AppState.current.notifyOnInsulinZeroEnabled && currentPoint.insulinOnBoard > 0){
+            if let point = data.first(where: { (point) -> Bool in
+              return point.date >= Date() && point.insulinOnBoard == 0;
+            }) {
               let content = UNMutableNotificationContent();
-              content.body = NSLocalizedString("notification_peak_description", comment: "notification_peak_description")
-              content.subtitle = NSLocalizedString("insulin_on_board_short", comment: "IOB") + " - " + max.insulinOnBoard.format(f: "0.1")
-              content.title = NSLocalizedString("notification_peak_title", comment: "notification_peak_title")
+              content.body = NSLocalizedString("notification_zero_description", comment: "Zero Insulin")
+              content.title = NSLocalizedString("notification_zero_title", comment: "notification_zero_title")
               content.sound = .default;
               let filteredData = data.filter { (point) -> Bool in
-                return point.date >= max.date.addHours(addHours: -1) && point.date <= max.date.addHours(addHours: 5)
+                return point.date >= point.date.addHours(addHours: -1) && point.date <= point.date.addHours(addHours: 5)
               }
-              if let image = ChartBuilder.getChartImage(vals: filteredData, now: max.date) {
+              if let image = ChartBuilder.getChartImage(vals: filteredData, now: point.date) {
                 content.attachments = [UNNotificationAttachment.create(image: image, options: .none )!]
               }
               content.categoryIdentifier = "PEAK";
               
-              let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: max.date)
+              let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: point.date)
               let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: false)
               UNUserNotificationCenter.current().add(UNNotificationRequest.init(identifier: "PEAK", content: content, trigger: trigger)) { (error) in
                 //something failed
               }
             }
+            
+            
           }
         }
         
-        if(AppState.current.notifyOnInsulinZeroEnabled){
-          if let point = data.first(where: { (point) -> Bool in
-            return point.date >= Date() && point.insulinOnBoard == 0;
-          }) {
-            let content = UNMutableNotificationContent();
-            content.body = NSLocalizedString("notification_zero_description", comment: "Zero Insulin")
-            content.title = NSLocalizedString("notification_zero_title", comment: "notification_zero_title")
-            content.sound = .default;
-            let filteredData = data.filter { (point) -> Bool in
-              return point.date >= point.date.addHours(addHours: -1) && point.date <= point.date.addHours(addHours: 5)
-            }
-            if let image = ChartBuilder.getChartImage(vals: filteredData, now: point.date) {
-              content.attachments = [UNNotificationAttachment.create(image: image, options: .none )!]
-            }
-            content.categoryIdentifier = "PEAK";
-            
-            let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: point.date)
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: false)
-            UNUserNotificationCenter.current().add(UNNotificationRequest.init(identifier: "PEAK", content: content, trigger: trigger)) { (error) in
-              //something failed
-            }
-          }
-          
-          
-        }
+        
+        
+        
+        
+        //UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["PEAK"])
+        
+        
+        
+        
         
         if(AppState.current.notifyOnCustomEnabled){
           /*if let point = data.first(where: { (point) -> Bool in

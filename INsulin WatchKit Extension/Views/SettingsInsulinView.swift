@@ -11,44 +11,33 @@ struct SettingsInsulinView: View {
       VStack(alignment: .center){
         StyledGroup {
           HStack {
-            Text("Duration")
-            Text(appState.insulinDurationInMinutes.format(f: "1.0") + " " + NSLocalizedString("min", comment: "Minutes"))
+            Text("duration")
+            Text(appState.insulinDurationInMinutes.format(f: "1.0") + " " + NSLocalizedString("min", comment: "Minutes")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
           }
           Slider(value: $appState.insulinDurationInMinutes, in: ClosedRange(uncheckedBounds: (lower: 200, upper: 600)), step: 5) {
             Text("Insulin Duration")
-          }
+          }.accentColor(Color.AccentColor)
         }
         
         StyledGroup {
           HStack {
-            Text("Peak")
-            Text(appState.insulinPeakTimeInMinutes.format(f: "1.0") + " " + NSLocalizedString("min", comment: "Minutes"))
+            Text("peak")
+            Text(appState.insulinPeakTimeInMinutes.format(f: "1.0") + " " + NSLocalizedString("min", comment: "Minutes")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
           }
           Slider(value: $appState.insulinPeakTimeInMinutes, in: ClosedRange(uncheckedBounds: (lower: 30, upper: 100)), step: 5) {
             Text("Insulin Duration")
-          }
+          }.accentColor(Color.AccentColor)
         }
         
         StyledGroup {
           HStack {
-            Text("Step size")
-            Text(appState.insulinStepSize.format(f: "0.1"))
+            Text("step_size")
+            Text(appState.insulinStepSize.format(f: "0.1")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
           }
           Slider(value: $appState.insulinStepSize, in: ClosedRange(uncheckedBounds: (lower: 0.5, upper: 1.0)), step: 0.5, minimumValueLabel: Text("0.5"), maximumValueLabel: Text("1")) {
             Text("Insulin Step Size")
-          }
+          }.accentColor(Color.AccentColor)
         }
-        
-        
-        
-        
-        
-        
-        /*Picker(selection: $value, label: "Step Size") {
-         ForEach(0 ..< options.count){
-         Text(self.options[$0])
-         }
-         }*/
         
       }
     }

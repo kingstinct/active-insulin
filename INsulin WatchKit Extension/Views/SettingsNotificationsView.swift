@@ -29,14 +29,14 @@ struct SettingsNotificationsView: View {
         Toggle(isOn: $appState.notifyOnInsulinZeroEnabled){
           Text("no_insulin")
         }.padding()
-        StyledGroup {
+        /*StyledGroup {
           Toggle(isOn:  $appState.notifyOnCustomEnabled){
             Text(appState.notifyOnCustomMinutes.format(f: "1.0") + " " + NSLocalizedString("min", comment: "Minutes"))
             }.padding(0)
           Slider(value: $appState.notifyOnCustomMinutes, in: ClosedRange(uncheckedBounds: (lower: customStepSize, upper: Double(appState.insulinDurationInMinutes))), step: self.customStepSize, minimumValueLabel: Text(customStepSize.format(f: "1.0")), maximumValueLabel: Text(appState.insulinDurationInMinutes.format(f: "1.0")), label: {
             Text(appState.notifyOnCustomMinutes.format(f: "1.0"))
             }).padding(0).disabled(!appState.notifyOnCustomEnabled)
-          }.accentColor(Color.AccentColor)
+          }.accentColor(Color.AccentColor)*/
         StyledGroup {
           Text("snooze_options").bold()
           Toggle(isOn: $appState.snooze15Enabled){

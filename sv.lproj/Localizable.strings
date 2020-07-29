@@ -30,3 +30,6 @@
 "snooze_options" = "Påminnelsealternativ";
 "settings" = "Inställningar";
 "insulin" = "Insulin";
+"peak" = "Topp";
+"duration" = "Varaktighet";
+"step_size" = "Dosering";

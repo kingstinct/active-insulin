@@ -17,9 +17,9 @@
 "notification_snoozed_title" = "Insulin Reminder";
 "notification_peak_description" = "Your insulin level is peaking, check your glucose?";
 "notification_peak_title" = "Insulin Peak";
-"snooze_15" = "Snooze 15 mins";
-"snooze_30" = "Snooze 30 mins";
-"snooze_60" = "Snooze 60 mins";
+"snooze_15" = "Snooze 15 min";
+"snooze_30" = "Snooze 30 min";
+"snooze_60" = "Snooze 60 min";
 "add_insulin" = "Add insulin";
 "add" = "Add";
 "active" = "Active";
@@ -33,3 +33,6 @@
 "notification_zero_title" = "Insulin Zero";
 "notification_custom_description" = "It's been a while since your last insulin injection, check your glucose?";
 "notification_custom_title" = "Insulin Reminder";
+"peak" = "Peak";
+"duration" = "Duration";
+"step_size" = "Step Size";
