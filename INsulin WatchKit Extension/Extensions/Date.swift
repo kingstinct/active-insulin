@@ -13,7 +13,15 @@ extension Date {
     return self.addingTimeInterval(TimeInterval(addHours * 60 * 60))
   }
   
+  func addHours(addHours: Int) -> Date {
+    return self.addingTimeInterval(TimeInterval(addHours * 60 * 60))
+  }
+  
   func addMinutes(addMinutes: Double) -> Date {
+    return self.addingTimeInterval(TimeInterval(addMinutes * 60))
+  }
+  
+  func addMinutes(addMinutes: Int) -> Date {
     return self.addingTimeInterval(TimeInterval(addMinutes * 60))
   }
 }

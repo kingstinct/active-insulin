@@ -10,6 +10,15 @@
 		0198B310D0E13132DF8E3A5E /* Pods_INsulin_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19542F90B52576F8DA43D775 /* Pods_INsulin_WatchKit_Extension.framework */; };
 		6172A19FC5B292CC1739567A /* Pods_INsulin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9245D9C6B63D805483CF1315 /* Pods_INsulin.framework */; };
 		8E02E5DE194C74D3B02FD48E /* Pods_INsulin_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A6D9F01B4E45DABF11DA6B7 /* Pods_INsulin_WatchKit_App.framework */; };
+		A93D5E4224D0CDAB0055AE20 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E4124D0CDAB0055AE20 /* Stepper.swift */; };
+		A93D5E4424D0CE020055AE20 /* SettingsHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E4324D0CE020055AE20 /* SettingsHostingController.swift */; };
+		A93D5E4624D0CE290055AE20 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E4524D0CE290055AE20 /* SettingsView.swift */; };
+		A93D5E4824D0D0E10055AE20 /* SettingsInsulinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E4724D0D0E10055AE20 /* SettingsInsulinView.swift */; };
+		A93D5E4A24D0D0F30055AE20 /* SettingsInsulinHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E4924D0D0F30055AE20 /* SettingsInsulinHostingController.swift */; };
+		A93D5E4F24D1669C0055AE20 /* SettingsNotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E4E24D1669C0055AE20 /* SettingsNotificationsView.swift */; };
+		A93D5E5124D168E60055AE20 /* SettingsNotificationsHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E5024D168E60055AE20 /* SettingsNotificationsHostingController.swift */; };
+		A93D5E5324D16CB50055AE20 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E5224D16CB50055AE20 /* Color.swift */; };
+		A93D5E5524D197CB0055AE20 /* StyledGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E5424D197CB0055AE20 /* StyledGroup.swift */; };
 		A944AA3824CB2BB800671754 /* INsulin.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A944AA3724CB2BB800671754 /* INsulin.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A944AA3E24CB2BB800671754 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A944AA3C24CB2BB800671754 /* Interface.storyboard */; };
 		A944AA4024CB2BBA00671754 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A944AA3F24CB2BBA00671754 /* Assets.xcassets */; };
@@ -111,6 +120,15 @@
 		821838AC2EF54D90330E6661 /* Pods-INsulin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INsulin.release.xcconfig"; path = "Target Support Files/Pods-INsulin/Pods-INsulin.release.xcconfig"; sourceTree = "<group>"; };
 		9245D9C6B63D805483CF1315 /* Pods_INsulin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_INsulin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7CF3B6E9D1A814FE9714C89 /* Pods-INsulin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INsulin.debug.xcconfig"; path = "Target Support Files/Pods-INsulin/Pods-INsulin.debug.xcconfig"; sourceTree = "<group>"; };
+		A93D5E4124D0CDAB0055AE20 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
+		A93D5E4324D0CE020055AE20 /* SettingsHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHostingController.swift; sourceTree = "<group>"; };
+		A93D5E4524D0CE290055AE20 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A93D5E4724D0D0E10055AE20 /* SettingsInsulinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInsulinView.swift; sourceTree = "<group>"; };
+		A93D5E4924D0D0F30055AE20 /* SettingsInsulinHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInsulinHostingController.swift; sourceTree = "<group>"; };
+		A93D5E4E24D1669C0055AE20 /* SettingsNotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsView.swift; sourceTree = "<group>"; };
+		A93D5E5024D168E60055AE20 /* SettingsNotificationsHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsHostingController.swift; sourceTree = "<group>"; };
+		A93D5E5224D16CB50055AE20 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		A93D5E5424D197CB0055AE20 /* StyledGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyledGroup.swift; sourceTree = "<group>"; };
 		A944AA3324CB2BB800671754 /* Active Insulin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Active Insulin.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A944AA3724CB2BB800671754 /* INsulin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = INsulin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A944AA3D24CB2BB800671754 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -186,6 +204,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A93D5E4B24D1645D0055AE20 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A93D5E4124D0CDAB0055AE20 /* Stepper.swift */,
+				A93D5E5424D197CB0055AE20 /* StyledGroup.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		A93D5E4C24D164870055AE20 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A944AAA224CF057700671754 /* ChartBuilder.swift */,
+				A944AA6A24CB307D00671754 /* Calculations.swift */,
+				A944AAA024CF04EE00671754 /* Health.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A93D5E4D24D164AB0055AE20 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A944AA4B24CB2BBA00671754 /* InsulinInputView.swift */,
+				A944AA4D24CB2BBA00671754 /* InsulinInputHostingController.swift */,
+				A944AA6E24CC445000671754 /* ChartHostingController.swift */,
+				A944AA7024CC45A100671754 /* ChartView.swift */,
+				A93D5E4324D0CE020055AE20 /* SettingsHostingController.swift */,
+				A93D5E4524D0CE290055AE20 /* SettingsView.swift */,
+				A93D5E4724D0D0E10055AE20 /* SettingsInsulinView.swift */,
+				A93D5E4924D0D0F30055AE20 /* SettingsInsulinHostingController.swift */,
+				A93D5E4E24D1669C0055AE20 /* SettingsNotificationsView.swift */,
+				A93D5E5024D168E60055AE20 /* SettingsNotificationsHostingController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		A944AA2C24CB2BB800671754 = {
 			isa = PBXGroup;
 			children = (
@@ -225,21 +279,17 @@
 		A944AA4A24CB2BBA00671754 /* INsulin WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				A944AA9F24CF044B00671754 /* Utils */,
+				A93D5E4D24D164AB0055AE20 /* Views */,
+				A93D5E4C24D164870055AE20 /* Utils */,
+				A93D5E4B24D1645D0055AE20 /* Components */,
+				A944AA9F24CF044B00671754 /* Extensions */,
 				A944AA6624CB2C1800671754 /* INsulin WatchKit Extension.entitlements */,
-				A944AA4B24CB2BBA00671754 /* InsulinInputView.swift */,
-				A944AA4D24CB2BBA00671754 /* InsulinInputHostingController.swift */,
 				A944AA4F24CB2BBA00671754 /* ExtensionDelegate.swift */,
 				A944AA5124CB2BBA00671754 /* ComplicationController.swift */,
 				A944AA5324CB2BBB00671754 /* Assets.xcassets */,
 				A944AA5824CB2BBB00671754 /* Info.plist */,
 				A944AA5524CB2BBB00671754 /* Preview Content */,
-				A944AA6A24CB307D00671754 /* Calculations.swift */,
-				A944AA6E24CC445000671754 /* ChartHostingController.swift */,
-				A944AA7024CC45A100671754 /* ChartView.swift */,
 				A944AA9B24CF016700671754 /* AppState.swift */,
-				A944AAA024CF04EE00671754 /* Health.swift */,
-				A944AAA224CF057700671754 /* ChartBuilder.swift */,
 			);
 			path = "INsulin WatchKit Extension";
 			sourceTree = "<group>";
@@ -281,7 +331,7 @@
 			path = "INsulin Siri extension";
 			sourceTree = "<group>";
 		};
-		A944AA9F24CF044B00671754 /* Utils */ = {
+		A944AA9F24CF044B00671754 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				A944AA9824CEF59800671754 /* CLKTextProvider+MultiColorPatch.m */,
@@ -292,8 +342,9 @@
 				A99B3D2524D0099A005BACB0 /* NSUserActivity.swift */,
 				A99B3D2724D02F5C005BACB0 /* Date.swift */,
 				A99B3D2924D03E1A005BACB0 /* INImage.swift */,
+				A93D5E5224D16CB50055AE20 /* Color.swift */,
 			);
-			path = Utils;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		F203E97192BB68B5D4918F9C /* Pods */ = {
@@ -566,20 +617,29 @@
 			files = (
 				A944AAA124CF04EE00671754 /* Health.swift in Sources */,
 				A944AA4E24CB2BBA00671754 /* InsulinInputHostingController.swift in Sources */,
+				A93D5E5124D168E60055AE20 /* SettingsNotificationsHostingController.swift in Sources */,
+				A93D5E4424D0CE020055AE20 /* SettingsHostingController.swift in Sources */,
 				A944AAA724CF657900671754 /* FileManager.+clearTmpDirectory.swift in Sources */,
 				A99B3D2824D02F5C005BACB0 /* Date.swift in Sources */,
+				A93D5E4624D0CE290055AE20 /* SettingsView.swift in Sources */,
+				A93D5E4A24D0D0F30055AE20 /* SettingsInsulinHostingController.swift in Sources */,
 				A944AA9924CEF59800671754 /* CLKTextProvider+MultiColorPatch.m in Sources */,
 				A99B3D2A24D03E1A005BACB0 /* INImage.swift in Sources */,
+				A93D5E4824D0D0E10055AE20 /* SettingsInsulinView.swift in Sources */,
+				A93D5E4F24D1669C0055AE20 /* SettingsNotificationsView.swift in Sources */,
 				A944AA9E24CF03F700671754 /* UNNotificationAttachment+create.swift in Sources */,
+				A93D5E4224D0CDAB0055AE20 /* Stepper.swift in Sources */,
 				A944AA5224CB2BBA00671754 /* ComplicationController.swift in Sources */,
 				A944AA9C24CF016700671754 /* AppState.swift in Sources */,
 				A944AAA324CF057700671754 /* ChartBuilder.swift in Sources */,
 				A944AAA524CF5E2400671754 /* Double+Format.swift in Sources */,
+				A93D5E5324D16CB50055AE20 /* Color.swift in Sources */,
 				A944AA6F24CC445000671754 /* ChartHostingController.swift in Sources */,
 				A944AA7124CC45A100671754 /* ChartView.swift in Sources */,
 				A99B3D2624D0099A005BACB0 /* NSUserActivity.swift in Sources */,
 				A944AA4C24CB2BBA00671754 /* InsulinInputView.swift in Sources */,
 				A944AA6B24CB307D00671754 /* Calculations.swift in Sources */,
+				A93D5E5524D197CB0055AE20 /* StyledGroup.swift in Sources */,
 				A944AA5024CB2BBA00671754 /* ExtensionDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -755,7 +815,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "INsulin WatchKit Extension/INsulin WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_ASSET_PATHS = "\"INsulin WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				ENABLE_PREVIEWS = YES;
@@ -785,7 +845,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "INsulin WatchKit Extension/INsulin WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_ASSET_PATHS = "\"INsulin WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				ENABLE_PREVIEWS = YES;
@@ -813,7 +873,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				IBSC_MODULE = INsulin_WatchKit_Extension;
 				INFOPLIST_FILE = "INsulin WatchKit App/Info.plist";
@@ -834,7 +894,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				IBSC_MODULE = INsulin_WatchKit_Extension;
 				INFOPLIST_FILE = "INsulin WatchKit App/Info.plist";
@@ -853,7 +913,7 @@
 			baseConfigurationReference = A7CF3B6E9D1A814FE9714C89 /* Pods-INsulin.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				INFOPLIST_FILE = "INsulin App/Info.plist";
 				MARKETING_VERSION = 1.0;
@@ -868,7 +928,7 @@
 			baseConfigurationReference = 821838AC2EF54D90330E6661 /* Pods-INsulin.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				INFOPLIST_FILE = "INsulin App/Info.plist";
 				MARKETING_VERSION = 1.0;
@@ -883,7 +943,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "INsulin Siri extension/INsulin Siri extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				INFOPLIST_FILE = "INsulin Siri extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -907,7 +967,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "INsulin Siri extension/INsulin Siri extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				INFOPLIST_FILE = "INsulin Siri extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

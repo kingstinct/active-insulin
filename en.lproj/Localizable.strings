@@ -23,3 +23,13 @@
 "add_insulin" = "Add insulin";
 "add" = "Add";
 "active" = "Active";
+"notifications" = "Notifications";
+"no_insulin" = "No insulin";
+"custom" = "Custom";
+"snooze_options" = "Snooze Options";
+"settings" = "Settings";
+"insulin" = "Insulin";
+"notification_zero_description" = "You're now out of active insulin, check your glucose?";
+"notification_zero_title" = "Insulin Zero";
+"notification_custom_description" = "It's been a while since your last insulin injection, check your glucose?";
+"notification_custom_title" = "Insulin Reminder";

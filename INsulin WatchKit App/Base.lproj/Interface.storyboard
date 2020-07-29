@@ -1,28 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097.2" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="3mp-fW-waa">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="16097.2" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ViL-N3-uUb">
     <device id="watch38"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="16012"/>
     </dependencies>
     <scenes>
-        <!--Insulin Input Hosting Controller-->
+        <!--InsulinInputView-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <hostingController id="3mp-fW-waa" customClass="InsulinInputHostingController" customModule="INsulin" customModuleProvider="target">
+                <hostingController identifier="InsulinInputView" id="3mp-fW-waa" customClass="InsulinInputHostingController" customModule="INsulin" customModuleProvider="target">
                     <connections>
-                        <segue destination="ViL-N3-uUb" kind="relationship" relationship="nextPage" id="D2v-Kp-VPR"/>
+                        <segue destination="u2Q-hr-9Nv" kind="relationship" relationship="nextPage" id="sry-hN-Eo8"/>
                     </connections>
                 </hostingController>
             </objects>
-            <point key="canvasLocation" x="34" y="31"/>
+            <point key="canvasLocation" x="562" y="-23"/>
         </scene>
-        <!--Chart Hosting Controller-->
+        <!--ChartView-->
         <scene sceneID="u2u-5G-8mu">
             <objects>
-                <hostingController id="ViL-N3-uUb" customClass="ChartHostingController" customModule="INsulin_WatchKit_Extension"/>
+                <hostingController identifier="ChartView" id="ViL-N3-uUb" customClass="ChartHostingController" customModule="INsulin_WatchKit_Extension">
+                    <connections>
+                        <segue destination="3mp-fW-waa" kind="relationship" relationship="nextPage" id="WNs-I2-uhu"/>
+                    </connections>
+                </hostingController>
             </objects>
             <point key="canvasLocation" x="243" y="3"/>
         </scene>
+        <!--SettingsView-->
+        <scene sceneID="hOe-xf-JhY">
+            <objects>
+                <hostingController identifier="SettingsView" id="u2Q-hr-9Nv" customClass="SettingsHostingController" customModule="INsulin_WatchKit_Extension"/>
+            </objects>
+            <point key="canvasLocation" x="830" y="69"/>
+        </scene>
+        <!--SettingsStepSizeView-->
+        <scene sceneID="zeC-zZ-XJp">
+            <objects>
+                <hostingController identifier="SettingsStepSizeView" id="Z0I-1F-3B5" customClass="SettingsInsulinHostingController" customModule="INsulin_WatchKit_Extension"/>
+            </objects>
+            <point key="canvasLocation" x="845" y="-237"/>
+        </scene>
+        <!--NotificationsView-->
+        <scene sceneID="DFi-4N-X3o">
+            <objects>
+                <hostingController identifier="NotificationsView" id="iGv-wF-deN" customClass="SettingsNotificationsHostingController" customModule="INsulin_WatchKit_Extension"/>
+            </objects>
+            <point key="canvasLocation" x="621" y="291"/>
+        </scene>
     </scenes>
+    <color key="tintColor" name="AccentColor"/>
+    <resources>
+        <namedColor name="AccentColor">
+            <color red="1" green="0.0" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

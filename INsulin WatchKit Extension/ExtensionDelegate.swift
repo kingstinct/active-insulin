@@ -32,20 +32,31 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
   func applicationDidFinishLaunching() {
     UNUserNotificationCenter.current().delegate = self;
     // Define the custom actions.
-    let snooze15 = UNNotificationAction(identifier: "SNOOZE_15",
-                                        title: NSLocalizedString("snooze_15", comment: "Snooze 15 mins") ,
-                                        options: [])
-    let snooze30 = UNNotificationAction(identifier: "SNOOZE_30",
-                                        title: NSLocalizedString("snooze_30", comment: "Snooze 30 mins"),
-                                        options: [])
-    let snooze60 = UNNotificationAction(identifier: "SNOOZE_60",
-                                        title: NSLocalizedString("snooze_60", comment: "Snooze 1 hour"),
-                                        options: [])
+    
+    var snoozes = Array<UNNotificationAction>();
+    
+    if(AppState.current.snooze15Enabled){
+      snoozes.append(UNNotificationAction(identifier: "SNOOZE_15",
+                                          title: NSLocalizedString("snooze_15", comment: "Snooze 15 mins") ,
+                                          options: []))
+    }
+    if(AppState.current.snooze30Enabled){
+      snoozes.append(UNNotificationAction(identifier: "SNOOZE_30",
+                                          title: NSLocalizedString("snooze_30", comment: "Snooze 30 mins"),
+                                          options: []))
+    }
+    if(AppState.current.snooze60Enabled){
+      snoozes.append(UNNotificationAction(identifier: "SNOOZE_60",
+                                          title: NSLocalizedString("snooze_60", comment: "Snooze 1 hour"),
+                                          options: []))
+    }
+    
     
     
     // Define the notification type
-    let notificationCategory = UNNotificationCategory(identifier: "PEAK", actions: [snooze15, snooze30, snooze60], intentIdentifiers: [], options: [.allowAnnouncement, .allowInCarPlay])
-    Health.current.healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
+    let notificationCategory = UNNotificationCategory(identifier: "PEAK", actions: snoozes, intentIdentifiers: [], options: [.allowAnnouncement, .allowInCarPlay])
+    
+    Health.current.healthStore.getRequestStatusForAuthorization(toShare: [Health.current.insulinQuantityType], read: [Health.current.insulinObjectType, Health.current.activeEnergyObjectType]) { (status, error) in
       if(status == .unnecessary){
         DispatchQueue.main.async {
           AppState.current.objectWillChange.send()
@@ -59,7 +70,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
           self.query = query;
         }
       } else {
-        Health.current.healthStore.requestAuthorization(toShare: [Health.current.insulinQuantityType], read: [insulinObjectType]) { (status, error) in
+        Health.current.healthStore.requestAuthorization(toShare: [Health.current.insulinQuantityType], read: [Health.current.insulinObjectType, Health.current.activeEnergyObjectType]) { (status, error) in
           DispatchQueue.main.async {
             AppState.current.objectWillChange.send()
             if(status){
@@ -145,44 +156,100 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
       }
     }
     
-    Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 6)) { (error, data) in
+    Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 11)) { (error, data) in
       DispatchQueue.main.async {
-        if let max = data.max(by: { (arg0, arg1) -> Bool in
-          return arg0.currentInsulin < arg1.currentInsulin;
-        }) {
-          if(max != data.first && max.date > Date()){
-            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-            //UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["PEAK"])
-            
-            FileManager.default.clearTmpDirectory();
-            
+        
+        
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        //UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["PEAK"])
+        
+        FileManager.default.clearTmpDirectory();
+        
+        if(AppState.current.notifyOnInsulinPeakEnabled){
+          if let max = data.max(by: { (arg0, arg1) -> Bool in
+            return arg0.currentInsulin < arg1.currentInsulin;
+          }) {
+            if(max != data.first && max.date > Date()){
+              let content = UNMutableNotificationContent();
+              content.body = NSLocalizedString("notification_peak_description", comment: "notification_peak_description")
+              content.subtitle = NSLocalizedString("insulin_on_board_short", comment: "IOB") + " - " + max.insulinOnBoard.format(f: "0.1")
+              content.title = NSLocalizedString("notification_peak_title", comment: "notification_peak_title")
+              content.sound = .default;
+              let filteredData = data.filter { (point) -> Bool in
+                return point.date >= max.date.addHours(addHours: -1) && point.date <= max.date.addHours(addHours: 5)
+              }
+              if let image = ChartBuilder.getChartImage(vals: filteredData, now: max.date) {
+                content.attachments = [UNNotificationAttachment.create(image: image, options: .none )!]
+              }
+              content.categoryIdentifier = "PEAK";
+              
+              let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: max.date)
+              let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: false)
+              UNUserNotificationCenter.current().add(UNNotificationRequest.init(identifier: "PEAK", content: content, trigger: trigger)) { (error) in
+                //something failed
+              }
+            }
+          }
+        }
+        
+        if(AppState.current.notifyOnInsulinZeroEnabled){
+          if let point = data.first(where: { (point) -> Bool in
+            return point.date >= Date() && point.insulinOnBoard == 0;
+          }) {
             let content = UNMutableNotificationContent();
-            content.body = NSLocalizedString("notification_peak_description", comment: "notification_peak_description")
-            content.subtitle = NSLocalizedString("insulin_on_board", comment: "IOB") + " - " + max.insulinOnBoard.format(f: "0.1")
-            content.title = NSLocalizedString("notification_peak_title", comment: "notification_peak_title")
+            content.body = NSLocalizedString("notification_zero_description", comment: "Zero Insulin")
+            content.title = NSLocalizedString("notification_zero_title", comment: "notification_zero_title")
             content.sound = .default;
             let filteredData = data.filter { (point) -> Bool in
-              return point.date >= max.date.addHours(addHours: -1) && point.date <= max.date.addHours(addHours: 5)
+              return point.date >= point.date.addHours(addHours: -1) && point.date <= point.date.addHours(addHours: 5)
             }
-            if let image = ChartBuilder.getChartImage(vals: filteredData, now: max.date) {
+            if let image = ChartBuilder.getChartImage(vals: filteredData, now: point.date) {
               content.attachments = [UNNotificationAttachment.create(image: image, options: .none )!]
             }
             content.categoryIdentifier = "PEAK";
             
-            let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: max.date)
+            let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: point.date)
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: false)
             UNUserNotificationCenter.current().add(UNNotificationRequest.init(identifier: "PEAK", content: content, trigger: trigger)) { (error) in
               //something failed
-            }
-            
-            self.updateRelevantShortcuts(data: data) {
-              completionHandler();
             }
           }
           
           
         }
+        
+        if(AppState.current.notifyOnCustomEnabled){
+          /*if let point = data.first(where: { (point) -> Bool in
+           return point.date >= Date().addMinutes(addMinutes: AppState.current.notifyOnCustomMinutes);
+           }) {
+           let content = UNMutableNotificationContent();
+           content.body = NSLocalizedString("notification_custom_description", comment: "Custom")
+           content.subtitle = NSLocalizedString("insulin_on_board", comment: "IOB") + " - " + point.insulinOnBoard.format(f: "0.1")
+           content.title = NSLocalizedString("notification_custom_title", comment: "notification_custom_title")
+           content.sound = .default;
+           let filteredData = data.filter { (point) -> Bool in
+           return point.date >= point.date.addHours(addHours: -1) && point.date <= point.date.addHours(addHours: 5)
+           }
+           if let image = ChartBuilder.getChartImage(vals: filteredData, now: point.date) {
+           content.attachments = [UNNotificationAttachment.create(image: image, options: .none )!]
+           }
+           content.categoryIdentifier = "PEAK";
+           
+           let dateMatching = Calendar.current.dateComponents([.minute, .day, .hour], from: point.date)
+           let trigger = UNCalendarNotificationTrigger(dateMatching: dateMatching, repeats: false)
+           UNUserNotificationCenter.current().add(UNNotificationRequest.init(identifier: "PEAK", content: content, trigger: trigger)) { (error) in
+           //something failed
+           }
+           }
+           */
+          
+        }
+        
+        self.updateRelevantShortcuts(data: data) {
+          completionHandler();
+        }
       }
+      
       
     }
     
@@ -225,7 +292,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         }
         
         if let iob = atTime?.insulinOnBoard {
-          content.subtitle = NSLocalizedString("insulin_on_board", comment: "IOB") + " - " + iob.format(f: "0.1")
+          content.subtitle = NSLocalizedString("insulin_on_board_short", comment: "IOB") + " - " + iob.format(f: "0.1")
         }
         
         
@@ -248,14 +315,14 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     
     func applicationDidBecomeActive() {
       UNUserNotificationCenter.current().removeAllDeliveredNotifications();
-      Health.current.healthStore.getRequestStatusForAuthorization(toShare: [insulinQuantityType], read: [insulinObjectType]) { (status, error) in
+      Health.current.healthStore.getRequestStatusForAuthorization(toShare: [Health.current.insulinQuantityType], read: [Health.current.insulinObjectType, Health.current.activeEnergyObjectType]) { (status, error) in
         DispatchQueue.main.async {
           
           if(status == .unnecessary){
             AppState.current.objectWillChange.send()
             AppState.current.isHealthKitAuthorized = .authorized;
             if(self.query == nil){
-              let query = HKObserverQuery.init(sampleType: self.insulinQuantityType, predicate: nil) { (query, handler, error) in
+              let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
                 self.onUpdatedInsulin(completionHandler: handler)
               }
               
@@ -278,16 +345,27 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
     
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {
+      /*
+       
+       WKInterfaceController.reloadRootPageControllers(withNames:
+       ["Controller1" "Controller2", "Controller3"],
+       contexts: [context1, context2, context3],
+       orientation: WKPageOrientation.horizontal,
+       pageIndex: 1)
+       */
       // Sent when the system needs to launch the application in the background to process tasks. Tasks arrive in a set, so loop through and process each one.
       for task in backgroundTasks {
         // Use a switch statement to check the task type
         switch task {
         case let backgroundTask as WKApplicationRefreshBackgroundTask:
-          // Be sure to complete the background task once you’re done.
-          backgroundTask.setTaskCompletedWithSnapshot(false)
+          onUpdatedInsulin {
+            backgroundTask.setTaskCompletedWithSnapshot(true)
+          }
         case let snapshotTask as WKSnapshotRefreshBackgroundTask:
-          // Snapshot tasks have a unique completion call, make sure to set your expiration date
-          snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
+          onUpdatedInsulin {
+            snapshotTask.setTaskCompleted(restoredDefaultState: true, estimatedSnapshotExpiration: Date.distantFuture, userInfo: nil)
+          }
+          
         case let connectivityTask as WKWatchConnectivityRefreshBackgroundTask:
           // Be sure to complete the connectivity task once you’re done.
           connectivityTask.setTaskCompletedWithSnapshot(false)
@@ -313,6 +391,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     }
   }
 }
+
 
 
 
