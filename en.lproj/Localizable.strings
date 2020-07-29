@@ -9,7 +9,7 @@
 
 "insulin_on_board" = "Insulin on Board";
 "insulin_on_board_short" = "IOB";
-"units_of_insulin" = "Units of Insulin";
+"units_of_insulin" = "Insulin Units";
 "save" = "Save";
 "app_name" = "Active Insulin";
 "please_authorize" = "Please authorize access to Insulin Delivery in Health Settings";
@@ -36,3 +36,7 @@
 "peak" = "Peak";
 "duration" = "Duration";
 "step_size" = "Step Size";
+"past_24h" = "past 24h";
+"past_2_weeks" = "past 2 weeks";
+"compared_to_the_past_2_weeks" = "Compared to the past 2 weeks";
+"activity" = "Activity";

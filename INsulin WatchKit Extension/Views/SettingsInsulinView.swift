@@ -12,7 +12,7 @@ struct SettingsInsulinView: View {
         StyledGroup {
           HStack {
             Text("duration")
-            Text(appState.insulinDurationInMinutes.format(f: "1.0") + " " + NSLocalizedString("min", comment: "Minutes")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+            Text(appState.insulinDurationInMinutes.format(f: "1.0") + " " + LocalizedString("min")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
           }
           Slider(value: $appState.insulinDurationInMinutes, in: ClosedRange(uncheckedBounds: (lower: 200, upper: 600)), step: 5) {
             Text("Insulin Duration")
@@ -22,7 +22,7 @@ struct SettingsInsulinView: View {
         StyledGroup {
           HStack {
             Text("peak")
-            Text(appState.insulinPeakTimeInMinutes.format(f: "1.0") + " " + NSLocalizedString("min", comment: "Minutes")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+            Text(appState.insulinPeakTimeInMinutes.format(f: "1.0") + " " + LocalizedString("min")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
           }
           Slider(value: $appState.insulinPeakTimeInMinutes, in: ClosedRange(uncheckedBounds: (lower: 30, upper: 100)), step: 5) {
             Text("Insulin Duration")

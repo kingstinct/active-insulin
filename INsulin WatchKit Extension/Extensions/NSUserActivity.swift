@@ -13,7 +13,7 @@ extension NSUserActivity {
   static let displayIOBActivityTypeIdentifier = "com.kingstinct.INsulin.displayIOB"
   
   class func displayIOBActivityType() -> NSUserActivity {
-    let title = NSLocalizedString("insulin_on_board", comment: "Insulin on Board");
+    let title = LocalizedString("insulin_on_board");
     let userActivity = NSUserActivity(activityType: displayIOBActivityTypeIdentifier)
     userActivity.title = title
     userActivity.isEligibleForPrediction = true;

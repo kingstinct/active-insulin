@@ -105,7 +105,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   
   func combinedTextProviderSmall(iob: Double) -> CLKTextProvider{
     let iobStr = iob.format(f: "0.1");
-    let label = CLKSimpleTextProvider(text: NSLocalizedString("insulin_on_board_short", comment: "Active Insulin"))
+    let label = CLKSimpleTextProvider(text: LocalizedString("insulin_on_board_short"))
     label.tintColor = UIColor.gray
     
     let text = CLKSimpleTextProvider(text: iobStr)
@@ -119,7 +119,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   
   func combinedTextProvider(iob: Double) -> CLKTextProvider{
     let iobStr = iob.format(f: "0.1");
-    let label = CLKSimpleTextProvider(text: NSLocalizedString("insulin_on_board", comment: "Active Insulin"))
+    let label = CLKSimpleTextProvider(text: LocalizedString("insulin_on_board"))
     label.tintColor = UIColor.gray
     
     let text = CLKSimpleTextProvider(text: iobStr)
@@ -177,7 +177,6 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   
   func getExtraLarge(iob: Double, image: UIImage) -> CLKComplicationTemplateExtraLargeStackImage {
     let iobStr = iob.format(f: "0.1");
-    // let valueTextProvider = CLKSimpleTextProvider(text: NSLocalizedString("app_name", comment: "Active Insulin") + " - " + iobStr);
     
     let text = CLKSimpleTextProvider(text: iobStr)
     text.tintColor = UIColor.magenta
@@ -215,8 +214,8 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   func getTemplateWithIOB(for complication: CLKComplication, iob: Double) -> CLKComplicationTemplate? {
     let iobStr = iob.format(f: "0.1");
     
-    let labelProvider = CLKSimpleTextProvider(text: NSLocalizedString("insulin_on_board", comment: "Insulin on board"));
-    labelProvider.shortText = NSLocalizedString("insulin_on_board_short", comment: "Insulin on board")
+    let labelProvider = CLKSimpleTextProvider(text: LocalizedString("insulin_on_board"));
+    labelProvider.shortText = LocalizedString("insulin_on_board_short")
     let valueTextProvider = CLKSimpleTextProvider(text: iobStr);
     valueTextProvider.tintColor = UIColor.magenta
     

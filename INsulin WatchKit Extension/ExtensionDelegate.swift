@@ -37,17 +37,17 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     
     if(AppState.current.snooze15Enabled){
       snoozes.append(UNNotificationAction(identifier: "SNOOZE_15",
-                                          title: NSLocalizedString("snooze_15", comment: "Snooze 15 mins") ,
+                                          title: LocalizedString("snooze_15") ,
                                           options: []))
     }
     if(AppState.current.snooze30Enabled){
       snoozes.append(UNNotificationAction(identifier: "SNOOZE_30",
-                                          title: NSLocalizedString("snooze_30", comment: "Snooze 30 mins"),
+                                          title: LocalizedString("snooze_30"),
                                           options: []))
     }
     if(AppState.current.snooze60Enabled){
       snoozes.append(UNNotificationAction(identifier: "SNOOZE_60",
-                                          title: NSLocalizedString("snooze_60", comment: "Snooze 1 hour"),
+                                          title: LocalizedString("snooze_60"),
                                           options: []))
     }
     
@@ -119,7 +119,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             return point.date >= date.addHours(addHours: -1) && point.date <= date.addHours(addHours: 1)
           }
           
-          let title = NSLocalizedString("insulin_on_board", comment: "Insulin on Board");
+          let title = LocalizedString("insulin_on_board");
           
           let shortcut = INShortcut(userActivity: .displayIOBActivityType())
           
@@ -171,9 +171,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
             }) {
               if(max != data.first && max.date > Date()){
                 let content = UNMutableNotificationContent();
-                content.body = NSLocalizedString("notification_peak_description", comment: "notification_peak_description")
-                content.subtitle = NSLocalizedString("insulin_on_board_short", comment: "IOB") + " - " + max.insulinOnBoard.format(f: "0.1")
-                content.title = NSLocalizedString("notification_peak_title", comment: "notification_peak_title")
+                content.body = LocalizedString("notification_peak_description")
+                content.subtitle = LocalizedString("insulin_on_board_short") + " - " + max.insulinOnBoard.format(f: "0.1")
+                content.title = LocalizedString("notification_peak_title")
                 content.sound = .default;
                 let filteredData = data.filter { (point) -> Bool in
                   return point.date >= max.date.addHours(addHours: -1) && point.date <= max.date.addHours(addHours: 5)
@@ -197,8 +197,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
               return point.date >= Date() && point.insulinOnBoard == 0;
             }) {
               let content = UNMutableNotificationContent();
-              content.body = NSLocalizedString("notification_zero_description", comment: "Zero Insulin")
-              content.title = NSLocalizedString("notification_zero_title", comment: "notification_zero_title")
+              content.body = LocalizedString("notification_zero_description")
+              content.title = LocalizedString("notification_zero_title")
               content.sound = .default;
               let filteredData = data.filter { (point) -> Bool in
                 return point.date >= point.date.addHours(addHours: -1) && point.date <= point.date.addHours(addHours: 5)
@@ -283,8 +283,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
       
       Health.current.fetchActiveInsulinChart(from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 6)) { (error, vals) in
         let content = UNMutableNotificationContent();
-        content.body = NSLocalizedString("notification_snoozed_description", comment: "Snooze description");
-        content.title = NSLocalizedString("notification_snoozed_title", comment: "Snooze title")
+        content.body = LocalizedString("notification_snoozed_description");
+        content.title = LocalizedString("notification_snoozed_title")
         content.categoryIdentifier = "PEAK";
         content.sound = .default;
         
@@ -303,7 +303,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
         }
         
         if let iob = atTime?.insulinOnBoard {
-          content.subtitle = NSLocalizedString("insulin_on_board_short", comment: "IOB") + " - " + iob.format(f: "0.1")
+          content.subtitle = LocalizedString("insulin_on_board_short") + " - " + iob.format(f: "0.1")
         }
         
         

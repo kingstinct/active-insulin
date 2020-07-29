@@ -40,11 +40,10 @@ struct ChartView: View {
   var body: some View {
     
     if(appState.isHealthKitAuthorized == .unauthorized){
-      Text(NSLocalizedString("please_authorize", comment: "Please authorize"))
+      Text(LocalizedString("please_authorize"))
     } else {
       ScrollView(){
-        VStack(alignment: .leading, spacing: 0){
-          if(insulinLast24hours?.sumQuantity == 0){
+        Group {if(insulinLast24hours?.sumQuantity == 0){
             NavigationLink(destinationName: "InsulinInputView") {
               Text("Add some insulin")
             }.padding()
@@ -52,7 +51,7 @@ struct ChartView: View {
             
           }
           
-          Text(NSLocalizedString("insulin_on_board", comment: "Insulin on board")).frame(minWidth: 0, maxWidth: .infinity, alignment: .center).padding(EdgeInsets(top: 0, leading: 0, bottom: 5, trailing: 0))
+          Text(LocalizedString("insulin_on_board").uppercased()).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).font(.system(size: 14)).foregroundColor(Color.gray)
           HStack(alignment: .center) {
             if(self.optionalData.chartImage != nil){
               Image(uiImage: self.optionalData.chartImage!)
@@ -61,54 +60,54 @@ struct ChartView: View {
             }
           }.frame(maxWidth: CGFloat(chartWidth), minHeight: CGFloat(chartHeight), maxHeight: CGFloat(chartHeight), alignment: .center).background(Color.AlmosterBlack).cornerRadius(5)
           HStack(alignment: .top, spacing: 0) {
-            Text("-1h")
+            Text("-1h").font(.system(size: 14)).foregroundColor(Color.gray)
             Text("\(activeInsulin.format(f: "0.1"))").multilineTextAlignment(.center).frame(minWidth: 0, maxWidth: .infinity, alignment: .center).foregroundColor(Color(UIColor.magenta))
             Text("+5h").multilineTextAlignment(.trailing).frame(alignment: .trailing)
-          }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity).padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
-          
+          }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity).padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0)).font(.system(size: 14)).foregroundColor(Color.gray)
           
         }
-        StyledGroup {
+        
+        if(insulinLast24hours?.sumQuantity != nil && insulinLast2weeks?.sumQuantity != nil){
+          Divider()
           HStack {
-            Text("Last 24 hours")
-          }.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-          if(activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyLast24hours?.sumQuantity != nil){
-            HStack {
-              Text("Move")
-              Text(activeEnergyLast24hours!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: .infinity, alignment: Alignment.trailing)
-              TrendArrow(value: activeEnergyLast24hours!.sumQuantity!, compareWith: activeEnergyLast2weeks!.sumQuantity! / 14)
-            }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+            Text(LocalizedString("units_of_insulin").uppercased()).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).foregroundColor(Color.gray).font(.system(size: 14))
           }
-          if(insulinLast24hours?.sumQuantity != nil && insulinLast2weeks?.sumQuantity != nil){
-            HStack {
-              
-              Text("Insulin").frame(minWidth: 50, alignment: .leading)
-              Text(insulinLast24hours!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: .infinity, alignment: Alignment.trailing)
-              TrendArrow(value: insulinLast24hours!.sumQuantity!, compareWith: insulinLast2weeks!.sumQuantity! / 14)
-            }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-          }
-        }.padding()
-        StyledGroup {
+          
           HStack {
-            Text("Last 2 weeks")
-          }.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-          if(activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyPrevious2weeks?.sumQuantity != nil){
-            HStack {
-              
-              Text("Move")
-              Text(activeEnergyLast2weeks!.sumQuantity! > 1000 ? (activeEnergyLast2weeks!.sumQuantity! / 1000).format(f: "0.1") + "k" : activeEnergyLast2weeks!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: .infinity, alignment: Alignment.trailing)
-              TrendArrow(value: activeEnergyLast2weeks!.sumQuantity!, compareWith: activeEnergyPrevious2weeks!.sumQuantity!)
-            }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+            Text(insulinLast24hours!.sumQuantity!.format(f: "1.0")).foregroundColor(Color.AccentColor)
+            Text( LocalizedString("past_24h") ).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing).foregroundColor(Color.gray).font(.system(size: 14))
           }
-          if(insulinPrevious2weeks?.sumQuantity != nil && insulinLast2weeks?.sumQuantity != nil){
-            HStack {
-              
-              Text("Insulin").frame(minWidth: 50, alignment: .leading)
-              Text(insulinLast2weeks!.sumQuantity!.format(f: "1.0")).frame(minWidth: 0, maxWidth: .infinity, alignment: Alignment.trailing)
-              TrendArrow(value: insulinLast2weeks!.sumQuantity!, compareWith: insulinPrevious2weeks!.sumQuantity!)
-            }.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+          HStack {
+            Text(insulinLast2weeks!.sumQuantity!.format(f: "1.0")).foregroundColor(Color.AccentColor)
+            Text( LocalizedString("past_2_weeks") ).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing).foregroundColor(Color.gray).font(.system(size: 14))
           }
-        }.padding()
+        }
+        
+        if(activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyLast24hours?.sumQuantity != nil){
+          Divider()
+          HStack {
+            Text( LocalizedString("activity").uppercased()).foregroundColor(Color.gray).font(.system(size: 14))
+            Text(LocalizedString("past_24h").uppercased()).foregroundColor(Color.gray).font(.system(size: 14)).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+          }
+          
+          
+          HStack {
+            TrendArrow(value: activeEnergyLast24hours!.sumQuantity!, compareWith: activeEnergyLast2weeks!.sumQuantity! / 14).foregroundColor(activeEnergyLast24hours!.sumQuantity! > (activeEnergyLast2weeks!.sumQuantity! / 14) ? Color.green : activeEnergyLast24hours!.sumQuantity! < (activeEnergyLast2weeks!.sumQuantity! / 14) ? Color.red : Color.white)
+            Text(
+                (
+                  Double(
+                    100 * activeEnergyLast24hours!.sumQuantity! / (activeEnergyLast2weeks!.sumQuantity! / 14)) - 100
+                ).format(f: "1.0") + "%"
+              )
+              .foregroundColor(Color.green)
+              .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+            Text(activeEnergyLast24hours!.sumQuantity!.format(f: "1.0") + " kcal")
+            
+          }
+          Text("compared_to_the_past_2_weeks").multilineTextAlignment(.center).lineLimit(nil).foregroundColor(Color.gray).font(.system(size: 12))
+        }
+        
+        
       }.navigationBarTitle(LocalizedStringKey("active"))
     }
   }
@@ -124,6 +123,6 @@ struct ChartView_Previews: PreviewProvider {
     let energyLast2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 5000)
     let energyPrevious2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 4000)
     let energyLast24hours = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 400)
-    return ChartView(activeInsulin: 5, chartWidth: Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: 100, insulinLast2weeks: last2weeks, insulinLast24hours: last24hours, insulinPrevious2weeks: previous2weeks, activeEnergyLast2weeks: energyLast2weeks, activeEnergyPrevious2weeks: energyPrevious2weeks, activeEnergyLast24hours: energyLast24hours,appState: AppState.current, optionalData: optionalData)
+    return ChartView(activeInsulin: 5, chartWidth: Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: 100, insulinLast2weeks: last2weeks, insulinLast24hours: last24hours, insulinPrevious2weeks: previous2weeks, activeEnergyLast2weeks: energyLast2weeks, activeEnergyPrevious2weeks: energyPrevious2weeks, activeEnergyLast24hours: energyLast24hours,appState: AppState(), optionalData: optionalData)
   }
 }

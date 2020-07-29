@@ -17,7 +17,7 @@ struct InsulinInputView: View {
   @ObservedObject var appState: AppState = AppState.current;
   
   func onSave() -> Void {
-    // self.appState.insulinInputInitialUnits = appState.insulinInputInitialUnits;
+    appState.insulinInputInitialUnits = appState.insulinStepSize == 0.5 ? appState.insulinInputInitialUnits : round(appState.insulinInputInitialUnits);
     self.saveAction?(appState.insulinInputInitialUnits)
     WKInterfaceDevice.current().play(.success)
   }
@@ -25,16 +25,16 @@ struct InsulinInputView: View {
   @ViewBuilder
   var body: some View {
     if(appState.isHealthKitAuthorized == .unauthorized){
-      Text(NSLocalizedString("please_authorize", comment: "Please authorize"))
+      Text(LocalizedString("please_authorize"))
     }
-    VStack(alignment: .center){
+    VStack {
       
-      Text(NSLocalizedString("units_of_insulin", comment: "Units of insulin"))
+      Text(LocalizedString("units_of_insulin").uppercased()).foregroundColor(Color.gray)
       
       Stepper(value: $appState.insulinInputInitialUnits, stepSize: appState.insulinStepSize, format: appState.insulinStepSize == 0.5 ? "0.1" : "1.0")
       
       Button(action: onSave){
-        Text(NSLocalizedString("save", comment: "Save"))
+        Text(LocalizedString("save"))
       }
       
     }.navigationBarTitle(LocalizedStringKey(stringLiteral: "add"))
@@ -43,3 +43,9 @@ struct InsulinInputView: View {
 
 
 
+
+struct InsulinInputView_Previews: PreviewProvider {
+  static var previews: some View {
+    InsulinInputView()
+  }
+}

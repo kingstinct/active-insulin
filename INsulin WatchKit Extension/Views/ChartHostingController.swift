@@ -21,7 +21,7 @@ class ChartHostingController: WKHostingController<ChartView> {
   var image: UIImage?
   var updateQuery: HKQuery?;
   let chartWidth = Double(WKInterfaceDevice.current().screenBounds.width) - 4
-  let chartHeight: Double = 80;
+  let chartHeight: Double = 100;
   var insulinLast24Hours: StatsResponse? = nil
   var insulinLast2weeks: StatsResponse? = nil
   var insulinPrevious2weeks: StatsResponse? = nil
@@ -69,18 +69,19 @@ class ChartHostingController: WKHostingController<ChartView> {
       self.activeEnergyLast2weeks = response;
       self.setNeedsBodyUpdate()
     }
-    Health.current.fetchInsulinStats(start: Date().addHours(addHours: -24 * 28), end: Date().addHours(addHours: -24 * 14)) { (error, response) in
+    Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24)) { (error, response) in
+      self.activeEnergyLast24Hours = response;
+      self.setNeedsBodyUpdate()
+    }
+    /*Health.current.fetchInsulinStats(start: Date().addHours(addHours: -24 * 28), end: Date().addHours(addHours: -24 * 14)) { (error, response) in
       self.insulinPrevious2weeks = response;
       self.setNeedsBodyUpdate()
     }
     Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24 * 28), end: Date().addHours(addHours: -24 * 14)) { (error, response) in
       self.activeEnergyPrevious2weeks = response;
       self.setNeedsBodyUpdate()
-    }
-    Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24)) { (error, response) in
-      self.activeEnergyLast24Hours = response;
-      self.setNeedsBodyUpdate()
-    }
+    }*/
+    
     Health.current.fetchIOB { (error, value) in
       if let iob = value {
         self.activeInsulin = iob

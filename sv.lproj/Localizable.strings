@@ -10,7 +10,7 @@
 
 "insulin_on_board" = "Insulin on Board";
 "insulin_on_board_short" = "IOB";
-"units_of_insulin" = "Enheter Insulin";
+"units_of_insulin" = "Insulinenheter";
 "save" = "Spara";
 "app_name" = "Active Insulin";
 "please_authorize" = "Vänligen ge tillgång till Insulin Delivery i inställningarna för Hälsa";

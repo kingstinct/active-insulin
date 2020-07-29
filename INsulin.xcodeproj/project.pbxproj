@@ -48,6 +48,7 @@
 		A99B3D2624D0099A005BACB0 /* NSUserActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99B3D2524D0099A005BACB0 /* NSUserActivity.swift */; };
 		A99B3D2824D02F5C005BACB0 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99B3D2724D02F5C005BACB0 /* Date.swift */; };
 		A99B3D2A24D03E1A005BACB0 /* INImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99B3D2924D03E1A005BACB0 /* INImage.swift */; };
+		A9FBFABF24D20C6D00B84D46 /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9FBFABE24D20C6D00B84D46 /* LocalizedString.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,6 +167,7 @@
 		A99B3D2524D0099A005BACB0 /* NSUserActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSUserActivity.swift; sourceTree = "<group>"; };
 		A99B3D2724D02F5C005BACB0 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		A99B3D2924D03E1A005BACB0 /* INImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = INImage.swift; sourceTree = "<group>"; };
+		A9FBFABE24D20C6D00B84D46 /* LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +221,7 @@
 				A944AAA224CF057700671754 /* ChartBuilder.swift */,
 				A944AA6A24CB307D00671754 /* Calculations.swift */,
 				A944AAA024CF04EE00671754 /* Health.swift */,
+				A9FBFABE24D20C6D00B84D46 /* LocalizedString.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -632,6 +635,7 @@
 				A944AA5224CB2BBA00671754 /* ComplicationController.swift in Sources */,
 				A944AA9C24CF016700671754 /* AppState.swift in Sources */,
 				A944AAA324CF057700671754 /* ChartBuilder.swift in Sources */,
+				A9FBFABF24D20C6D00B84D46 /* LocalizedString.swift in Sources */,
 				A944AAA524CF5E2400671754 /* Double+Format.swift in Sources */,
 				A93D5E5324D16CB50055AE20 /* Color.swift in Sources */,
 				A944AA6F24CC445000671754 /* ChartHostingController.swift in Sources */,

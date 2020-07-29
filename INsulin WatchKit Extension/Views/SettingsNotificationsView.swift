@@ -40,13 +40,13 @@ struct SettingsNotificationsView: View {
         StyledGroup {
           Text("snooze_options").bold()
           Toggle(isOn: $appState.snooze15Enabled){
-            Text("15" + NSLocalizedString("min", comment: "Minutes"))
+            Text("15" + LocalizedString("min"))
           }.padding()
           Toggle(isOn: $appState.snooze30Enabled){
-            Text("30" + NSLocalizedString("min", comment: "Minutes"))
+            Text("30" + LocalizedString("min"))
           }.padding()
           Toggle(isOn:  $appState.snooze60Enabled){
-            Text("60" + NSLocalizedString("min", comment: "Minutes"))
+            Text("60" + LocalizedString("min"))
           }.padding()
         }
         
