@@ -20,6 +20,7 @@ class ChartHostingController: WKHostingController<ChartView> {
   var activeInsulin: Double = 0
   var image: UIImage?
   var updateQuery: HKQuery?;
+  var updateActiveEnergyQuery: HKQuery?;
   let chartWidth = Double(WKInterfaceDevice.current().screenBounds.width) - 4
   let chartHeight: Double = 100;
   var insulinLast24Hours: StatsResponse? = nil
@@ -30,9 +31,59 @@ class ChartHostingController: WKHostingController<ChartView> {
   var activeEnergyPrevious2weeks: StatsResponse? = nil
   var timer: Timer? = nil;
   
+  var isHealthkitAuthorized: HKAuthorizationRequestStatus?
+  
   var isAuthorized = true;
   
-  override func willDisappear() {
+  func initQuery(){
+    let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
+      self.queryAndUpdateActiveInsulin(handler: handler);
+    }
+    
+    let activeEnergyQuery = HKObserverQuery.init(sampleType: Health.current.activeEnergyQuantityType, predicate: nil) { (query, handler, error) in
+      self.queryAndUpdateActiveEnergy(handler: handler);
+    }
+    
+    Health.current.healthStore.execute(query)
+    Health.current.healthStore.execute(activeEnergyQuery)
+    self.updateQuery = query;
+    self.updateActiveEnergyQuery = activeEnergyQuery;
+    
+    timer = Timer.init(timeInterval: TimeInterval(60), repeats: true, block: { (_) in
+      self.queryAndUpdateActiveInsulin {
+        
+      }
+    })
+
+  }
+  
+  func checkForAuth() {
+    Health.current.healthStore.getRequestStatusForAuthorization(toShare: [], read: [Health.current.insulinObjectType]) { (status, error) in
+      DispatchQueue.main.async {
+        self.isHealthkitAuthorized = status;
+        
+        if(status == .unnecessary){
+          self.initQuery();
+        }
+        else if(status == .shouldRequest){
+          self.presentAuthAlert { (_, _) in
+            self.checkForAuth()
+          }
+        }
+      }
+    }
+  }
+  
+  override func willActivate() {
+    print("willActivate")
+    
+    
+    checkForAuth()
+  }
+  
+  
+  override func didDeactivate() {
+    print("didDeactivate")
     if let query = updateQuery {
       Health.current.healthStore.stop(query)
     }
@@ -41,19 +92,25 @@ class ChartHostingController: WKHostingController<ChartView> {
     }
   }
   
-  override func didAppear() {
-    NSUserActivity.displayIOBActivityType().becomeCurrent()
-    timer = Timer.init(timeInterval: TimeInterval(60), repeats: true, block: { (_) in
-      self.queryAndUpdateActiveInsulin {
-        
-      }
-    })
+  override func willDisappear() {
+    print("willDisappear")
     
-    let query = HKObserverQuery.init(sampleType: insulinQuantityType, predicate: nil) { (query, handler, error) in
-      self.queryAndUpdateActiveInsulin(handler: handler)
+  }
+  
+  override func didAppear() {
+    print("didAppear")
+    NSUserActivity.displayIOBActivityType().becomeCurrent()
+  }
+  
+  func queryAndUpdateActiveEnergy (handler: @escaping HKObserverQueryCompletionHandler) {
+    Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24 * 14)) { (error, response) in
+      self.activeEnergyLast2weeks = response;
+      self.setNeedsBodyUpdate()
     }
-    Health.current.healthStore.execute(query);
-    updateQuery = query;
+    Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24)) { (error, response) in
+      self.activeEnergyLast24Hours = response;
+      self.setNeedsBodyUpdate()
+    }
   }
   
   func queryAndUpdateActiveInsulin (handler: @escaping HKObserverQueryCompletionHandler) {
@@ -65,14 +122,7 @@ class ChartHostingController: WKHostingController<ChartView> {
       self.insulinLast2weeks = response;
       self.setNeedsBodyUpdate()
     }
-    Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24 * 14)) { (error, response) in
-      self.activeEnergyLast2weeks = response;
-      self.setNeedsBodyUpdate()
-    }
-    Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24)) { (error, response) in
-      self.activeEnergyLast24Hours = response;
-      self.setNeedsBodyUpdate()
-    }
+    
     /*Health.current.fetchInsulinStats(start: Date().addHours(addHours: -24 * 28), end: Date().addHours(addHours: -24 * 14)) { (error, response) in
       self.insulinPrevious2weeks = response;
       self.setNeedsBodyUpdate()
@@ -116,6 +166,7 @@ class ChartHostingController: WKHostingController<ChartView> {
                      activeEnergyLast2weeks: activeEnergyLast2weeks,
                      activeEnergyPrevious2weeks: activeEnergyPrevious2weeks,
                      activeEnergyLast24hours: activeEnergyLast24Hours,
+                     isHealthKitAuthorized: isHealthkitAuthorized,
                      appState: AppState.current,
                      optionalData: optionalData)
   }

@@ -16,6 +16,3 @@ class SettingsNotificationsHostingController: WKHostingController<SettingsNotifi
     // return InsulinInputView(saveAction: saveAction, appState: AppState.current)
   }
 }
-
-
-

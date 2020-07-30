@@ -15,6 +15,7 @@ import YOChartImageKit
 
 class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   var insulin = Double(AppState.current.insulinInputInitialUnits)
+  var isHealthKitAuthorized: HKAuthorizationStatus?
   
   func saveAction(units: Double) -> Void {
     let now = Date.init();
@@ -26,8 +27,29 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
     }
   }
   
+  override func willActivate() {
+    checkForAuth()
+  }
+  
+  func checkForAuth() {
+    Health.current.healthStore.getRequestStatusForAuthorization(toShare: [Health.current.insulinQuantityType], read: []) { (status, error) in
+      DispatchQueue.main.async {
+        if(status == .unnecessary){
+          let authStatus = Health.current.healthStore.authorizationStatus(for: Health.current.insulinObjectType);
+          self.isHealthKitAuthorized = authStatus;
+          self.setNeedsBodyUpdate();
+        }
+        else if(status == .shouldRequest){
+          self.presentAuthAlert { (_, _) in
+            self.checkForAuth()
+          }
+        }
+      }
+    }
+  }
+  
   override var body: InsulinInputView {
-    return InsulinInputView(saveAction: saveAction, appState: AppState.current)
+    return InsulinInputView(saveAction: saveAction, appState: AppState.current, isHealthKitAuthorized: isHealthKitAuthorized)
     // return InsulinInputView(saveAction: saveAction, appState: AppState.current)
   }
 }

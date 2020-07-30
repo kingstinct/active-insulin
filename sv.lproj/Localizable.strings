@@ -13,7 +13,6 @@
 "units_of_insulin" = "Insulinenheter";
 "save" = "Spara";
 "app_name" = "Active Insulin";
-"please_authorize" = "Vänligen ge tillgång till Insulin Delivery i inställningarna för Hälsa";
 "notification_snoozed_description" = "Dags att kolla blodsockret efter din insulintopp?";
 "notification_snoozed_title" = "Insulin-påminnelse";
 "notification_peak_description" = "Du har en insulintopp, dags att kolla blodsockret?";
@@ -22,7 +21,7 @@
 "snooze_30" = "Påminn om 30 min";
 "snooze_60" = "Påminn om 60 min";
 "add_insulin" = "Lägg till insulin";
-"add" = "Lägg till";
+"add" = "Mata in";
 "active" = "Aktiv";
 "notifications" = "Aviseringar";
 "no_insulin" = "Inget insulin";
@@ -33,3 +32,11 @@
 "peak" = "Topp";
 "duration" = "Varaktighet";
 "step_size" = "Dosering";
+"stats" = "Statistik";
+"please_authorize_share" = "Vänligen tillåt skrivning av Insulin. Du gör detta i appen Inställningar under Hälsa.";
+"please_authorize_read" = "Vänligen tillåt läsning av Insulin. Du gör detta i appen Inställningar under Hälsa.";
+"please_authorize" = "Appen behöver din tillåtelse för att kunna visa och uppdatera din hälsodata. Vi kommer skicka notiser relaterade till din insulin-data.";
+"allow" = "Tillåt";
+"Later" = "Senare";
+"please_authorize_title" = "Hälsodata & notiser";
+"Enter insulin" = "Mata in insulin";

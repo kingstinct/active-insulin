@@ -40,3 +40,11 @@
 "past_2_weeks" = "past 2 weeks";
 "compared_to_the_past_2_weeks" = "Compared to the past 2 weeks";
 "activity" = "Activity";
+"stats" = "Stats";
+"please_authorize_share" = "Please allow writing of Insulin Delivery in the Health section of the Settings app.";
+"please_authorize_read" = "Please allow reading of Insulin Delivery in the Health section of the Settings app.";
+"please_authorize" = "This app needs your permission to present and update your Health data. We'll send you notifications related to your insulin data";
+"allow" = "Allow";
+"Later" = "Later";
+"please_authorize_title" = "Health data & notifications";
+"Enter insulin" = "Enter insulin";

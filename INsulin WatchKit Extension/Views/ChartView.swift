@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Combine
+import HealthKit
 
 class OptionalData: ObservableObject {
   @Published var chartImage: UIImage?
@@ -33,19 +34,20 @@ struct ChartView: View {
   var activeEnergyLast2weeks: StatsResponse?
   var activeEnergyPrevious2weeks: StatsResponse?
   var activeEnergyLast24hours: StatsResponse?
+  var isHealthKitAuthorized: HKAuthorizationRequestStatus?
   @State var isFocusable = true
   @ObservedObject var appState: AppState
   @ObservedObject var optionalData: OptionalData
   @ViewBuilder
   var body: some View {
     
-    if(appState.isHealthKitAuthorized == .unauthorized){
-      Text(LocalizedString("please_authorize"))
+    if(isHealthKitAuthorized == HKAuthorizationRequestStatus.unknown){
+      Text(LocalizedString("please_authorize_read"))
     } else {
       ScrollView(){
         Group {if(insulinLast24hours?.sumQuantity == 0){
             NavigationLink(destinationName: "InsulinInputView") {
-              Text("Add some insulin")
+              Text("Enter insulin")
             }.padding()
           } else {
             
@@ -83,7 +85,7 @@ struct ChartView: View {
           }
         }
         
-        if(activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyLast24hours?.sumQuantity != nil){
+        if(activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyLast24hours?.sumQuantity != nil && activeEnergyLast24hours?.sumQuantity != 0){
           Divider()
           HStack {
             Text( LocalizedString("activity").uppercased()).foregroundColor(Color.gray).font(.system(size: 14))
@@ -108,7 +110,7 @@ struct ChartView: View {
         }
         
         
-      }.navigationBarTitle(LocalizedStringKey("active"))
+      }.navigationBarTitle(LocalizedStringKey("stats"))
     }
   }
 }

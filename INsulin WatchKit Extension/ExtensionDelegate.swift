@@ -56,53 +56,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
     // Define the notification type
     let notificationCategory = UNNotificationCategory(identifier: "PEAK", actions: snoozes, intentIdentifiers: [], options: [.allowAnnouncement, .allowInCarPlay])
     
-    Health.current.healthStore.getRequestStatusForAuthorization(toShare: [Health.current.insulinQuantityType], read: [Health.current.insulinObjectType, Health.current.activeEnergyObjectType]) { (status, error) in
-      if(status == .unnecessary){
-        DispatchQueue.main.async {
-          AppState.current.objectWillChange.send()
-          AppState.current.isHealthKitAuthorized = .authorized;
-          // AppState.current.$isHealthKitAuthorized.append(true)
-          let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
-            self.onUpdatedInsulin(completionHandler: handler)
-          }
-          
-          Health.current.healthStore.execute(query)
-          self.query = query;
-        }
-      } else {
-        Health.current.healthStore.requestAuthorization(toShare: [Health.current.insulinQuantityType], read: [Health.current.insulinObjectType, Health.current.activeEnergyObjectType]) { (status, error) in
-          DispatchQueue.main.async {
-            AppState.current.objectWillChange.send()
-            if(status){
-              AppState.current.isHealthKitAuthorized = .authorized;
-              let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
-                self.onUpdatedInsulin(completionHandler: handler)
-              }
-              
-              Health.current.healthStore.execute(query)
-              self.query = query;
-            } else {
-              AppState.current.isHealthKitAuthorized = .unauthorized;
-            }
-          }
-        }
-      }
-    }
-    
-    
     // Register the notification type.
     let notificationCenter = UNUserNotificationCenter.current()
     notificationCenter.setNotificationCategories([notificationCategory])
-    
-    notificationCenter.getNotificationSettings { (settings) in
-      if(settings.alertSetting == .enabled && settings.soundSetting == .enabled){
-        
-      } else {
-        notificationCenter.requestAuthorization(options: [.alert, .sound]) { (success, error) in
-          
-        }
-      }
-    }
   }
   
   func updateRelevantShortcuts(data: [ChartPoint], completionHandler: @escaping () -> Void){
@@ -324,29 +280,12 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
       
     }
     
+    func applicationWillEnterForeground(){
+      UNUserNotificationCenter.current().removeAllDeliveredNotifications();
+    }
+    
     func applicationDidBecomeActive() {
       UNUserNotificationCenter.current().removeAllDeliveredNotifications();
-      Health.current.healthStore.getRequestStatusForAuthorization(toShare: [Health.current.insulinQuantityType], read: [Health.current.insulinObjectType, Health.current.activeEnergyObjectType]) { (status, error) in
-        DispatchQueue.main.async {
-          
-          if(status == .unnecessary){
-            AppState.current.objectWillChange.send()
-            AppState.current.isHealthKitAuthorized = .authorized;
-            if(self.query == nil){
-              let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
-                self.onUpdatedInsulin(completionHandler: handler)
-              }
-              
-              Health.current.healthStore.execute(query)
-              self.query = query;
-            }
-            
-          } else {
-            AppState.current.objectWillChange.send()
-            AppState.current.isHealthKitAuthorized = .unauthorized;
-          }
-        }
-      }
       // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
     

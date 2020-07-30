@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Combine
+import HealthKit
 
 
 struct InsulinInputView: View {
@@ -15,6 +16,7 @@ struct InsulinInputView: View {
   // @State private var insulin: Double = AppState.current.insulinInputInitialUnits
   // 'var onInsulinUpdate: ((_: Double) -> Void)?
   @ObservedObject var appState: AppState = AppState.current;
+  var isHealthKitAuthorized: HKAuthorizationStatus?
   
   func onSave() -> Void {
     appState.insulinInputInitialUnits = appState.insulinStepSize == 0.5 ? appState.insulinInputInitialUnits : round(appState.insulinInputInitialUnits);
@@ -24,20 +26,22 @@ struct InsulinInputView: View {
   
   @ViewBuilder
   var body: some View {
-    if(appState.isHealthKitAuthorized == .unauthorized){
-      Text(LocalizedString("please_authorize"))
+    if(isHealthKitAuthorized == .sharingDenied){
+      Text(LocalizedString("please_authorize_share")).navigationBarTitle(LocalizedStringKey(stringLiteral: "add"))
     }
-    VStack {
-      
-      Text(LocalizedString("units_of_insulin").uppercased()).foregroundColor(Color.gray)
-      
-      Stepper(value: $appState.insulinInputInitialUnits, stepSize: appState.insulinStepSize, format: appState.insulinStepSize == 0.5 ? "0.1" : "1.0")
-      
-      Button(action: onSave){
-        Text(LocalizedString("save"))
-      }
-      
-    }.navigationBarTitle(LocalizedStringKey(stringLiteral: "add"))
+    else {
+      VStack {
+        
+        Text(LocalizedString("units_of_insulin").uppercased()).foregroundColor(Color.gray)
+        
+        Stepper(value: $appState.insulinInputInitialUnits, stepSize: appState.insulinStepSize, format: appState.insulinStepSize == 0.5 ? "0.1" : "1.0")
+        
+        Button(action: onSave){
+          Text(LocalizedString("save"))
+        }
+        
+      }.navigationBarTitle(LocalizedStringKey(stringLiteral: "add"))
+    }
   }
 }
 

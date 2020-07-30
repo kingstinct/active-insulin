@@ -10,6 +10,8 @@
 		0198B310D0E13132DF8E3A5E /* Pods_INsulin_WatchKit_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19542F90B52576F8DA43D775 /* Pods_INsulin_WatchKit_Extension.framework */; };
 		6172A19FC5B292CC1739567A /* Pods_INsulin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9245D9C6B63D805483CF1315 /* Pods_INsulin.framework */; };
 		8E02E5DE194C74D3B02FD48E /* Pods_INsulin_WatchKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A6D9F01B4E45DABF11DA6B7 /* Pods_INsulin_WatchKit_App.framework */; };
+		A93C4F0C24D29ADE007C3704 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93C4F0B24D29ADE007C3704 /* Auth.swift */; };
+		A93C4F0E24D29F27007C3704 /* WKInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93C4F0D24D29F27007C3704 /* WKInterfaceController.swift */; };
 		A93D5E4224D0CDAB0055AE20 /* Stepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E4124D0CDAB0055AE20 /* Stepper.swift */; };
 		A93D5E4424D0CE020055AE20 /* SettingsHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E4324D0CE020055AE20 /* SettingsHostingController.swift */; };
 		A93D5E4624D0CE290055AE20 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D5E4524D0CE290055AE20 /* SettingsView.swift */; };
@@ -121,6 +123,8 @@
 		821838AC2EF54D90330E6661 /* Pods-INsulin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INsulin.release.xcconfig"; path = "Target Support Files/Pods-INsulin/Pods-INsulin.release.xcconfig"; sourceTree = "<group>"; };
 		9245D9C6B63D805483CF1315 /* Pods_INsulin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_INsulin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7CF3B6E9D1A814FE9714C89 /* Pods-INsulin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-INsulin.debug.xcconfig"; path = "Target Support Files/Pods-INsulin/Pods-INsulin.debug.xcconfig"; sourceTree = "<group>"; };
+		A93C4F0B24D29ADE007C3704 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
+		A93C4F0D24D29F27007C3704 /* WKInterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKInterfaceController.swift; sourceTree = "<group>"; };
 		A93D5E4124D0CDAB0055AE20 /* Stepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stepper.swift; sourceTree = "<group>"; };
 		A93D5E4324D0CE020055AE20 /* SettingsHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHostingController.swift; sourceTree = "<group>"; };
 		A93D5E4524D0CE290055AE20 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -222,6 +226,7 @@
 				A944AA6A24CB307D00671754 /* Calculations.swift */,
 				A944AAA024CF04EE00671754 /* Health.swift */,
 				A9FBFABE24D20C6D00B84D46 /* LocalizedString.swift */,
+				A93C4F0B24D29ADE007C3704 /* Auth.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -346,6 +351,7 @@
 				A99B3D2724D02F5C005BACB0 /* Date.swift */,
 				A99B3D2924D03E1A005BACB0 /* INImage.swift */,
 				A93D5E5224D16CB50055AE20 /* Color.swift */,
+				A93C4F0D24D29F27007C3704 /* WKInterfaceController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -618,6 +624,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A93C4F0C24D29ADE007C3704 /* Auth.swift in Sources */,
 				A944AAA124CF04EE00671754 /* Health.swift in Sources */,
 				A944AA4E24CB2BBA00671754 /* InsulinInputHostingController.swift in Sources */,
 				A93D5E5124D168E60055AE20 /* SettingsNotificationsHostingController.swift in Sources */,
@@ -644,6 +651,7 @@
 				A944AA4C24CB2BBA00671754 /* InsulinInputView.swift in Sources */,
 				A944AA6B24CB307D00671754 /* Calculations.swift in Sources */,
 				A93D5E5524D197CB0055AE20 /* StyledGroup.swift in Sources */,
+				A93C4F0E24D29F27007C3704 /* WKInterfaceController.swift in Sources */,
 				A944AA5024CB2BBA00671754 /* ExtensionDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -28,8 +28,6 @@ extension Published {
 }
 
 class AppState: ObservableObject {
-  @Published var isHealthKitAuthorized: AuthStatus = .uninitialized
-  
   @Published(key: "INSULIN_DURATION_IN_MINUTES") var insulinDurationInMinutes: Double = 360;
   @Published(key: "INSULIN_PEAK_TIME_IN_MINUTES") var insulinPeakTimeInMinutes: Double = 75;
   @Published(key: "INSULIN_INITIAL_UNITS") var insulinInputInitialUnits = 4.0;
