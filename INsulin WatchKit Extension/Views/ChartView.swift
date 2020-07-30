@@ -46,9 +46,11 @@ struct ChartView: View {
     } else {
       ScrollView(){
         Group {if(insulinLast24hours?.sumQuantity == 0 || insulinLast24hours?.sumQuantity == nil){
-            NavigationLink(destinationName: "InsulinInputView") {
+          Button(action: {
+            self.appState.ActivePage = .insulinInput
+          }, label: {
               Text("Enter insulin")
-            }.padding()
+            }).padding()
           } else {
             
           }

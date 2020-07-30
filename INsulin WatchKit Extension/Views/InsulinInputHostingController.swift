@@ -17,19 +17,28 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   var insulin = Double(AppState.current.insulinInputInitialUnits)
   var isHealthKitAuthorized: HKAuthorizationStatus?
   
+  var listenToSelf: AnyCancellable?
+  
   func saveAction(units: Double) -> Void {
     let now = Date.init();
+    
     let sample = HKQuantitySample.init(type: Health.current.insulinQuantityType, quantity: HKQuantity(unit: HKUnit.internationalUnit(), doubleValue: units), start: now, end: now,
                                        metadata: [HKMetadataKeyInsulinDeliveryReason : HKInsulinDeliveryReason.bolus.rawValue]
     )
     Health.current.healthStore.save(sample) { (success, error) in
+      DispatchQueue.main.async {
+        AppState.current.ActivePage = .chart
+      }
       
     }
   }
   
+  
+  
   override func didAppear() {
     print("didAppear: InsulinInput")
     checkForAuth()
+    AppState.current.ActivePage = .insulinInput
   }
   
   override func willActivate() {
@@ -39,6 +48,14 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   
   override func awake(withContext context: Any?) {
     print("awake: InsulinInput")
+    listenToSelf = AppState.current.$ActivePage.sink { (page) in
+      if(page == .insulinInput){
+        self.becomeCurrentPage()
+        self.crownSequencer.focus()
+      } else {
+        self.crownSequencer.resignFocus()
+      }
+    }
   }
   
   func checkForAuth() {

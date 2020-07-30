@@ -35,8 +35,19 @@ class ChartHostingController: WKHostingController<ChartView> {
   
   var isAuthorized = true;
   
+  var listenToSelf: AnyCancellable?
+  
   override func awake(withContext context: Any?) {
     print("awake: ChartHostingController")
+    
+    listenToSelf = AppState.current.$ActivePage.sink { (page) in
+      if(page == .chart){
+        self.becomeCurrentPage()
+        // self.crownSequencer.focus()
+      } else {
+        // self.crownSequencer.resignFocus()
+      }
+    }
   }
   
   func initQuery(){
@@ -49,9 +60,6 @@ class ChartHostingController: WKHostingController<ChartView> {
     if(self.updateQuery == nil){
       let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
         self.queryAndUpdateActiveInsulin(handler: handler);
-        DispatchQueue.main.async {
-          self.becomeCurrentPage();
-        }
       }
       Health.current.healthStore.execute(query)
       self.updateQuery = query;
@@ -69,6 +77,7 @@ class ChartHostingController: WKHostingController<ChartView> {
       self.updateActiveEnergyQuery = activeEnergyQuery;
     }
   }
+  
   
   func checkForAuth() {
     
@@ -117,6 +126,8 @@ class ChartHostingController: WKHostingController<ChartView> {
     self.initQuery();
     print("didAppear: ChartHostingController")
     NSUserActivity.displayIOBActivityType().becomeCurrent();
+    
+    AppState.current.ActivePage = .chart
   }
   
   func queryAndUpdateActiveEnergy (handler: @escaping HKObserverQueryCompletionHandler) {

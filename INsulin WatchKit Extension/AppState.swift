@@ -15,6 +15,12 @@ enum AuthStatus {
   case unauthorized;
 }
 
+enum Pages {
+  case insulinInput;
+  case chart;
+  case settings;
+}
+
 private var cancellables = [String:AnyCancellable]()
 
 extension Published {
@@ -42,85 +48,8 @@ class AppState: ObservableObject {
   @Published(key: "NOTIFICATION_SNOOZE_30_ENABLED") var snooze30Enabled = true;
   @Published(key: "NOTIFICATION_SNOOZE_60_ENABLED") var snooze60Enabled = false;
   
-  var updaters = Array<AnyCancellable>()
-  
-  static func read(forKey: String, withDefault: Int) -> Int {
-    if(UserDefaults.standard.data(forKey: forKey) != nil){
-      return UserDefaults.standard.integer(forKey: forKey)
-    }
-    return withDefault;
-  }
-  
-  /*static func read(forKey: String, withDefault: Double) -> Double {
-    if(UserDefaults.standard.data(forKey: forKey) != nil){
-      return UserDefaults.standard.double(forKey: forKey)
-    }
-    return withDefault;
-  }
-  
-  static func read(forKey: String, withDefault: Bool) -> Bool{
-    if(UserDefaults.standard.data(forKey: forKey) != nil){
-      return UserDefaults.standard.bool(forKey: forKey)
-    }
-    return withDefault;
-  }
-  
-  static func persist(forKey: String, listenTo: Published<Double>.Publisher) -> AnyCancellable {
-    return listenTo.sink { (val) in
-      UserDefaults.standard.set(val, forKey: forKey)
-    }
-  }
-  
-  static func persist(forKey: String, listenTo: Published<Bool>.Publisher) -> AnyCancellable {
-    return listenTo.sink { (val) in
-      UserDefaults.standard.set(val, forKey: forKey)
-    }
-  }
-  
-  static func persist(forKey: String, listenTo: Published<Int>.Publisher) -> AnyCancellable {
-    return listenTo.sink { (val) in
-      UserDefaults.standard.set(val, forKey: forKey)
-    }
-  }*/
-  
-  /*private init() {
-    insulinDurationInMinutes = AppState.read(forKey: "INSULIN_DURATION_IN_MINUTES", withDefault: 360);
-    insulinPeakTimeInMinutes = AppState.read(forKey: "INSULIN_PEAK_TIME_IN_MINUTES", withDefault: 75)
-    insulinInputInitialUnits = AppState.read(forKey: "INSULIN_INITIAL_UNITS", withDefault: 4);
-    insulinStepSize = AppState.read(forKey: "INSULIN_STEP_SIZE", withDefault: 0.5);
-    
-    notifyOnCustomEnabled = AppState.read(forKey: "NOTIFY_ON_CUSTOM_ENABLED", withDefault: false);
-    notifyOnCustomMinutes = AppState.read(forKey: "NOTIFY_ON_CUSTOM_MINUTES", withDefault: 90);
-    /// notifyOnInsulinPeakEnabled = AppState.read(forKey: "NOTIFY_ON_INSULIN_PEAK_ENABLED", withDefault: false);
-    
-    snooze15Enabled = AppState.read(forKey: "NOTIFY_SNOOZE_15", withDefault: false);
-    snooze30Enabled = AppState.read(forKey: "NOTIFY_SNOOZE_30", withDefault: true);
-    snooze60Enabled = AppState.read(forKey: "NOTIFY_SNOOZE_60", withDefault: false);
-    
-
-    updaters.append(contentsOf: [
-      AppState.persist(forKey: "INSULIN_PEAK_TIME_IN_MINUTES", listenTo: $insulinPeakTimeInMinutes),
-      AppState.persist(forKey: "INSULIN_DURATION_IN_MINUTES", listenTo: $insulinDurationInMinutes),
-      AppState.persist(forKey: "INSULIN_STEP_SIZE", listenTo: $insulinStepSize),
-      AppState.persist(forKey: "INSULIN_INITIAL_UNITS", listenTo: $insulinInputInitialUnits),
-      
-      AppState.persist(forKey: "NOTIFY_ON_CUSTOM_ENABLED", listenTo: $notifyOnCustomEnabled),
-      AppState.persist(forKey: "NOTIFY_ON_CUSTOM_MINUTES", listenTo: $notifyOnCustomMinutes),
-      /// AppState.persist(forKey: "NOTIFY_ON_INSULIN_PEAK_ENABLED", listenTo: $notifyOnInsulinPeakEnabled),
-      
-      AppState.persist(forKey: "NOTIFY_SNOOZE_15", listenTo: $snooze15Enabled),
-      AppState.persist(forKey: "NOTIFY_SNOOZE_30", listenTo: $snooze30Enabled),
-      AppState.persist(forKey: "NOTIFY_SNOOZE_60", listenTo: $snooze60Enabled),
-    ])
-  }*/
+  @Published var ActivePage: Pages = .chart;
   
   static var current = AppState();
   
-  /*static func current() -> AppState {
-    _current = _current ?? AppState()
-    
-    dispatchonce
-    
-    return _current!;
-  }*/
 }

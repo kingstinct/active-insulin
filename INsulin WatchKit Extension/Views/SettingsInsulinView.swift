@@ -9,7 +9,7 @@ struct SettingsInsulinView: View {
   var body: some View {
     ScrollView {
       VStack(alignment: .center){
-        Text("insulin_info")
+        Text("insulin_info").padding()
         StyledGroup {
           HStack {
             Text("duration")
