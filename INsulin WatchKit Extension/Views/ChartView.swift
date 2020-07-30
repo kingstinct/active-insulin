@@ -45,7 +45,7 @@ struct ChartView: View {
       Text(LocalizedString("please_authorize_read"))
     } else {
       ScrollView(){
-        Group {if(insulinLast24hours?.sumQuantity == 0){
+        Group {if(insulinLast24hours?.sumQuantity == 0 || insulinLast24hours?.sumQuantity == nil){
             NavigationLink(destinationName: "InsulinInputView") {
               Text("Enter insulin")
             }.padding()
@@ -86,7 +86,7 @@ struct ChartView: View {
         }
         
         if(activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyLast24hours?.sumQuantity != nil && activeEnergyLast24hours?.sumQuantity != 0){
-          Divider()
+          Divider().navigationBarTitle(LocalizedStringKey("hej"))
           HStack {
             Text( LocalizedString("activity").uppercased()).foregroundColor(Color.gray).font(.system(size: 14))
             Text(LocalizedString("past_24h").uppercased()).foregroundColor(Color.gray).font(.system(size: 14)).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)

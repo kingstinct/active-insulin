@@ -19,8 +19,8 @@ class ChartHostingController: WKHostingController<ChartView> {
   let insulinQuantityType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
   var activeInsulin: Double = 0
   var image: UIImage?
-  var updateQuery: HKQuery?;
-  var updateActiveEnergyQuery: HKQuery?;
+  var updateQuery: HKQuery? = nil;
+  var updateActiveEnergyQuery: HKQuery? = nil;
   let chartWidth = Double(WKInterfaceDevice.current().screenBounds.width) - 4
   let chartHeight: Double = 100;
   var insulinLast24Hours: StatsResponse? = nil
@@ -35,35 +35,49 @@ class ChartHostingController: WKHostingController<ChartView> {
   
   var isAuthorized = true;
   
+  override func awake(withContext context: Any?) {
+    print("awake: ChartHostingController")
+  }
+  
   func initQuery(){
-    let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
-      self.queryAndUpdateActiveInsulin(handler: handler);
-    }
-    
-    let activeEnergyQuery = HKObserverQuery.init(sampleType: Health.current.activeEnergyQuantityType, predicate: nil) { (query, handler, error) in
-      self.queryAndUpdateActiveEnergy(handler: handler);
-    }
-    
-    Health.current.healthStore.execute(query)
-    Health.current.healthStore.execute(activeEnergyQuery)
-    self.updateQuery = query;
-    self.updateActiveEnergyQuery = activeEnergyQuery;
-    
     timer = Timer.init(timeInterval: TimeInterval(60), repeats: true, block: { (_) in
       self.queryAndUpdateActiveInsulin {
         
       }
     })
-
+    
+    if(self.updateQuery == nil){
+      let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
+        self.queryAndUpdateActiveInsulin(handler: handler);
+        DispatchQueue.main.async {
+          self.becomeCurrentPage();
+        }
+      }
+      Health.current.healthStore.execute(query)
+      self.updateQuery = query;
+    }
+    
+    
+    if(self.updateActiveEnergyQuery == nil){
+      let activeEnergyQuery = HKObserverQuery.init(sampleType: Health.current.activeEnergyQuantityType, predicate: nil) { (query, handler, error) in
+        self.queryAndUpdateActiveEnergy(handler: handler);
+      }
+      
+      
+      Health.current.healthStore.execute(activeEnergyQuery)
+      
+      self.updateActiveEnergyQuery = activeEnergyQuery;
+    }
   }
   
   func checkForAuth() {
+    
     Health.current.healthStore.getRequestStatusForAuthorization(toShare: [], read: [Health.current.insulinObjectType]) { (status, error) in
       DispatchQueue.main.async {
         self.isHealthkitAuthorized = status;
         
         if(status == .unnecessary){
-          self.initQuery();
+          
         }
         else if(status == .shouldRequest){
           self.presentAuthAlert { (_, _) in
@@ -75,31 +89,34 @@ class ChartHostingController: WKHostingController<ChartView> {
   }
   
   override func willActivate() {
-    print("willActivate")
-    
+    print("willActivate: ChartHostingController")
     
     checkForAuth()
   }
   
-  
   override func didDeactivate() {
-    print("didDeactivate")
-    if let query = updateQuery {
-      Health.current.healthStore.stop(query)
+    print("didDeactivate: ChartHostingController")
+    /*if let query = updateQuery {
+      Health.current.healthStore.stop(query);
     }
+    if let energyQuery = updateActiveEnergyQuery {
+      Health.current.healthStore.stop(energyQuery);
+    }*/
     if let timer = timer {
       timer.invalidate()
     }
   }
   
   override func willDisappear() {
-    print("willDisappear")
+    print("willDisappear: ChartHostingController")
+    
     
   }
   
   override func didAppear() {
-    print("didAppear")
-    NSUserActivity.displayIOBActivityType().becomeCurrent()
+    self.initQuery();
+    print("didAppear: ChartHostingController")
+    NSUserActivity.displayIOBActivityType().becomeCurrent();
   }
   
   func queryAndUpdateActiveEnergy (handler: @escaping HKObserverQueryCompletionHandler) {

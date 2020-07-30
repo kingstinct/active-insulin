@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSUserActivityTypes</key>
-	<array>
-		<string>com.kingstinct.INsulin.displayIOB</string>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -54,11 +50,15 @@
 	<string>Active Insulin uses Healthkit to read Insulin Data</string>
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>Active Insulin uses Healthkit to store Insulin Data</string>
+	<key>NSSiriUsageDescription</key>
+	<string>Active Insulin uses Siri to display relevant information on the Siri Watchface</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>com.kingstinct.INsulin.displayIOB</string>
+	</array>
 	<key>WKExtensionDelegateClassName</key>
 	<string>$(PRODUCT_MODULE_NAME).ExtensionDelegate</string>
 	<key>WKWatchOnly</key>
 	<true/>
-	<key>NSSiriUsageDescription</key>
-	<string>Active Insulin uses Siri to display relevant information on the Siri Watchface</string>
 </dict>
 </plist>

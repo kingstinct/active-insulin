@@ -27,8 +27,18 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
     }
   }
   
-  override func willActivate() {
+  override func didAppear() {
+    print("didAppear: InsulinInput")
     checkForAuth()
+  }
+  
+  override func willActivate() {
+    print("willActivate: InsulinInput")
+    checkForAuth()
+  }
+  
+  override func awake(withContext context: Any?) {
+    print("awake: InsulinInput")
   }
   
   func checkForAuth() {

@@ -24,4 +24,5 @@ extension NSUserActivity {
 
     return userActivity;
   }
+
 }

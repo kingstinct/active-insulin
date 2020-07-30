@@ -11,7 +11,8 @@ import UserNotifications
 import HealthKit;
 import Combine;
 import Intents;
-import SwiftUI
+import SwiftUI;
+import StoreKit;
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenterDelegate {
   
@@ -31,6 +32,8 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
   
   func applicationDidFinishLaunching() {
     UNUserNotificationCenter.current().delegate = self;
+    
+    SKPaymentQueue.default().add(StoreObserver.current)
     // Define the custom actions.
     
     var snoozes = Array<UNNotificationAction>();
@@ -51,7 +54,13 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, UNUserNotificationCenter
                                           options: []))
     }
     
+    let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
+      self.onUpdatedInsulin(completionHandler: handler)
+    }
     
+    Health.current.healthStore.execute(query)
+    self.query = query;
+
     
     // Define the notification type
     let notificationCategory = UNNotificationCategory(identifier: "PEAK", actions: snoozes, intentIdentifiers: [], options: [.allowAnnouncement, .allowInCarPlay])

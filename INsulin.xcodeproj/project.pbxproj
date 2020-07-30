@@ -50,6 +50,9 @@
 		A99B3D2624D0099A005BACB0 /* NSUserActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99B3D2524D0099A005BACB0 /* NSUserActivity.swift */; };
 		A99B3D2824D02F5C005BACB0 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99B3D2724D02F5C005BACB0 /* Date.swift */; };
 		A99B3D2A24D03E1A005BACB0 /* INImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99B3D2924D03E1A005BACB0 /* INImage.swift */; };
+		A9E9115E24D3051D0082D806 /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E9115D24D3051D0082D806 /* StoreObserver.swift */; };
+		A9E9116024D308470082D806 /* SKProduct+regularPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E9115F24D308470082D806 /* SKProduct+regularPrice.swift */; };
+		A9E9116224D343620082D806 /* FocusableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E9116124D343620082D806 /* FocusableTextField.swift */; };
 		A9FBFABF24D20C6D00B84D46 /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9FBFABE24D20C6D00B84D46 /* LocalizedString.swift */; };
 /* End PBXBuildFile section */
 
@@ -171,6 +174,9 @@
 		A99B3D2524D0099A005BACB0 /* NSUserActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSUserActivity.swift; sourceTree = "<group>"; };
 		A99B3D2724D02F5C005BACB0 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		A99B3D2924D03E1A005BACB0 /* INImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = INImage.swift; sourceTree = "<group>"; };
+		A9E9115D24D3051D0082D806 /* StoreObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreObserver.swift; sourceTree = "<group>"; };
+		A9E9115F24D308470082D806 /* SKProduct+regularPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKProduct+regularPrice.swift"; sourceTree = "<group>"; };
+		A9E9116124D343620082D806 /* FocusableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusableTextField.swift; sourceTree = "<group>"; };
 		A9FBFABE24D20C6D00B84D46 /* LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -215,6 +221,7 @@
 			children = (
 				A93D5E4124D0CDAB0055AE20 /* Stepper.swift */,
 				A93D5E5424D197CB0055AE20 /* StyledGroup.swift */,
+				A9E9116124D343620082D806 /* FocusableTextField.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -227,6 +234,7 @@
 				A944AAA024CF04EE00671754 /* Health.swift */,
 				A9FBFABE24D20C6D00B84D46 /* LocalizedString.swift */,
 				A93C4F0B24D29ADE007C3704 /* Auth.swift */,
+				A9E9115D24D3051D0082D806 /* StoreObserver.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -352,6 +360,7 @@
 				A99B3D2924D03E1A005BACB0 /* INImage.swift */,
 				A93D5E5224D16CB50055AE20 /* Color.swift */,
 				A93C4F0D24D29F27007C3704 /* WKInterfaceController.swift */,
+				A9E9115F24D308470082D806 /* SKProduct+regularPrice.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -635,12 +644,15 @@
 				A93D5E4A24D0D0F30055AE20 /* SettingsInsulinHostingController.swift in Sources */,
 				A944AA9924CEF59800671754 /* CLKTextProvider+MultiColorPatch.m in Sources */,
 				A99B3D2A24D03E1A005BACB0 /* INImage.swift in Sources */,
+				A9E9115E24D3051D0082D806 /* StoreObserver.swift in Sources */,
 				A93D5E4824D0D0E10055AE20 /* SettingsInsulinView.swift in Sources */,
 				A93D5E4F24D1669C0055AE20 /* SettingsNotificationsView.swift in Sources */,
 				A944AA9E24CF03F700671754 /* UNNotificationAttachment+create.swift in Sources */,
 				A93D5E4224D0CDAB0055AE20 /* Stepper.swift in Sources */,
+				A9E9116224D343620082D806 /* FocusableTextField.swift in Sources */,
 				A944AA5224CB2BBA00671754 /* ComplicationController.swift in Sources */,
 				A944AA9C24CF016700671754 /* AppState.swift in Sources */,
+				A9E9116024D308470082D806 /* SKProduct+regularPrice.swift in Sources */,
 				A944AAA324CF057700671754 /* ChartBuilder.swift in Sources */,
 				A9FBFABF24D20C6D00B84D46 /* LocalizedString.swift in Sources */,
 				A944AAA524CF5E2400671754 /* Double+Format.swift in Sources */,

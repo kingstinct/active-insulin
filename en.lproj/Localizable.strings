@@ -48,3 +48,4 @@
 "Later" = "Later";
 "please_authorize_title" = "Health data & notifications";
 "Enter insulin" = "Enter insulin";
+"insulin_info" = "The bolus insulin curve varies depending on brands and the individual - here you can adjust the values to suit your case";
