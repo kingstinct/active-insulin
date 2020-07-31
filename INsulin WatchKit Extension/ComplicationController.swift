@@ -104,7 +104,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   }
   
   func combinedTextProviderSmall(iob: Double) -> CLKTextProvider{
-    let iobStr = iob.format(f: "0.1");
+    let iobStr = iob.format("0.1");
     let label = CLKSimpleTextProvider(text: LocalizedString("insulin_on_board_short"))
     label.tintColor = UIColor.gray
     
@@ -118,7 +118,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   }
   
   func combinedTextProvider(iob: Double) -> CLKTextProvider{
-    let iobStr = iob.format(f: "0.1");
+    let iobStr = iob.format("0.1");
     let label = CLKSimpleTextProvider(text: LocalizedString("insulin_on_board"))
     label.tintColor = UIColor.gray
     
@@ -170,13 +170,13 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   func getModularSmall(iob: Double, image: UIImage) -> CLKComplicationTemplateModularSmallStackImage {
     let modularSmall = CLKComplicationTemplateModularSmallStackImage();
     modularSmall.line1ImageProvider = CLKImageProvider(onePieceImage: image);
-    modularSmall.line2TextProvider = CLKSimpleTextProvider(text: iob.format(f: "0.1"))
+    modularSmall.line2TextProvider = CLKSimpleTextProvider(text: iob.format("0.1"))
 
     return modularSmall;
   }
   
   func getExtraLarge(iob: Double, image: UIImage) -> CLKComplicationTemplateExtraLargeStackImage {
-    let iobStr = iob.format(f: "0.1");
+    let iobStr = iob.format("0.1");
     
     let text = CLKSimpleTextProvider(text: iobStr)
     text.tintColor = UIColor.magenta
@@ -212,7 +212,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
   }
   
   func getTemplateWithIOB(for complication: CLKComplication, iob: Double) -> CLKComplicationTemplate? {
-    let iobStr = iob.format(f: "0.1");
+    let iobStr = iob.format("0.1");
     
     let labelProvider = CLKSimpleTextProvider(text: LocalizedString("insulin_on_board"));
     labelProvider.shortText = LocalizedString("insulin_on_board_short")

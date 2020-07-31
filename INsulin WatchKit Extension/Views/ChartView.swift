@@ -20,7 +20,13 @@ struct TrendArrow: View {
   var compareWith: Double;
   
   var body: some View {
-    Image(systemName: value > compareWith * 2 ? "arrow.up" : value > compareWith ? "arrow.up.right" : value == compareWith ? "arrow.right" : value * 2 < compareWith ?  "arrow.down" : "arrow.down.right")
+    Image(systemName: value > compareWith * 2
+      ? "arrow.up" : value > compareWith
+      ? "arrow.up.right" : value == compareWith
+      ? "arrow.right" : value * 2 < compareWith
+      ? "arrow.down"
+      : "arrow.down.right"
+    )
   }
 }
 
@@ -38,6 +44,7 @@ struct ChartView: View {
   @State var isFocusable = true
   @ObservedObject var appState: AppState
   @ObservedObject var optionalData: OptionalData
+  
   @ViewBuilder
   var body: some View {
     
@@ -47,7 +54,7 @@ struct ChartView: View {
       ScrollView(){
         Group {if(insulinLast24hours?.sumQuantity == 0 || insulinLast24hours?.sumQuantity == nil){
           Button(action: {
-            self.appState.ActivePage = .insulinInput
+            self.appState.activePage = .insulinInput
           }, label: {
               Text("Enter insulin")
             }).padding()
@@ -65,7 +72,7 @@ struct ChartView: View {
           }.frame(maxWidth: CGFloat(chartWidth), minHeight: CGFloat(chartHeight), maxHeight: CGFloat(chartHeight), alignment: .center).background(Color.AlmosterBlack).cornerRadius(5)
           HStack(alignment: .top, spacing: 0) {
             Text("-1h").font(.system(size: 14)).foregroundColor(Color.gray)
-            Text("\(activeInsulin.format(f: "0.1"))").multilineTextAlignment(.center).frame(minWidth: 0, maxWidth: .infinity, alignment: .center).foregroundColor(Color(UIColor.magenta))
+            Text("\(activeInsulin.format("0.1"))").multilineTextAlignment(.center).frame(minWidth: 0, maxWidth: .infinity, alignment: .center).foregroundColor(Color(UIColor.magenta))
             Text("+5h").multilineTextAlignment(.trailing).frame(alignment: .trailing)
           }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity).padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0)).font(.system(size: 14)).foregroundColor(Color.gray)
           
@@ -78,17 +85,17 @@ struct ChartView: View {
           }
           
           HStack {
-            Text(insulinLast24hours!.sumQuantity!.format(f: "1.0")).foregroundColor(Color.AccentColor)
+            Text(insulinLast24hours!.sumQuantity!.format("1.0")).foregroundColor(Color.AccentColor)
             Text( LocalizedString("past_24h") ).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing).foregroundColor(Color.gray).font(.system(size: 14))
           }
           HStack {
-            Text(insulinLast2weeks!.sumQuantity!.format(f: "1.0")).foregroundColor(Color.AccentColor)
+            Text(insulinLast2weeks!.sumQuantity!.format("1.0")).foregroundColor(Color.AccentColor)
             Text( LocalizedString("past_2_weeks") ).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing).foregroundColor(Color.gray).font(.system(size: 14))
           }
         }
         
         if(activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyLast24hours?.sumQuantity != nil && activeEnergyLast24hours?.sumQuantity != 0){
-          Divider().navigationBarTitle(LocalizedStringKey("hej"))
+          Divider()
           HStack {
             Text( LocalizedString("activity").uppercased()).foregroundColor(Color.gray).font(.system(size: 14))
             Text(LocalizedString("past_24h").uppercased()).foregroundColor(Color.gray).font(.system(size: 14)).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
@@ -101,11 +108,11 @@ struct ChartView: View {
                 (
                   Double(
                     100 * activeEnergyLast24hours!.sumQuantity! / (activeEnergyLast2weeks!.sumQuantity! / 14)) - 100
-                ).format(f: "1.0") + "%"
+                ).format("1.0") + "%"
               )
               .foregroundColor(Color.green)
               .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-            Text(activeEnergyLast24hours!.sumQuantity!.format(f: "1.0") + " kcal")
+            Text(activeEnergyLast24hours!.sumQuantity!.format("1.0") + " kcal")
             
           }
           Text("compared_to_the_past_2_weeks").multilineTextAlignment(.center).lineLimit(nil).foregroundColor(Color.gray).font(.system(size: 12))

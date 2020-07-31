@@ -37,7 +37,7 @@ class AppState: ObservableObject {
   @Published(key: "INSULIN_DURATION_IN_MINUTES") var insulinDurationInMinutes: Double = 360;
   @Published(key: "INSULIN_PEAK_TIME_IN_MINUTES") var insulinPeakTimeInMinutes: Double = 75;
   @Published(key: "INSULIN_INITIAL_UNITS") var insulinInputInitialUnits = 4.0;
-  @Published(key: "INSULIN_STEP_SIZE") var insulinStepSize = 0.5;
+  @Published(key: "INSULIN_STEP_SIZE") var insulinStepSize = 1.0;
   
   @Published(key: "NOTIFY_ON_INSULIN_PEAK_ENABLED") var notifyOnInsulinPeakEnabled = true;
   @Published(key: "NOTIFY_ON_INSULIN_ZERO_ENABLED") var notifyOnInsulinZeroEnabled = false;
@@ -48,7 +48,9 @@ class AppState: ObservableObject {
   @Published(key: "NOTIFICATION_SNOOZE_30_ENABLED") var snooze30Enabled = true;
   @Published(key: "NOTIFICATION_SNOOZE_60_ENABLED") var snooze60Enabled = false;
   
-  @Published var ActivePage: Pages = .chart;
+  @Published var activePage: Pages = .chart;
+  
+  @Published(key: "IS_PREMIUM_UNTIL") var isPremiumUntil: Double = 0;
   
   static var current = AppState();
   

@@ -10,4 +10,8 @@ class SettingsInsulinHostingController: WKHostingController<SettingsInsulinView>
     return SettingsInsulinView(appState: AppState.current)
     // return InsulinInputView(saveAction: saveAction, appState: AppState.current)
   }
+  
+  override func awake(withContext context: Any?) {
+    StoreObserver.current.fetchProducts();
+  }
 }

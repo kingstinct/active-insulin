@@ -43,9 +43,10 @@
 "stats" = "Stats";
 "please_authorize_share" = "Please allow writing of Insulin Delivery in the Health section of the Settings app.";
 "please_authorize_read" = "Please allow reading of Insulin Delivery in the Health section of the Settings app.";
-"please_authorize" = "This app needs your permission to present and update your Health data. We'll send you notifications related to your insulin data";
+"please_authorize" = "We need your permission to access your Health data. We'll send you notifications relevant to your insulin data";
 "allow" = "Allow";
 "Later" = "Later";
 "please_authorize_title" = "Health data & notifications";
 "Enter insulin" = "Enter insulin";
-"insulin_info" = "The bolus insulin curve varies depending on brands and the individual - here you can adjust the values to suit your case";
+"insulin_info" = "Bolus insulin effect varies depending on brands and the individual. Adjust to suit your case";
+"go_premium" = "Go Premium";

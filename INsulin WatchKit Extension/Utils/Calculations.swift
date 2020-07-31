@@ -8,10 +8,8 @@
 
 import WatchKit
 import Foundation
-import SwiftUI
 import HealthKit
 import Combine
-import YOChartImageKit
 
 // as in https://github.com/LoopKit/Loop/issues/388#issuecomment-317938473
 class Calculations {

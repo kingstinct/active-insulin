@@ -11,7 +11,6 @@ import Foundation
 import SwiftUI
 import HealthKit
 import Combine
-import YOChartImageKit
 
 struct ChartPoint: Equatable {
   var date: Date;

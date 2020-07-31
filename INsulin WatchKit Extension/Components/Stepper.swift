@@ -52,14 +52,13 @@ struct Stepper: View {
   }
   var body: some View {
     return HStack {
-      
       Button(action: onButtonMinus) {
         Text("-").bold()
       }.disabled(!(self.value > stepSize)).accentColor(self.value > stepSize
         ? Color(UIColor.magenta)
         : Color(UIColor.magenta.withAlphaComponent(0.8)))
       
-      Text(value.format(f: format))
+      Text(value.format(format))
         .foregroundColor(Color(UIColor.magenta))
         .frame(minWidth: 0, maxWidth: CGFloat.infinity, alignment: .center)
       

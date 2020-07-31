@@ -10,6 +10,9 @@ class SettingsNotificationsHostingController: WKHostingController<SettingsNotifi
   override func didAppear() {
   }
   
+  override func awake(withContext context: Any?) {
+    StoreObserver.current.fetchProducts();
+  }
   
   override var body: SettingsNotificationsView {
     return SettingsNotificationsView(appState: AppState.current)

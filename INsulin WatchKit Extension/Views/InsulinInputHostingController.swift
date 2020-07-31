@@ -12,12 +12,27 @@ import SwiftUI
 import HealthKit
 import Combine
 import YOChartImageKit
+import Intents
 
 class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   var insulin = Double(AppState.current.insulinInputInitialUnits)
   var isHealthKitAuthorized: HKAuthorizationStatus?
   
   var listenToSelf: AnyCancellable?
+  
+  func donate(units: Double){
+    let intent = AddInsulinIntent()
+    intent.suggestedInvocationPhrase = "Add insulin"
+    intent.units = NSNumber(value: units)
+    let interaction = INInteraction(intent: intent, response: nil)
+    interaction.donate { error in
+      if let error = error as NSError? {
+        print("Interaction donation failed: \(error.description)")
+      } else {
+        print("Successfully donated interaction")
+      }
+    }
+  }
   
   func saveAction(units: Double) -> Void {
     let now = Date.init();
@@ -27,9 +42,23 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
     )
     Health.current.healthStore.save(sample) { (success, error) in
       DispatchQueue.main.async {
-        AppState.current.ActivePage = .chart
+        if(success){
+          if(INPreferences.siriAuthorizationStatus() == .authorized){
+            self.donate(units: units);
+          }
+          if(INPreferences.siriAuthorizationStatus() == .notDetermined){
+            INPreferences.requestSiriAuthorization { (status) in
+              if(status == .authorized){
+                self.donate(units: units);
+              }
+            }
+          }
+        
+        
+          AppState.current.activePage = .chart
+        }
+        
       }
-      
     }
   }
   
@@ -38,7 +67,7 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   override func didAppear() {
     print("didAppear: InsulinInput")
     checkForAuth()
-    AppState.current.ActivePage = .insulinInput
+    AppState.current.activePage = .insulinInput
   }
   
   override func willActivate() {
@@ -48,7 +77,7 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   
   override func awake(withContext context: Any?) {
     print("awake: InsulinInput")
-    listenToSelf = AppState.current.$ActivePage.sink { (page) in
+    listenToSelf = AppState.current.$activePage.sink { (page) in
       if(page == .insulinInput){
         self.becomeCurrentPage()
         self.crownSequencer.focus()

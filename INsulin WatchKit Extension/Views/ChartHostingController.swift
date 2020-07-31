@@ -40,7 +40,7 @@ class ChartHostingController: WKHostingController<ChartView> {
   override func awake(withContext context: Any?) {
     print("awake: ChartHostingController")
     
-    listenToSelf = AppState.current.$ActivePage.sink { (page) in
+    listenToSelf = AppState.current.$activePage.sink { (page) in
       if(page == .chart){
         self.becomeCurrentPage()
         // self.crownSequencer.focus()
@@ -97,6 +97,7 @@ class ChartHostingController: WKHostingController<ChartView> {
     }
   }
   
+  
   override func willActivate() {
     print("willActivate: ChartHostingController")
     
@@ -123,11 +124,12 @@ class ChartHostingController: WKHostingController<ChartView> {
   }
   
   override func didAppear() {
+    checkForAuth()
     self.initQuery();
     print("didAppear: ChartHostingController")
     NSUserActivity.displayIOBActivityType().becomeCurrent();
     
-    AppState.current.ActivePage = .chart
+    AppState.current.activePage = .chart
   }
   
   func queryAndUpdateActiveEnergy (handler: @escaping HKObserverQueryCompletionHandler) {

@@ -9,35 +9,49 @@ struct SettingsInsulinView: View {
   var body: some View {
     ScrollView {
       VStack(alignment: .center){
+        Button(action: {
+          if let product = StoreObserver.current.availableProducts.first{
+              StoreObserver.current.makePurchase(product: product)
+          }
+        }, label: {
+          Text("go_premium")
+        })
+        
+        Button(action: {
+          StoreObserver.current.restorePurchases();
+        }, label: {
+          Text("restore_purchases")
+        })
+        
         Text("insulin_info").padding()
         StyledGroup {
           HStack {
             Text("duration")
-            Text(appState.insulinDurationInMinutes.format(f: "1.0") + " " + LocalizedString("min")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+            Text(appState.insulinDurationInMinutes.format("1.0") + " " + LocalizedString("min")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
           }
           Slider(value: $appState.insulinDurationInMinutes, in: ClosedRange(uncheckedBounds: (lower: 200, upper: 600)), step: 5) {
             Text("Insulin Duration")
-          }.accentColor(Color.AccentColor)
+          }.accentColor(Color.AccentColor).disabled(!(appState.isPremiumUntil > Date().timeIntervalSince1970))
         }
         
         StyledGroup {
           HStack {
             Text("peak")
-            Text(appState.insulinPeakTimeInMinutes.format(f: "1.0") + " " + LocalizedString("min")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+            Text(appState.insulinPeakTimeInMinutes.format("1.0") + " " + LocalizedString("min")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
           }
           Slider(value: $appState.insulinPeakTimeInMinutes, in: ClosedRange(uncheckedBounds: (lower: 30, upper: 100)), step: 5) {
             Text("Insulin Duration")
-          }.accentColor(Color.AccentColor)
+          }.accentColor(Color.AccentColor).disabled(!(appState.isPremiumUntil > Date().timeIntervalSince1970))
         }
         
         StyledGroup {
           HStack {
             Text("step_size")
-            Text(appState.insulinStepSize.format(f: "0.1")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+            Text(appState.insulinStepSize.format("0.1")).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
           }
           Slider(value: $appState.insulinStepSize, in: ClosedRange(uncheckedBounds: (lower: 0.5, upper: 1.0)), step: 0.5, minimumValueLabel: Text("0.5"), maximumValueLabel: Text("1")) {
             Text("Insulin Step Size")
-          }.accentColor(Color.AccentColor)
+          }.accentColor(Color.AccentColor).disabled(!(appState.isPremiumUntil > Date().timeIntervalSince1970))
         }
         
       }

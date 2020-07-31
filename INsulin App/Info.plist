@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSUserActivityTypes</key>
-	<array>
-		<string>com.kingstinct.INsulin.displayIOB</string>
-	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSHealthShareUsageDescription</key>
@@ -14,5 +10,10 @@
 	<string>Active Insulin uses Healthkit to store Insulin Data</string>
 	<key>NSSiriUsageDescription</key>
 	<string>Active Insulin uses Siri to display relevant information on the Siri Watchface</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>AddInsulinIntent</string>
+		<string>com.kingstinct.INsulin.displayIOB</string>
+	</array>
 </dict>
 </plist>
