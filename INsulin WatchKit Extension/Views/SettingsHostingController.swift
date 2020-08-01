@@ -20,7 +20,9 @@ class SettingsHostingController: WKHostingController<SettingsView> {
   }
 
   override func didAppear() {
-    AppState.current.activePage = .settings
+    if(AppState.current.activePage != .settings) {
+      AppState.current.activePage = .settings
+    }
   }
   
   

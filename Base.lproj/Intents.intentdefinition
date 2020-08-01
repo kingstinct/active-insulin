@@ -21,6 +21,8 @@
 			<string>create</string>
 			<key>INIntentConfigurable</key>
 			<true/>
+			<key>INIntentDefaultImageName</key>
+			<string>icon</string>
 			<key>INIntentDescription</key>
 			<string>Add Units of Insulin</string>
 			<key>INIntentDescriptionID</key>

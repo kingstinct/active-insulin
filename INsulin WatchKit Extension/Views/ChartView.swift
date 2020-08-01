@@ -31,6 +31,7 @@ struct TrendArrow: View {
 }
 
 struct ChartView: View {
+   @State private var showingAlert = false
   var activeInsulin: Double
   var chartWidth: Double
   var chartHeight: Double
@@ -62,14 +63,27 @@ struct ChartView: View {
             
           }
           
-          Text(LocalizedString("insulin_on_board").uppercased()).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).font(.system(size: 14)).foregroundColor(Color.gray)
-          HStack(alignment: .center) {
-            if(self.optionalData.chartImage != nil){
-              Image(uiImage: self.optionalData.chartImage!)
-            } else {
-              
+          VStack {
+            HStack {
+              Text(LocalizedString("insulin_on_board").uppercased()).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).font(.system(size: 14)).foregroundColor(Color.gray)
+              Image(systemName: "exclamationmark.circle.fill").foregroundColor(Color.gray)
             }
-          }.frame(maxWidth: CGFloat(chartWidth), minHeight: CGFloat(chartHeight), maxHeight: CGFloat(chartHeight), alignment: .center).background(Color.AlmosterBlack).cornerRadius(5)
+            HStack(alignment: .center) {
+              if(self.optionalData.chartImage != nil){
+                Image(uiImage: self.optionalData.chartImage!)
+              } else {
+                
+              }
+            }.frame(maxWidth: CGFloat(chartWidth), minHeight: CGFloat(chartHeight), maxHeight: CGFloat(chartHeight), alignment: .center)
+              .background(Color.AlmosterBlack).cornerRadius(5)
+            
+          }.accentColor(Color.black).onTapGesture {
+            self.showingAlert = true;
+          }.alert(isPresented: $showingAlert,  content: {
+            Alert(title: Text("info"))
+          })
+          
+          
           HStack(alignment: .top, spacing: 0) {
             Text("-1h").font(.system(size: 14)).foregroundColor(Color.gray)
             Text("\(activeInsulin.format("0.1"))").multilineTextAlignment(.center).frame(minWidth: 0, maxWidth: .infinity, alignment: .center).foregroundColor(Color(UIColor.magenta))

@@ -22,9 +22,10 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   
   func donate(units: Double){
     let intent = AddInsulinIntent()
-    intent.suggestedInvocationPhrase = "Add insulin"
+    intent.suggestedInvocationPhrase = "Add " + units.format("1") + " units of insulin"
     intent.units = NSNumber(value: units)
     let interaction = INInteraction(intent: intent, response: nil)
+    interaction.dateInterval = DateInterval(start: Date(), duration: 0);
     interaction.donate { error in
       if let error = error as NSError? {
         print("Interaction donation failed: \(error.description)")
@@ -67,7 +68,9 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   override func didAppear() {
     print("didAppear: InsulinInput")
     checkForAuth()
-    AppState.current.activePage = .insulinInput
+    if(AppState.current.activePage != .insulinInput) {
+      AppState.current.activePage = .insulinInput
+    }
   }
   
   override func willActivate() {

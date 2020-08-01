@@ -5,10 +5,22 @@ class StoreObserver: NSObject, SKPaymentTransactionObserver, SKProductsRequestDe
   var invalidProductIdentifiers = Array<String>();
   
   func request(_ request: SKRequest, didFailWithError error: Error) {
-    
+    print("finished with error")
+  }
+  
+  //Initialize the store observer.
+  override init() {
+    super.init()
+    //Other initialization here.
+    fetchProducts()
+  }
+  
+  func requestDidFinish(_ request: SKRequest) {
+    print("finished")
   }
   
   func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+    
     if !response.products.isEmpty {
       availableProducts = response.products
     }
@@ -22,10 +34,6 @@ class StoreObserver: NSObject, SKPaymentTransactionObserver, SKProductsRequestDe
   let identifiers = ["com.kingstinct.INsulin.premium_monthly", "com.kingstinct.INsulin.premium-monthly"];
   
   static let current = StoreObserver()
-  
-  override init() {
-    super.init()
-  }
   
   func makePurchase(product: SKProduct){
     let payment = SKPayment(product: product);

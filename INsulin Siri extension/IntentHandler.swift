@@ -28,13 +28,15 @@ class AddInsulinIntentHandler : NSObject, AddInsulinIntentHandling {
       completion(nil, nil);
     }
   }*/
+
   
   func resolveUnits(for intent: AddInsulinIntent, with completion: @escaping (AddInsulinUnitsResolutionResult) -> Void) {
     if let units = intent.units as? Double {
-      if(units >= 0.5){
+      if (units >= 0.5) {
         return completion(AddInsulinUnitsResolutionResult.success(with: units));
-      } else if(units < 0){
-        return completion(AddInsulinUnitsResolutionResult.unsupported(forReason: .negativeNumbersNotSupported));
+      } else if(units < 0) {
+        return completion(AddInsulinUnitsResolutionResult
+          .unsupported(forReason: .negativeNumbersNotSupported));
       } else {
         return completion(AddInsulinUnitsResolutionResult.unsupported(forReason: .lessThanMinimumValue));
       }
@@ -54,7 +56,6 @@ class AddInsulinIntentHandler : NSObject, AddInsulinIntentHandling {
         } else {
           completion(AddInsulinIntentResponse(code: .failure, userActivity: nil))
         }
-        
       }
     } else {
       completion(AddInsulinIntentResponse(code: .failure, userActivity: nil))
@@ -77,6 +78,7 @@ class AddInsulinIntentHandler : NSObject, AddInsulinIntentHandling {
 }
 
 class IntentHandler: INExtension {
+  
     
     override func handler(for intent: INIntent) -> Any {
       if intent is AddInsulinIntent {

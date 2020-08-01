@@ -51,6 +51,9 @@ class ChartHostingController: WKHostingController<ChartView> {
   }
   
   func initQuery(){
+    self.queryAndUpdateActiveInsulin {
+      
+    }
     timer = Timer.init(timeInterval: TimeInterval(60), repeats: true, block: { (_) in
       self.queryAndUpdateActiveInsulin {
         
@@ -129,7 +132,10 @@ class ChartHostingController: WKHostingController<ChartView> {
     print("didAppear: ChartHostingController")
     NSUserActivity.displayIOBActivityType().becomeCurrent();
     
-    AppState.current.activePage = .chart
+    if(AppState.current.activePage != .chart) {
+      AppState.current.activePage = .chart
+    }
+    
   }
   
   func queryAndUpdateActiveEnergy (handler: @escaping HKObserverQueryCompletionHandler) {
