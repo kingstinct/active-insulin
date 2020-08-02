@@ -145,24 +145,25 @@ class ChartHostingController: WKHostingController<ChartView> {
   }
   
   func queryAndUpdateActiveEnergy (handler: @escaping HKObserverQueryCompletionHandler) {
-    Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24 * 14)) { (error, response) in
-      self.activeEnergyLast2weeks = response;
-      self.setNeedsBodyUpdate()
-    }
     Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24)) { (error, response) in
+      
       self.activeEnergyLast24Hours = response;
-      self.setNeedsBodyUpdate()
+      self.setNeedsBodyUpdate();
+    }
+    Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24 * 15), end: Date().addHours(addHours: -24 * 1)) { (error, response) in
+      self.activeEnergyLast2weeks = response;
+      self.setNeedsBodyUpdate();
     }
   }
   
   func queryAndUpdateActiveInsulin (handler: @escaping HKObserverQueryCompletionHandler) {
     Health.current.fetchInsulinStats(start: Date().addHours(addHours: -24)) { (error, response) in
       self.insulinLast24Hours = response;
-      self.setNeedsBodyUpdate()
+      self.setNeedsBodyUpdate();
     }
-    Health.current.fetchInsulinStats(start: Date().addHours(addHours: -24 * 14)) { (error, response) in
+    Health.current.fetchInsulinStats(start: Date().addHours(addHours: -24 * 15), end: Date().addHours(addHours: -24 * 1)) { (error, response) in
       self.insulinLast2weeks = response;
-      self.setNeedsBodyUpdate()
+      self.setNeedsBodyUpdate();
     }
     
     /*Health.current.fetchInsulinStats(start: Date().addHours(addHours: -24 * 28), end: Date().addHours(addHours: -24 * 14)) { (error, response) in
@@ -203,10 +204,12 @@ class ChartHostingController: WKHostingController<ChartView> {
                      chartWidth: chartWidth,
                      chartHeight: chartHeight,
                      isHealthKitAuthorized: isHealthkitAuthorized,
-                     activeEnergyLast2Weeks: activeEnergyLast2weeks?.sumQuantity ?? 0,
+                     activeEnergyLast2Weeks: activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyLast2weeks?.totalDays != nil && activeEnergyLast2weeks!.totalDays! > 1 ? activeEnergyLast2weeks!.sumQuantity! / activeEnergyLast2weeks!.totalDays! : 0,
                      activeEnergyLast24Hours: activeEnergyLast24Hours?.sumQuantity ?? 0,
-                     insulinUnitsLast2Weeks: insulinLast2weeks?.sumQuantity ?? 0,
+                     insulinUnitsLast2Weeks: insulinLast2weeks?.sumQuantity != nil && insulinLast2weeks?.totalDays != nil && insulinLast2weeks!.totalDays! > 2 ? insulinLast2weeks!.sumQuantity! / ceil(insulinLast2weeks!.totalDays!) : 0,
                      insulinUnitsLast24Hours: insulinLast24Hours?.sumQuantity ?? 0,
+                     daysOfDataInsulin: insulinLast2weeks?.totalDays ?? 0,
+                     daysOfDataActiveEnergy: activeEnergyLast2weeks?.totalDays ?? 0,
                      appState: AppState.current,
                      optionalData: optionalData
     )

@@ -53,7 +53,14 @@ class AddInsulinIntentHandler : NSObject, AddInsulinIntentHandling {
     
       Health.current.healthStore.save(sample) { (success, error) in
         if(success){
-          completion(AddInsulinIntentResponse(code: .success, userActivity: nil))
+          Health.current.fetchIOB { (error, iob) in
+            if let iob = iob {
+              completion(AddInsulinIntentResponse.success(insulinOnBoard: NSNumber(value: iob)))
+            } else {
+              completion(AddInsulinIntentResponse(code: .success, userActivity: nil))
+            }
+          }
+          
         } else {
           completion(AddInsulinIntentResponse(code: .failure, userActivity: nil))
         }

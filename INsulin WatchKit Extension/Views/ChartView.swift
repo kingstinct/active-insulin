@@ -40,6 +40,8 @@ struct ChartView: View {
   var activeEnergyLast24Hours: Double;
   var insulinUnitsLast2Weeks: Double;
   var insulinUnitsLast24Hours: Double;
+  var daysOfDataInsulin: Double;
+  var daysOfDataActiveEnergy: Double;
   @ObservedObject var appState: AppState
   @ObservedObject var optionalData: OptionalData
   
@@ -89,7 +91,7 @@ struct ChartView: View {
           
         }
         
-        if(insulinUnitsLast24Hours > 0 && insulinUnitsLast2Weeks > 0){
+        if(insulinUnitsLast24Hours > 0){
           Divider()
           HStack {
             Text(LocalizedString("units_of_insulin").uppercased()).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).foregroundColor(Color.gray).font(.system(size: 14))
@@ -99,13 +101,15 @@ struct ChartView: View {
             Text(insulinUnitsLast24Hours.format("1.0")).foregroundColor(Color.AccentColor)
             Text( LocalizedString("past_24h") ).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing).foregroundColor(Color.gray).font(.system(size: 14))
           }
-          HStack {
-            Text(insulinUnitsLast2Weeks.format("1.0")).foregroundColor(Color.AccentColor)
-            Text( LocalizedString("past_2_weeks") ).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing).foregroundColor(Color.gray).font(.system(size: 14))
+          if(daysOfDataInsulin > 1 && insulinUnitsLast2Weeks > 0){
+            HStack {
+              Text(insulinUnitsLast2Weeks.format("1.0")).foregroundColor(Color.AccentColor)
+              Text( LocalizedString("past_2_weeks") ).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing).foregroundColor(Color.gray).font(.system(size: 14))
+            }
           }
         }
         
-        if(activeEnergyLast2Weeks > 0 && activeEnergyLast24Hours > 0){
+        if(activeEnergyLast2Weeks > 0 && activeEnergyLast24Hours > 0 && daysOfDataActiveEnergy > 1){
           Divider()
           HStack {
             Text( LocalizedString("activity").uppercased()).foregroundColor(Color.gray).font(.system(size: 14))
@@ -114,14 +118,14 @@ struct ChartView: View {
           
           
           HStack {
-            TrendArrow(value: activeEnergyLast24Hours, compareWith: activeEnergyLast2Weeks / 14)
+            TrendArrow(value: activeEnergyLast24Hours, compareWith: activeEnergyLast2Weeks)
             Text(
                 (
                   Double(
-                    100 * activeEnergyLast24Hours / (activeEnergyLast2Weeks / 14)) - 100
+                    100 * activeEnergyLast24Hours / activeEnergyLast2Weeks) - 100
                 ).format("1.0") + "%"
               )
-              .foregroundColor(Color.green)
+              .foregroundColor(activeEnergyLast24Hours > activeEnergyLast2Weeks ? Color.green : activeEnergyLast24Hours < activeEnergyLast2Weeks ? Color.red : Color.white)
               .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
             Text(activeEnergyLast24Hours.format("1.0") + " kcal")
             
@@ -146,6 +150,6 @@ struct ChartView_Previews: PreviewProvider {
     let energyPrevious2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 4000)
     let energyLast24hours = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 400)*/
     
-    return ChartView(insulinOnBoard: 5, chartWidth: Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: 100, isHealthKitAuthorized: .unnecessary, activeEnergyLast2Weeks: 280, activeEnergyLast24Hours: 500, insulinUnitsLast2Weeks: 6900, insulinUnitsLast24Hours: 20, appState: AppState.current, optionalData: optionalData)
+    return ChartView(insulinOnBoard: 5, chartWidth: Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: 100, isHealthKitAuthorized: .unnecessary, activeEnergyLast2Weeks: 280, activeEnergyLast24Hours: 500, insulinUnitsLast2Weeks: 6900, insulinUnitsLast24Hours: 20, daysOfDataInsulin: 7, daysOfDataActiveEnergy: 10, appState: AppState.current, optionalData: optionalData)
   }
 }

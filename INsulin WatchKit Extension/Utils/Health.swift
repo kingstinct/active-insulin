@@ -20,11 +20,15 @@ struct ChartPoint: Equatable {
 
 struct StatsResponse {
   // var averageQuantity: Double?;
+  
   var maximumQuantity: Double?;
   // var minimumQuantity: Double?;
   var mostRecentQuantity: Double?;
   var mostRecentTime: Date?;
   var sumQuantity: Double?;
+  var startDate: Date;
+  var endDate: Date;
+  var totalDays: Double?;
 }
 
 class Health {
@@ -136,11 +140,12 @@ class Health {
    }*/
   
   
-  func fetchInsulinStats(start: Date, end: Date? = nil, callback: @escaping (Error?, StatsResponse) -> Void) {
+  func fetchInsulinStats(start: Date, end: Date = Date(), callback: @escaping (Error?, StatsResponse?) -> Void) {
     let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: []);
     
-    let query = HKStatisticsQuery.init(quantityType: insulinQuantityType, quantitySamplePredicate: predicate, options: [.cumulativeSum, .mostRecent, /*.discreteMax*/]) { (_, stats, error) in
+    let query = HKStatisticsQuery.init(quantityType: insulinQuantityType, quantitySamplePredicate: predicate, options: [.cumulativeSum, .mostRecent, .duration /*.discreteMax*/]) { (_, stats, error) in
       if let stats = stats {
+        let totalDays = stats.startDate.distance(to: stats.endDate) / (60 * 60 * 24)
         return callback(
           nil,
           StatsResponse(
@@ -149,22 +154,26 @@ class Health {
             //minimumQuantity: stats.minimumQuantity()?.doubleValue(for: HKUnit.internationalUnit()),
             mostRecentQuantity: stats.mostRecentQuantity()?.doubleValue(for: HKUnit.internationalUnit()),
             mostRecentTime: stats.mostRecentQuantityDateInterval()?.start,
-            sumQuantity: stats.sumQuantity()?.doubleValue(for: HKUnit.internationalUnit())
+            sumQuantity: stats.sumQuantity()?.doubleValue(for: HKUnit.internationalUnit()),
+            startDate: stats.startDate,
+            endDate: stats.endDate,
+            totalDays: totalDays
           )
         )
       }
       else {
-        callback(error, StatsResponse());
+        callback(error, nil);
       }
     }
     healthStore.execute(query);
   }
   
-  func fetchActiveEnergyStats(start: Date, end: Date? = nil, callback: @escaping (Error?, StatsResponse) -> Void) {
+  func fetchActiveEnergyStats(start: Date, end: Date? = nil, callback: @escaping (Error?, StatsResponse?) -> Void) {
     let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: []);
     
-    let query = HKStatisticsQuery.init(quantityType: activeEnergyQuantityType, quantitySamplePredicate: predicate, options: [.cumulativeSum, .mostRecent]) { (_, stats, error) in
+    let query = HKStatisticsQuery.init(quantityType: activeEnergyQuantityType, quantitySamplePredicate: predicate, options: [.cumulativeSum, .mostRecent, .duration]) { (_, stats, error) in
       if let stats = stats {
+        let totalDays = stats.startDate.distance(to: stats.endDate) / (60 * 60 * 24)
         return callback(
           nil,
           StatsResponse(
@@ -173,12 +182,15 @@ class Health {
             //minimumQuantity: stats.minimumQuantity()?.doubleValue(for: HKUnit.internationalUnit()),
             mostRecentQuantity: stats.mostRecentQuantity()?.doubleValue(for: HKUnit.kilocalorie()),
             mostRecentTime: stats.mostRecentQuantityDateInterval()?.start,
-            sumQuantity: stats.sumQuantity()?.doubleValue(for: HKUnit.kilocalorie())
+            sumQuantity: stats.sumQuantity()?.doubleValue(for: HKUnit.kilocalorie()),
+            startDate: stats.startDate,
+            endDate: stats.endDate,
+            totalDays: totalDays
           )
         )
       }
       else {
-        callback(error, StatsResponse());
+        callback(error, nil);
       }
     }
     healthStore.execute(query);
