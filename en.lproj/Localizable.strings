@@ -7,8 +7,8 @@
 */
 
 
-"insulin_on_board" = "Insulin on Board";
-"insulin_on_board_short" = "IOB";
+"insulin_on_board" = "Bolus on Board";
+"insulin_on_board_short" = "BOB";
 "units_of_insulin" = "Insulin Units";
 "save" = "Save";
 "app_name" = "Active Insulin";
@@ -51,3 +51,4 @@
 "insulin_info" = "Bolus insulin effect varies depending on brands and the individual. Adjust to suit your case";
 "go_premium" = "Go Premium";
 "restore_purchases" = "Restore Purchases";
+"iob_info_text" = "Bolus on Board is an estimation of how much injected bolus insulin is still to affect your Blood Glucose. Consult with your physician and configure the peak time and duration in settings depending on your insulin and you as an individual.";

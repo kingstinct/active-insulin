@@ -50,6 +50,7 @@ class AddInsulinIntentHandler : NSObject, AddInsulinIntentHandling {
       let sample = HKQuantitySample.init(type: Health.current.insulinQuantityType, quantity: HKQuantity(unit: HKUnit.internationalUnit(), doubleValue: units), start: now, end: now,
                                          metadata: [HKMetadataKeyInsulinDeliveryReason : HKInsulinDeliveryReason.bolus.rawValue]
       )
+    
       Health.current.healthStore.save(sample) { (success, error) in
         if(success){
           completion(AddInsulinIntentResponse(code: .success, userActivity: nil))

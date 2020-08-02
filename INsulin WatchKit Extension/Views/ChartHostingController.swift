@@ -25,10 +25,8 @@ class ChartHostingController: WKHostingController<ChartView> {
   let chartHeight: Double = 100;
   var insulinLast24Hours: StatsResponse? = nil
   var insulinLast2weeks: StatsResponse? = nil
-  var insulinPrevious2weeks: StatsResponse? = nil
   var activeEnergyLast24Hours: StatsResponse? = nil
   var activeEnergyLast2weeks: StatsResponse? = nil
-  var activeEnergyPrevious2weeks: StatsResponse? = nil
   var timer: Timer? = nil;
   
   var isHealthkitAuthorized: HKAuthorizationRequestStatus?
@@ -105,6 +103,11 @@ class ChartHostingController: WKHostingController<ChartView> {
     print("willActivate: ChartHostingController")
     
     checkForAuth()
+    self.initQuery();
+    
+    if(AppState.current.activePage != .chart) {
+      AppState.current.activePage = .chart
+    }
   }
   
   override func didDeactivate() {
@@ -128,7 +131,10 @@ class ChartHostingController: WKHostingController<ChartView> {
   
   override func didAppear() {
     checkForAuth()
-    self.initQuery();
+    self.queryAndUpdateActiveInsulin {
+      
+    }
+    
     print("didAppear: ChartHostingController")
     NSUserActivity.displayIOBActivityType().becomeCurrent();
     
@@ -193,28 +199,16 @@ class ChartHostingController: WKHostingController<ChartView> {
   override var body: ChartView {
     let optionalData = OptionalData();
     optionalData.chartImage = self.image;
-    return ChartView(activeInsulin: activeInsulin,
+    return ChartView(insulinOnBoard: activeInsulin,
                      chartWidth: chartWidth,
                      chartHeight: chartHeight,
-                     insulinLast2weeks: insulinLast2weeks,
-                     insulinLast24hours: insulinLast24Hours,
-                     insulinPrevious2weeks: insulinPrevious2weeks,
-                     activeEnergyLast2weeks: activeEnergyLast2weeks,
-                     activeEnergyPrevious2weeks: activeEnergyPrevious2weeks,
-                     activeEnergyLast24hours: activeEnergyLast24Hours,
                      isHealthKitAuthorized: isHealthkitAuthorized,
+                     activeEnergyLast2Weeks: activeEnergyLast2weeks?.sumQuantity ?? 0,
+                     activeEnergyLast24Hours: activeEnergyLast24Hours?.sumQuantity ?? 0,
+                     insulinUnitsLast2Weeks: insulinLast2weeks?.sumQuantity ?? 0,
+                     insulinUnitsLast24Hours: insulinLast24Hours?.sumQuantity ?? 0,
                      appState: AppState.current,
-                     optionalData: optionalData)
+                     optionalData: optionalData
+    )
   }
 }
-
-struct ChartHostingController_Previews: PreviewProvider {
-  static var previews: some View {
-    let optionalData = OptionalData();
-    let width = Double(WKInterfaceDevice.current().screenBounds.width);
-    let height = 100.0;
-    return ChartView(activeInsulin: 5, chartWidth: width, chartHeight: height, appState: AppState.current, optionalData: optionalData)
-  }
-}
-
-

@@ -20,21 +20,6 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   
   var listenToSelf: AnyCancellable?
   
-  func donate(units: Double){
-    let intent = AddInsulinIntent()
-    intent.suggestedInvocationPhrase = "Add " + units.format("1") + " units of insulin"
-    intent.units = NSNumber(value: units)
-    let interaction = INInteraction(intent: intent, response: nil)
-    interaction.dateInterval = DateInterval(start: Date(), duration: 0);
-    interaction.donate { error in
-      if let error = error as NSError? {
-        print("Interaction donation failed: \(error.description)")
-      } else {
-        print("Successfully donated interaction")
-      }
-    }
-  }
-  
   func saveAction(units: Double) -> Void {
     let now = Date.init();
     
@@ -45,12 +30,12 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
       DispatchQueue.main.async {
         if(success){
           if(INPreferences.siriAuthorizationStatus() == .authorized){
-            self.donate(units: units);
+            AddInsulinIntent.donate(units: units);
           }
           if(INPreferences.siriAuthorizationStatus() == .notDetermined){
             INPreferences.requestSiriAuthorization { (status) in
               if(status == .authorized){
-                self.donate(units: units);
+                AddInsulinIntent.donate(units: units);
               }
             }
           }
@@ -76,6 +61,9 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   override func willActivate() {
     print("willActivate: InsulinInput")
     checkForAuth()
+    if(AppState.current.activePage != .insulinInput) {
+      AppState.current.activePage = .insulinInput
+    }
   }
   
   override func awake(withContext context: Any?) {
@@ -85,7 +73,7 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
         self.becomeCurrentPage()
         self.crownSequencer.focus()
       } else {
-        self.crownSequencer.resignFocus()
+        // self.crownSequencer.resignFocus()
       }
     }
   }
