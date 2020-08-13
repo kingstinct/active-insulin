@@ -14,15 +14,21 @@ import Combine
 import YOChartImageKit
 
 class SettingsHostingController: WKHostingController<SettingsView> {
+  var listenToSelf: AnyCancellable? = nil;
   
   override func awake(withContext context: Any?) {
-    
+    listenToSelf = AppState.current.$activePage.sink { (page) in
+      if(page == .settings){
+        self.becomeCurrentPage()
+        // self.crownSequencer.focus()
+      } else {
+        // self.crownSequencer.resignFocus()
+      }
+    }
   }
 
   override func didAppear() {
-    if(AppState.current.activePage != .settings) {
-      AppState.current.activePage = .settings
-    }
+
   }
   
   

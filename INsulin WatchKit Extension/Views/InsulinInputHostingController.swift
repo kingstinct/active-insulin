@@ -32,6 +32,7 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
           if(INPreferences.siriAuthorizationStatus() == .authorized){
             AddInsulinIntent.donate(units: units);
           }
+
           if(INPreferences.siriAuthorizationStatus() == .notDetermined){
             INPreferences.requestSiriAuthorization { (status) in
               if(status == .authorized){
@@ -53,17 +54,17 @@ class InsulinInputHostingController: WKHostingController<InsulinInputView> {
   override func didAppear() {
     print("didAppear: InsulinInput")
     checkForAuth()
-    if(AppState.current.activePage != .insulinInput) {
+    /*if(AppState.current.activePage != .insulinInput) {
       AppState.current.activePage = .insulinInput
-    }
+    }*/
   }
   
   override func willActivate() {
     print("willActivate: InsulinInput")
     checkForAuth()
-    if(AppState.current.activePage != .insulinInput) {
+    /*if(AppState.current.activePage != .insulinInput) {
       AppState.current.activePage = .insulinInput
-    }
+    }*/
   }
   
   override func awake(withContext context: Any?) {

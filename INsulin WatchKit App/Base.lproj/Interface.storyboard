@@ -49,6 +49,13 @@
             </objects>
             <point key="canvasLocation" x="621" y="291"/>
         </scene>
+        <!--InjectionView-->
+        <scene sceneID="7cm-2u-fkP">
+            <objects>
+                <hostingController identifier="InjectionView" id="gkG-sG-Abg" customClass="InjectionHostingController" customModule="INsulin_WatchKit_Extension"/>
+            </objects>
+            <point key="canvasLocation" x="715" y="-543"/>
+        </scene>
     </scenes>
     <color key="tintColor" name="AccentColor"/>
     <resources>

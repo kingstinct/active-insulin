@@ -370,15 +370,19 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     var template: CLKComplicationTemplate?;
     
     if(self.advancedFamilies.contains(complication.family)){
-      var injections = Array<(Date, Double)>();
-      injections.append((Date(), 5));
+      var injections = Array<Injection>();
+      injections.append(Injection(date: Date(), insulinUnits: 5))
       
       let data = Health.current.buildChartData(injections: injections,
                                                from: Date().addHours(addHours: -1),
                                                to: Date().addHours(addHours: 5),
                                                minuteResolution: 2);
       
-      template = self.getTemplateWithChart(for: complication, iob: 5, unfilteredVals: data)
+      template = self.getTemplateWithChart(
+        for: complication,
+        iob: 5,
+        unfilteredVals: data
+      )
     }
     
     

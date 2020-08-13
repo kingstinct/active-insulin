@@ -12,6 +12,12 @@ import SwiftUI
 import HealthKit
 import Combine
 
+struct Injection {
+  var date: Date;
+  var insulinUnits: Double;
+  var quantitySample: HKQuantitySample?;
+}
+
 struct ChartPoint: Equatable {
   var date: Date;
   var insulinOnBoard: Double;
@@ -54,6 +60,24 @@ class Health {
     }) // ?.index(forKey: HKMetadataKeyInsulinDeliveryReason) == HKInsulinDeliveryReason.basal
   }
   
+  func iobFromValues(forTime: Date = Date(), injections: Array<Injection>) -> Double {
+    return injections.reduce(0) { (acc, injection) -> Double in
+      let minutesAgo = -injection.date.timeIntervalSince(forTime) / 60;
+      if(minutesAgo <= Double(AppState.current.insulinDurationInMinutes)){
+        let iobFactor = Calculations.iobCurve(t: minutesAgo, peakTimeInMinutes: Double(AppState.current.insulinPeakTimeInMinutes), totalDurationInMinutes: Double(AppState.current.insulinDurationInMinutes));
+        let activeInsulinLeft = injection.insulinUnits * iobFactor;
+        return activeInsulinLeft + acc;
+      }
+      return acc;
+    }
+  }
+  
+  func deleteSample(sample: HKQuantitySample, callback: @escaping (_ error: Error?) -> Void) -> Void {
+    healthStore.delete(sample) { (success, error) in
+      callback(error);
+    }
+  }
+  
   func fetchIOB(forTime: Date = Date(), callback: @escaping (Error?, Double?) -> Void) -> Void {
     
     let from = forTime.addMinutes(addMinutes: -Double(AppState.current.insulinDurationInMinutes));
@@ -63,17 +87,11 @@ class Health {
         callback(e, nil)
       } else {
         if let samples = _samples as? [HKQuantitySample] {
-          var totalActiveInsulinLeft: Double = 0;
-          
-          for sample in samples.filter(self.filterBolusSample) {
-            let quantity = sample.quantity.doubleValue(for: HKUnit.internationalUnit());
-            let minutesAgo = -sample.startDate.timeIntervalSince(forTime) / 60;
-            if(minutesAgo <= Double(AppState.current.insulinDurationInMinutes)){
-              let iobFactor = Calculations.iobCurve(t: minutesAgo, peakTimeInMinutes: Double(AppState.current.insulinPeakTimeInMinutes), totalDurationInMinutes: Double(AppState.current.insulinDurationInMinutes));
-              let activeInsulinLeft = quantity * iobFactor;
-              totalActiveInsulinLeft += activeInsulinLeft;
-            }
+          let injections = samples.filter(self.filterBolusSample).map { (sample) -> Injection in
+            return Injection(date: sample.startDate, insulinUnits: sample.quantity.doubleValue(for: HKUnit.internationalUnit()), quantitySample: sample);
           }
+          
+          let totalActiveInsulinLeft = self.iobFromValues(forTime: forTime, injections: injections);
           
           DispatchQueue.main.async {
             callback(nil, totalActiveInsulinLeft)
@@ -196,6 +214,25 @@ class Health {
     healthStore.execute(query);
   }
   
+  func fetchInjections(from: Date, to: Date = Date(), callback: @escaping (Error?, Array<Injection>?) -> Void) {
+    
+    let query = HKSampleQuery.init(sampleType: insulinQuantityType, predicate: HKQuery.predicateForSamples(withStart: from, end: to, options: []), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (q, _samples, error) in
+      if let e = error {
+        callback(e, nil)
+      } else {
+        if let unfilteredSamples = _samples as? [HKQuantitySample] {
+          let samples = unfilteredSamples.filter(self.filterBolusSample)
+            .map { (sample) -> Injection in
+              return Injection(date: sample.startDate, insulinUnits: sample.quantity.doubleValue(for: HKUnit.internationalUnit()), quantitySample: sample)
+          }
+          callback(nil, samples)
+        }
+      }
+    }
+    
+    healthStore.execute(query);
+  }
+  
   func fetchTimelineIOB(from: Date = Date(), limit: Int = 100, callback: @escaping (Error?, Array<(Date, Double)>?) -> Void) -> Void {
     // let from = Date.init(timeIntervalSinceNow: TimeInterval(exactly: -totalDurationInMinutes * 60)!)
     let queryFrom = from.addMinutes(addMinutes: -AppState.current.insulinDurationInMinutes);
@@ -293,7 +330,7 @@ class Health {
    
    }*/
   
-  func buildChartData (injections: Array<(Date, Double)>, from: Date, to: Date, minuteResolution: Double) -> Array<ChartPoint> {
+  func buildChartData (injections: Array<Injection>, from: Date, to: Date, minuteResolution: Double) -> Array<ChartPoint> {
     var futureMinute: Double = 0;
     var retVal = Array<ChartPoint>();
     while(futureMinute <= to.timeIntervalSince(from) / 60){
@@ -301,16 +338,16 @@ class Health {
       var insulinOnBoard: Double = 0;
       var currentInsulin: Double = 0;
       
-      for (sampleDate, quantity) in injections {
-        let minutesAgo = -sampleDate.timeIntervalSince(date) / 60;
+      for injection in injections {
+        let minutesAgo = -injection.date.timeIntervalSince(date) / 60;
         if(minutesAgo <= Double(AppState.current.insulinDurationInMinutes) && minutesAgo >= 0){
           let activityRightNow = -Calculations.insulinActivityCurve(t: minutesAgo, peakTimeInMinutes: Double(AppState.current.insulinPeakTimeInMinutes), totalDurationInMinutes: Double(AppState.current.insulinDurationInMinutes));
           
           let iobFactor = Calculations.iobCurve(t: minutesAgo, peakTimeInMinutes: Double(AppState.current.insulinPeakTimeInMinutes), totalDurationInMinutes: Double(AppState.current.insulinDurationInMinutes));
-          let iob = quantity * iobFactor;
+          let iob = injection.insulinUnits * iobFactor;
           insulinOnBoard += iob;
           
-          let activeInsulinLeft = quantity * activityRightNow;
+          let activeInsulinLeft = injection.insulinUnits * activityRightNow;
           currentInsulin += activeInsulinLeft > 0 ? activeInsulinLeft : 0;
         }
       }
@@ -332,8 +369,8 @@ class Health {
         callback(e, []);
       } else {
         if let unfilteredSamples = _samples as? [HKQuantitySample] {
-          let samples = unfilteredSamples.filter(self.filterBolusSample).map { (sample) -> (Date, Double) in
-            return (sample.startDate, sample.quantity.doubleValue(for: HKUnit.internationalUnit()))
+          let samples = unfilteredSamples.filter(self.filterBolusSample).map { (sample) -> Injection in
+            return Injection(date: sample.startDate, insulinUnits: sample.quantity.doubleValue(for: HKUnit.internationalUnit()), quantitySample: sample)
           };
           let retVal = self.buildChartData(injections: samples, from: from, to: to, minuteResolution: minuteResolution)
           /*var futureMinute: Double = 0;

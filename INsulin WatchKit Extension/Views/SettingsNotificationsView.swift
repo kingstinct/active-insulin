@@ -19,7 +19,7 @@ struct SettingsNotificationsView: View {
   var body: some View {
     ScrollView {
       VStack(alignment: .center){
-        Button(action: {
+        /*Button(action: {
           if let product = StoreObserver.current.availableProducts.first{
             StoreObserver.current.makePurchase(product: product)
           }
@@ -31,7 +31,7 @@ struct SettingsNotificationsView: View {
           StoreObserver.current.restorePurchases();
         }, label: {
           Text("restore_purchases")
-        })
+        })*/
         Toggle(isOn: $appState.notifyOnInsulinPeakEnabled){
           Text("notification_peak_title")
         }.padding().accentColor(Color(UIColor.magenta))/*.onReceive(Just(peakInsulinEnabled)) { (value) in
@@ -41,7 +41,7 @@ struct SettingsNotificationsView: View {
         }*/
         Toggle(isOn: $appState.notifyOnInsulinZeroEnabled){
           Text("no_insulin")
-        }.padding().disabled(!(appState.isPremiumUntil > Date().timeIntervalSince1970))
+        }.padding()
         /*StyledGroup {
           Toggle(isOn:  $appState.notifyOnCustomEnabled){
             Text(appState.notifyOnCustomMinutes.format(f: "1.0") + " " + NSLocalizedString("min", comment: "Minutes"))
@@ -54,13 +54,13 @@ struct SettingsNotificationsView: View {
           Text("snooze_options").bold()
           Toggle(isOn: $appState.snooze15Enabled){
             Text("15" + LocalizedString("min"))
-          }.padding().disabled(!(appState.isPremiumUntil > Date().timeIntervalSince1970))
+          }.padding()
           Toggle(isOn: $appState.snooze30Enabled){
             Text("30" + LocalizedString("min"))
           }.padding()
           Toggle(isOn:  $appState.snooze60Enabled){
             Text("60" + LocalizedString("min"))
-          }.padding().disabled(!(appState.isPremiumUntil > Date().timeIntervalSince1970))
+          }.padding()
         }
         
         /*Picker(selection: $value, label: "Step Size") {

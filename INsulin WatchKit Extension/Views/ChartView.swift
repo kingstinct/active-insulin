@@ -14,7 +14,6 @@ class OptionalData: ObservableObject {
   @Published var chartImage: UIImage?
 }
 
-
 struct TrendArrow: View {
   var value: Double;
   var compareWith: Double;
@@ -39,15 +38,17 @@ struct ChartView: View {
   var activeEnergyLast2Weeks: Double;
   var activeEnergyLast24Hours: Double;
   var insulinUnitsLast2Weeks: Double;
+  var openInjectionDetails: ((_ injection: Injection)->Void)? = nil;
   var insulinUnitsLast24Hours: Double;
   var daysOfDataInsulin: Double;
   var daysOfDataActiveEnergy: Double;
+  var timeFormatter: DateFormatter;
+  var injections: Array<Injection>? = nil
   @ObservedObject var appState: AppState
   @ObservedObject var optionalData: OptionalData
   
   @ViewBuilder
   var body: some View {
-    
     if(isHealthKitAuthorized == HKAuthorizationRequestStatus.unknown){
       Text(LocalizedString("please_authorize_read"))
     } else {
@@ -74,7 +75,7 @@ struct ChartView: View {
                 
               }
             }.frame(maxWidth: CGFloat(chartWidth), minHeight: CGFloat(chartHeight), maxHeight: CGFloat(chartHeight), alignment: .center)
-              .background(Color.AlmosterBlack).cornerRadius(5)
+              .background(Color.AlmostBlack).cornerRadius(5)
             
           }.accentColor(Color.black).onTapGesture {
             self.showingAlert = true;
@@ -98,12 +99,12 @@ struct ChartView: View {
           }
           
           HStack {
-            Text(insulinUnitsLast24Hours.format("1.0")).foregroundColor(Color.AccentColor)
+            Text(insulinUnitsLast24Hours.format("0.1")).foregroundColor(Color.AccentColor)
             Text( LocalizedString("past_24h") ).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing).foregroundColor(Color.gray).font(.system(size: 14))
           }
           if(daysOfDataInsulin > 1 && insulinUnitsLast2Weeks > 0){
             HStack {
-              Text(insulinUnitsLast2Weeks.format("1.0")).foregroundColor(Color.AccentColor)
+              Text(insulinUnitsLast2Weeks.format("0.1")).foregroundColor(Color.AccentColor)
               Text( LocalizedString("past_2_weeks") ).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing).foregroundColor(Color.gray).font(.system(size: 14))
             }
           }
@@ -130,10 +131,48 @@ struct ChartView: View {
             Text(activeEnergyLast24Hours.format("1.0") + " kcal")
             
           }
-          Text("compared_to_the_past_2_weeks").multilineTextAlignment(.center).lineLimit(nil).foregroundColor(Color.gray).font(.system(size: 12))
+          Text("compared_to_the_past_2_weeks")
+            .multilineTextAlignment(.center)
+            .lineLimit(nil)
+            .foregroundColor(Color.gray)
+            .font(.system(size: 12))
         }
         
-        
+        Divider()
+        HStack {
+          Text( LocalizedString("Injections").uppercased()).foregroundColor(Color.gray).font(.system(size: 14)).multilineTextAlignment(.leading).frame(minWidth:0, maxWidth: .infinity, alignment: .leading)
+        }
+        ForEach(injections ?? [], id: \.date) { (injection) in
+          Button(action: {
+            self.openInjectionDetails?(injection)
+          }) {
+            VStack {
+              HStack {
+                Text(
+                  injection.insulinUnits.format("0.1")
+                )
+                  .frame(
+                    minWidth:0,
+                    maxWidth: .infinity,
+                    alignment: .leading)
+                  .foregroundColor(Color.AccentColor)
+                Text(
+                  self.timeFormatter.string(from: injection.date)
+                )
+                  .frame(
+                    minWidth:0,
+                    maxWidth: .infinity,
+                    alignment: .trailing)
+                  .foregroundColor(Color.gray)
+                  .font(.system(size: 12))
+              }
+              // .padding()
+              //.background(Color.AlmostBlack)
+              .cornerRadius(10)
+            }.padding(3)
+          }
+          
+        }
       }.navigationBarTitle(LocalizedStringKey("stats"))
     }
   }
@@ -149,7 +188,15 @@ struct ChartView_Previews: PreviewProvider {
     let energyLast2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 5000)
     let energyPrevious2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 4000)
     let energyLast24hours = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 400)*/
+    let timeFormatter = DateFormatter();
+    timeFormatter.dateFormat = "HH:mm";
     
-    return ChartView(insulinOnBoard: 5, chartWidth: Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: 100, isHealthKitAuthorized: .unnecessary, activeEnergyLast2Weeks: 280, activeEnergyLast24Hours: 500, insulinUnitsLast2Weeks: 6900, insulinUnitsLast24Hours: 20, daysOfDataInsulin: 7, daysOfDataActiveEnergy: 10, appState: AppState.current, optionalData: optionalData)
+    let injections = [
+      Injection(date: Date(), insulinUnits: 5.0),
+      Injection(date: Date(), insulinUnits: 2.0)
+    ];
+    
+    return ChartView(insulinOnBoard: 5, chartWidth: Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: 100, isHealthKitAuthorized: .unnecessary, activeEnergyLast2Weeks: 280, activeEnergyLast24Hours: 500, insulinUnitsLast2Weeks: 6900,
+                     insulinUnitsLast24Hours: 20, daysOfDataInsulin: 7, daysOfDataActiveEnergy: 10, timeFormatter: timeFormatter, injections: injections, appState: AppState.current, optionalData: optionalData)
   }
 }

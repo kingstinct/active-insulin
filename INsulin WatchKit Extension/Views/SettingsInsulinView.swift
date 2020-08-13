@@ -9,20 +9,6 @@ struct SettingsInsulinView: View {
   var body: some View {
     ScrollView {
       VStack(alignment: .center){
-        Button(action: {
-          if let product = StoreObserver.current.availableProducts.first{
-              StoreObserver.current.makePurchase(product: product)
-          }
-        }, label: {
-          Text("go_premium")
-        })
-        
-        Button(action: {
-          StoreObserver.current.restorePurchases();
-        }, label: {
-          Text("restore_purchases")
-        })
-        
         Text("insulin_info").padding()
         StyledGroup {
           HStack {
@@ -31,7 +17,7 @@ struct SettingsInsulinView: View {
           }
           Slider(value: $appState.insulinDurationInMinutes, in: ClosedRange(uncheckedBounds: (lower: 200, upper: 600)), step: 5) {
             Text("Insulin Duration")
-          }.accentColor(Color.AccentColor).disabled(!(appState.isPremiumUntil > Date().timeIntervalSince1970))
+          }.accentColor(Color.AccentColor)
         }
         
         StyledGroup {
@@ -41,7 +27,7 @@ struct SettingsInsulinView: View {
           }
           Slider(value: $appState.insulinPeakTimeInMinutes, in: ClosedRange(uncheckedBounds: (lower: 30, upper: 100)), step: 5) {
             Text("Insulin Duration")
-          }.accentColor(Color.AccentColor).disabled(!(appState.isPremiumUntil > Date().timeIntervalSince1970))
+          }.accentColor(Color.AccentColor)
         }
         
         StyledGroup {
@@ -51,7 +37,7 @@ struct SettingsInsulinView: View {
           }
           Slider(value: $appState.insulinStepSize, in: ClosedRange(uncheckedBounds: (lower: 0.5, upper: 1.0)), step: 0.5, minimumValueLabel: Text("0.5"), maximumValueLabel: Text("1")) {
             Text("Insulin Step Size")
-          }.accentColor(Color.AccentColor).disabled(!(appState.isPremiumUntil > Date().timeIntervalSince1970))
+          }.accentColor(Color.AccentColor)
         }
         
       }

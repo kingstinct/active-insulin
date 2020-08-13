@@ -53,5 +53,4 @@ class AppState: ObservableObject {
   @Published(key: "IS_PREMIUM_UNTIL") var isPremiumUntil: Double = 0;
   
   static var current = AppState();
-  
 }

@@ -20,6 +20,10 @@ class StoreObserver: NSObject, SKPaymentTransactionObserver, SKProductsRequestDe
   }
   
   func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+    print("productsRequestDidReceive")
+    
+    print(response.products.count)
+    print(response.products[0].productIdentifier)
     
     if !response.products.isEmpty {
       availableProducts = response.products
@@ -155,7 +159,9 @@ class StoreObserver: NSObject, SKPaymentTransactionObserver, SKProductsRequestDe
   }
   
   func fetchProducts() {
+    print("fetchProducts()")
     if(SKPaymentQueue.canMakePayments()){
+      print("canMakePayments")
       // Create a set for the product identifiers.
       let productIdentifiers = Set(identifiers)
       
@@ -164,6 +170,7 @@ class StoreObserver: NSObject, SKPaymentTransactionObserver, SKProductsRequestDe
       productRequest.delegate = self
       
       // Send the request to the App Store.
+      print("sending request")
       productRequest.start()
     } else {
       
