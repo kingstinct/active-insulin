@@ -885,7 +885,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "INsulin WatchKit Extension/INsulin WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_ASSET_PATHS = "\"INsulin WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				ENABLE_PREVIEWS = YES;
@@ -915,7 +915,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "INsulin WatchKit Extension/INsulin WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_ASSET_PATHS = "\"INsulin WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				ENABLE_PREVIEWS = YES;
@@ -943,7 +943,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				IBSC_MODULE = INsulin_WatchKit_Extension;
 				INFOPLIST_FILE = "INsulin WatchKit App/Info.plist";
@@ -964,7 +964,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				IBSC_MODULE = INsulin_WatchKit_Extension;
 				INFOPLIST_FILE = "INsulin WatchKit App/Info.plist";
@@ -983,7 +983,7 @@
 			baseConfigurationReference = A7CF3B6E9D1A814FE9714C89 /* Pods-INsulin.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				INFOPLIST_FILE = "INsulin App/Info.plist";
 				MARKETING_VERSION = 1.0;
@@ -998,7 +998,7 @@
 			baseConfigurationReference = 821838AC2EF54D90330E6661 /* Pods-INsulin.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				INFOPLIST_FILE = "INsulin App/Info.plist";
 				MARKETING_VERSION = 1.0;
@@ -1013,7 +1013,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "INsulin Siri extension/INsulin Siri extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				INFOPLIST_FILE = "INsulin Siri extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1037,7 +1037,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "INsulin Siri extension/INsulin Siri extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = 34SE8X7Q58;
 				INFOPLIST_FILE = "INsulin Siri extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
