@@ -14,7 +14,6 @@ import Combine
 import YOChartImageKit
 import UserNotifications
 
-
 class ChartHostingController: WKHostingController<ChartView> {
   let insulinQuantityType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
   var activeInsulin: Double = 0
@@ -29,6 +28,8 @@ class ChartHostingController: WKHostingController<ChartView> {
   var activeEnergyLast24Hours: StatsResponse? = nil
   var activeEnergyLast2weeks: StatsResponse? = nil
   var timer: Timer? = nil;
+  var alertTitle: String? = nil;
+  var alertMessage: String? = nil;
   
   var injections: Array<Injection>? = nil
   
@@ -71,6 +72,10 @@ class ChartHostingController: WKHostingController<ChartView> {
     
     if(self.updateQuery == nil){
       let query = HKObserverQuery.init(sampleType: Health.current.insulinQuantityType, predicate: nil) { (query, handler, error) in
+        
+        if let error = error {
+          self.presentAlert(withTitle: "HK Observer Error", message: error.localizedDescription, preferredStyle: WKAlertControllerStyle.alert, actions: [])
+        }
         self.queryAndUpdateActiveInsulin(handler: handler);
       }
       Health.current.healthStore.execute(query)
@@ -80,6 +85,9 @@ class ChartHostingController: WKHostingController<ChartView> {
     
     if(self.updateActiveEnergyQuery == nil){
       let activeEnergyQuery = HKObserverQuery.init(sampleType: Health.current.activeEnergyQuantityType, predicate: nil) { (query, handler, error) in
+        if let error = error {
+          self.presentAlert(withTitle: "HK Observer Error", message: error.localizedDescription, preferredStyle: .alert, actions: []);
+        }
         self.queryAndUpdateActiveEnergy(handler: handler);
       }
       
@@ -91,7 +99,6 @@ class ChartHostingController: WKHostingController<ChartView> {
   
   
   func checkForAuth() {
-    
     Health.current.healthStore.getRequestStatusForAuthorization(toShare: [], read: [Health.current.insulinObjectType]) { (status, error) in
       DispatchQueue.main.async {
         self.isHealthkitAuthorized = status;
@@ -157,56 +164,83 @@ class ChartHostingController: WKHostingController<ChartView> {
   func queryAndUpdateActiveEnergy (handler: @escaping HKObserverQueryCompletionHandler) {
     Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24)) { (error, response) in
       
-      DispatchQueue.main.async {
-        self.activeEnergyLast24Hours = response;
+      if let error = error {
+        self.presentAlert(withTitle: "HK 24 hour energy Error", message: error.localizedDescription, preferredStyle: .alert, actions: []);
       }
       
       Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24 * 15), end: Date().addHours(addHours: -24 * 1)) { (error, response) in
         
+        if let error = error {
+          self.presentAlert(withTitle: "HK 2 week energy Error", message: error.localizedDescription, preferredStyle: .alert, actions: []);
+        }
+        
         DispatchQueue.main.async {
           self.activeEnergyLast2weeks = response;
+          self.activeEnergyLast24Hours = response;
           self.setNeedsBodyUpdate();
           handler();
         }
         
       }
     }
-    
   }
   
   func queryAndUpdateActiveInsulin (handler: @escaping HKObserverQueryCompletionHandler) {
     
-    
-    /*Health.current.fetchInsulinStats(start: Date().addHours(addHours: -24 * 28), end: Date().addHours(addHours: -24 * 14)) { (error, response) in
-      self.insulinPrevious2weeks = response;
-      self.setNeedsBodyUpdate()
-    }
-    Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24 * 28), end: Date().addHours(addHours: -24 * 14)) { (error, response) in
-      self.activeEnergyPrevious2weeks = response;
-      self.setNeedsBodyUpdate()
-    }*/
-    
-    Health.current.fetchInjections(from: Date().addHours(addHours: -24)) { (error, injections) in
+    Health.current.fetchInjections(from: Date().addHours(addHours: -360)) { (error, injections) in
+      
+      if let error = error {
+        self.presentAlert(withTitle: "HK injections Error", message: error.localizedDescription, preferredStyle: .alert, actions: []);
+      }
       
       if let injections = injections {
-        self.injections = injections.reversed();
+        let last24hours = injections.reversed().filter { (injection) -> Bool in
+          injection.date >= Date().addHours(addHours: -24)
+        }
+        self.injections = last24hours;
         
-        self.insulinLast24Hours = injections.reduce(0, { (acc, injection) -> Double in
+        self.insulinLast24Hours = last24hours.reduce(0, { (acc, injection) -> Double in
           return acc + injection.insulinUnits
         });
         
-        let vals = Health.current.buildChartData(injections: injections, from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 6), minuteResolution: 2)
+        let vals = Health.current.buildChartData(injections: last24hours, from: Date().addHours(addHours: -1), to: Date().addHours(addHours: 6), minuteResolution: 2)
         
         let newImage = ChartBuilder.getChartImage(vals: vals, width: self.chartWidth, chartHeight: self.chartHeight);
         
-        Health.current.fetchInsulinStats(start: Date().addHours(addHours: -24 * 15), end: Date().addHours(addHours: -24 * 1)) { (error, response) in
-          DispatchQueue.main.async {
-            self.image = newImage
-            self.insulinLast2weeks = response;
-            self.activeInsulin = Health.current.iobFromValues(injections: injections)
-            self.setNeedsBodyUpdate();
-            handler();
-          }
+        let last2Weeks = injections.filter { (injection) -> Bool in
+          injection.date < Date().addHours(addHours: -24)
+        }
+        
+        let maxLast2Weeks = last2Weeks.max { (inj1, inj2) -> Bool in
+          return inj1.insulinUnits > inj2.insulinUnits;
+        }?.insulinUnits
+        
+        let mostRecentQuantity = last2Weeks.last?.insulinUnits;
+        
+        let mostRecentTime = last2Weeks.last?.date;
+        
+        let sum = last2Weeks.reduce(0) { (prev, inj) -> Double in
+          return prev + inj.insulinUnits
+        }
+        
+        let startDate = last2Weeks.first?.date ?? Date();
+        let endDate = last2Weeks.last?.date ?? Date();
+        let totalDays = 0.5 + (startDate.distance(to: endDate) / (60 * 60 * 24));
+        
+        DispatchQueue.main.async {
+          self.image = newImage
+          self.insulinLast2weeks = StatsResponse.init(
+            maximumQuantity: maxLast2Weeks,
+            mostRecentQuantity: mostRecentQuantity,
+            mostRecentTime: mostRecentTime,
+            sumQuantity: sum,
+            startDate: startDate,
+            endDate: endDate,
+            totalDays: totalDays
+          );
+          self.activeInsulin = Health.current.iobFromValues(injections: last24hours)
+          self.setNeedsBodyUpdate();
+          handler();
         }
       }
     }

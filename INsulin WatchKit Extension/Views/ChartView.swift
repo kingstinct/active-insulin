@@ -30,7 +30,7 @@ struct TrendArrow: View {
 }
 
 struct ChartView: View {
-   @State private var showingAlert = false
+  @State private var showingAlert = false
   var insulinOnBoard: Double
   var chartWidth: Double
   var chartHeight: Double
@@ -57,10 +57,10 @@ struct ChartView: View {
           Button(action: {
             self.appState.activePage = .insulinInput
           }, label: {
-              Text("Enter insulin")
-            }).padding()
-          } else {
-            
+            Text("Enter insulin")
+          }).padding()
+        } else {
+          
           }
           
           VStack {
@@ -95,17 +95,27 @@ struct ChartView: View {
         if(insulinUnitsLast24Hours > 0){
           Divider()
           HStack {
-            Text(LocalizedString("units_of_insulin").uppercased()).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).foregroundColor(Color.gray).font(.system(size: 14))
+            Text(LocalizedString("units_of_insulin").uppercased())
+              .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+              .foregroundColor(Color.gray)
+              .font(.system(size: 14))
           }
           
           HStack {
             Text(insulinUnitsLast24Hours.format("0.1")).foregroundColor(Color.AccentColor)
-            Text( LocalizedString("past_24h") ).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing).foregroundColor(Color.gray).font(.system(size: 14))
+            Text( LocalizedString("past_24h") )
+              .frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+              .foregroundColor(Color.gray)
+              .font(.system(size: 14))
           }
           if(daysOfDataInsulin > 1 && insulinUnitsLast2Weeks > 0){
             HStack {
-              Text(insulinUnitsLast2Weeks.format("0.1")).foregroundColor(Color.AccentColor)
-              Text( LocalizedString("past_2_weeks") ).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing).foregroundColor(Color.gray).font(.system(size: 14))
+              Text(insulinUnitsLast2Weeks.format("0.1"))
+                .foregroundColor(Color.AccentColor)
+              Text(LocalizedString("past_2_weeks"))
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+                .foregroundColor(Color.gray)
+                .font(.system(size: 14))
             }
           }
         }
@@ -114,18 +124,20 @@ struct ChartView: View {
           Divider()
           HStack {
             Text( LocalizedString("activity").uppercased()).foregroundColor(Color.gray).font(.system(size: 14))
-            Text(LocalizedString("past_24h").uppercased()).foregroundColor(Color.gray).font(.system(size: 14)).frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+            Text(LocalizedString("past_24h").uppercased()).foregroundColor(Color.gray)
+              .font(.system(size: 14))
+              .frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
           }
           
           
           HStack {
             TrendArrow(value: activeEnergyLast24Hours, compareWith: activeEnergyLast2Weeks)
             Text(
-                (
-                  Double(
-                    100 * activeEnergyLast24Hours / activeEnergyLast2Weeks) - 100
+              (
+                Double(
+                  100 * activeEnergyLast24Hours / activeEnergyLast2Weeks) - 100
                 ).format("1.0") + "%"
-              )
+            )
               .foregroundColor(activeEnergyLast24Hours > activeEnergyLast2Weeks ? Color.green : activeEnergyLast24Hours < activeEnergyLast2Weeks ? Color.red : Color.white)
               .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
             Text(activeEnergyLast24Hours.format("1.0") + " kcal")
@@ -140,7 +152,10 @@ struct ChartView: View {
         
         Divider()
         HStack {
-          Text( LocalizedString("Injections").uppercased()).foregroundColor(Color.gray).font(.system(size: 14)).multilineTextAlignment(.leading).frame(minWidth:0, maxWidth: .infinity, alignment: .leading)
+          Text( LocalizedString("Injections").uppercased())
+            .foregroundColor(Color.gray)
+            .font(.system(size: 14))
+            .multilineTextAlignment(.leading).frame(minWidth:0, maxWidth: .infinity, alignment: .leading)
         }
         ForEach(injections ?? [], id: \.date) { (injection) in
           Button(action: {
@@ -166,9 +181,9 @@ struct ChartView: View {
                   .foregroundColor(Color.gray)
                   .font(.system(size: 12))
               }
-              // .padding()
-              //.background(Color.AlmostBlack)
-              .cornerRadius(10)
+                // .padding()
+                //.background(Color.AlmostBlack)
+                .cornerRadius(10)
             }.padding(3)
           }
           
@@ -182,12 +197,12 @@ struct ChartView_Previews: PreviewProvider {
   static var previews: some View {
     let optionalData = OptionalData()
     /*let last2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 2311)
-    let previous2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 1111)
-    let last24hours = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 111)
-    
-    let energyLast2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 5000)
-    let energyPrevious2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 4000)
-    let energyLast24hours = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 400)*/
+     let previous2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 1111)
+     let last24hours = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 111)
+     
+     let energyLast2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 5000)
+     let energyPrevious2weeks = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 4000)
+     let energyLast24hours = StatsResponse(/*maximumQuantity: 11, minimumQuantity: 1,*/ mostRecentQuantity: 10, mostRecentTime: Date(), sumQuantity: 400)*/
     let timeFormatter = DateFormatter();
     timeFormatter.dateFormat = "HH:mm";
     
@@ -196,7 +211,22 @@ struct ChartView_Previews: PreviewProvider {
       Injection(date: Date(), insulinUnits: 2.0)
     ];
     
-    return ChartView(insulinOnBoard: 5, chartWidth: Double(WKInterfaceDevice.current().screenBounds.width), chartHeight: 100, isHealthKitAuthorized: .unnecessary, activeEnergyLast2Weeks: 280, activeEnergyLast24Hours: 500, insulinUnitsLast2Weeks: 6900,
-                     insulinUnitsLast24Hours: 20, daysOfDataInsulin: 7, daysOfDataActiveEnergy: 10, timeFormatter: timeFormatter, injections: injections, appState: AppState.current, optionalData: optionalData)
+    return ChartView(
+      insulinOnBoard: 5,
+      chartWidth: Double(WKInterfaceDevice.current().screenBounds.width),
+      chartHeight: 100,
+      isHealthKitAuthorized: .unnecessary,
+      activeEnergyLast2Weeks: 280,
+      activeEnergyLast24Hours: 500,
+      insulinUnitsLast2Weeks: 6900,
+      insulinUnitsLast24Hours: 20,
+      daysOfDataInsulin: 7,
+      daysOfDataActiveEnergy: 10,
+      timeFormatter: timeFormatter,
+      injections: injections,
+      appState: AppState.current,
+      optionalData: optionalData)
   }
 }
+
+
