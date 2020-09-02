@@ -65,7 +65,10 @@ struct ChartView: View {
           
           VStack {
             HStack {
-              Text(LocalizedString("insulin_on_board").uppercased()).frame(minWidth: 0, maxWidth: .infinity, alignment: .leading).font(.system(size: 14)).foregroundColor(Color.gray)
+              Text(LocalizedString("insulin_on_board").uppercased())
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                .font(.system(size: 14))
+                .foregroundColor(Color.gray)
               Image(systemName: "info.circle.fill").foregroundColor(Color.gray)
             }
             HStack(alignment: .center) {
@@ -177,7 +180,8 @@ struct ChartView: View {
                   .frame(
                     minWidth:0,
                     maxWidth: .infinity,
-                    alignment: .trailing)
+                    alignment: .trailing
+                )
                   .foregroundColor(Color.gray)
                   .font(.system(size: 12))
               }
@@ -228,5 +232,6 @@ struct ChartView_Previews: PreviewProvider {
       optionalData: optionalData)
   }
 }
+
 
 

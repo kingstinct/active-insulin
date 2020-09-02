@@ -16,20 +16,18 @@ import UserNotifications
 
 class ChartHostingController: WKHostingController<ChartView> {
   let insulinQuantityType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.insulinDelivery)!;
-  var activeInsulin: Double = 0
-  var image: UIImage?
+  var activeInsulin: Double = 0;
+  var image: UIImage?;
   var updateQuery: HKQuery? = nil;
   var updateActiveEnergyQuery: HKQuery? = nil;
-  let chartWidth = Double(WKInterfaceDevice.current().screenBounds.width) - 4
+  let chartWidth = Double(WKInterfaceDevice.current().screenBounds.width) - 4;
   let chartHeight: Double = 100;
   let timeFormatter = DateFormatter();
-  var insulinLast24Hours: Double? = nil
-  var insulinLast2weeks: StatsResponse? = nil
-  var activeEnergyLast24Hours: StatsResponse? = nil
-  var activeEnergyLast2weeks: StatsResponse? = nil
+  var insulinLast24Hours: Double? = nil;
+  var insulinLast2weeks: StatsResponse? = nil;
+  var activeEnergyLast24Hours: StatsResponse? = nil;
+  var activeEnergyLast2weeks: StatsResponse? = nil;
   var timer: Timer? = nil;
-  var alertTitle: String? = nil;
-  var alertMessage: String? = nil;
   
   var injections: Array<Injection>? = nil
   
@@ -52,7 +50,7 @@ class ChartHostingController: WKHostingController<ChartView> {
   
   override func awake(withContext context: Any?) {
     print("awake: ChartHostingController")
-
+    
     listenToSelf = AppState.current.$activePage.sink { (page) in
       if(page == .chart){
         self.becomeCurrentPage()
@@ -123,18 +121,18 @@ class ChartHostingController: WKHostingController<ChartView> {
     self.initQuery();
     
     /*if(AppState.current.activePage != .chart) {
-      AppState.current.activePage = .chart
-    }*/
+     AppState.current.activePage = .chart
+     }*/
   }
   
   override func didDeactivate() {
     print("didDeactivate: ChartHostingController")
     /*if let query = updateQuery {
-      Health.current.healthStore.stop(query);
-    }
-    if let energyQuery = updateActiveEnergyQuery {
-      Health.current.healthStore.stop(energyQuery);
-    }*/
+     Health.current.healthStore.stop(query);
+     }
+     if let energyQuery = updateActiveEnergyQuery {
+     Health.current.healthStore.stop(energyQuery);
+     }*/
     if let timer = timer {
       timer.invalidate()
     }
@@ -149,8 +147,8 @@ class ChartHostingController: WKHostingController<ChartView> {
   override func didAppear() {
     checkForAuth()
     /*self.queryAndUpdateActiveInsulin {
-      
-    }*/
+     
+     }*/
     
     print("didAppear: ChartHostingController")
     NSUserActivity.displayIOBActivityType().becomeCurrent();
@@ -162,21 +160,21 @@ class ChartHostingController: WKHostingController<ChartView> {
   }
   
   func queryAndUpdateActiveEnergy (handler: @escaping HKObserverQueryCompletionHandler) {
-    Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24)) { (error, response) in
+    Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24)) { (error, last24hours) in
       
       if let error = error {
         self.presentAlert(withTitle: "HK 24 hour energy Error", message: error.localizedDescription, preferredStyle: .alert, actions: []);
       }
       
-      Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24 * 15), end: Date().addHours(addHours: -24 * 1)) { (error, response) in
+      Health.current.fetchActiveEnergyStats(start: Date().addHours(addHours: -24 * 15), end: Date().addHours(addHours: -24 * 1)) { (error, last2weeks) in
         
         if let error = error {
           self.presentAlert(withTitle: "HK 2 week energy Error", message: error.localizedDescription, preferredStyle: .alert, actions: []);
         }
         
         DispatchQueue.main.async {
-          self.activeEnergyLast2weeks = response;
-          self.activeEnergyLast24Hours = response;
+          self.activeEnergyLast2weeks = last2weeks;
+          self.activeEnergyLast24Hours = last24hours;
           self.setNeedsBodyUpdate();
           handler();
         }
@@ -213,7 +211,7 @@ class ChartHostingController: WKHostingController<ChartView> {
         
         let maxLast2Weeks = last2Weeks.max { (inj1, inj2) -> Bool in
           return inj1.insulinUnits > inj2.insulinUnits;
-        }?.insulinUnits
+          }?.insulinUnits
         
         let mostRecentQuantity = last2Weeks.last?.insulinUnits;
         
@@ -249,21 +247,23 @@ class ChartHostingController: WKHostingController<ChartView> {
   override var body: ChartView {
     let optionalData = OptionalData();
     optionalData.chartImage = self.image;
-    return ChartView(insulinOnBoard: activeInsulin,
-                     chartWidth: chartWidth,
-                     chartHeight: chartHeight,
-                     isHealthKitAuthorized: isHealthkitAuthorized,
-                     activeEnergyLast2Weeks: activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyLast2weeks?.totalDays != nil && activeEnergyLast2weeks!.totalDays! > 1 ? activeEnergyLast2weeks!.sumQuantity! / activeEnergyLast2weeks!.totalDays! : 0,
-                     activeEnergyLast24Hours: activeEnergyLast24Hours?.sumQuantity ?? 0,
-                     insulinUnitsLast2Weeks: insulinLast2weeks?.sumQuantity != nil && insulinLast2weeks?.totalDays != nil && insulinLast2weeks!.totalDays! > 2 ? insulinLast2weeks!.sumQuantity! / insulinLast2weeks!.totalDays! : 0, openInjectionDetails: self.openInjectionDetails,
-                     insulinUnitsLast24Hours: insulinLast24Hours ?? 0,
-                     daysOfDataInsulin: insulinLast2weeks?.totalDays ?? 0,
-                     daysOfDataActiveEnergy: activeEnergyLast2weeks?.totalDays ?? 0,
-                     timeFormatter: timeFormatter,
-  
-                     injections: self.injections,
-                     appState: AppState.current,
-                     optionalData: optionalData
+    return ChartView(
+      insulinOnBoard: activeInsulin,
+      chartWidth: chartWidth,
+      chartHeight: chartHeight,
+      isHealthKitAuthorized: isHealthkitAuthorized,
+      activeEnergyLast2Weeks: activeEnergyLast2weeks?.sumQuantity != nil && activeEnergyLast2weeks?.totalDays != nil && activeEnergyLast2weeks!.totalDays! > 1 ? activeEnergyLast2weeks!.sumQuantity! / activeEnergyLast2weeks!.totalDays! : 0,
+      activeEnergyLast24Hours: activeEnergyLast24Hours?.sumQuantity ?? 0,
+      insulinUnitsLast2Weeks: insulinLast2weeks?.sumQuantity != nil && insulinLast2weeks?.totalDays != nil && insulinLast2weeks!.totalDays! > 2 ? insulinLast2weeks!.sumQuantity! / insulinLast2weeks!.totalDays! : 0, openInjectionDetails: self.openInjectionDetails,
+      insulinUnitsLast24Hours: insulinLast24Hours ?? 0,
+      daysOfDataInsulin: insulinLast2weeks?.totalDays ?? 0,
+      daysOfDataActiveEnergy: activeEnergyLast2weeks?.totalDays ?? 0,
+      timeFormatter: timeFormatter,
+      
+      injections: self.injections,
+      appState: AppState.current,
+      optionalData: optionalData
     )
   }
 }
+
